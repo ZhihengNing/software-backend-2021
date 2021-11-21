@@ -1,0 +1,28 @@
+spring:
+  banner:
+    location: banner.txt
+  mvc:
+    servlet:
+      path: /api
+  profiles:
+    active: prod
+
+  servlet:
+    multipart:
+      enabled: true
+      max-file-size: 20MB  #单个文件最大大小
+      max-request-size: 60MB #上传数据总大小
+mybatis:
+  mapper-locations: mapper/**/*.xml
+
+server:
+  port: 9090
+
+jwt:
+  key: tongjinzh
+  time: 30
+
+knife4j:
+  enable: true
+
+

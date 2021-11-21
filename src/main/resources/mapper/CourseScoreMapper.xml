@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yuki.experiment.framework.mapper.CourseScoreMapper">
+
+    <resultMap id="BaseResultMap" type="com.yuki.experiment.framework.entity.CourseScore">
+            <id property="courseId" column="course_id" jdbcType="INTEGER"/>
+            <id property="studentId" column="student_id" jdbcType="INTEGER"/>
+            <result property="courseScore" column="course_score" jdbcType="DECIMAL"/>
+            <result property="thisAttendanceTime" column="this_attendance_time" jdbcType="TIMESTAMP"/>
+            <result property="lastAttendanceTime" column="last_attendance_time" jdbcType="TIMESTAMP"/>
+            <result property="attendanceScore" column="attendance_score" jdbcType="DECIMAL"/>
+            <result property="isActive" column="is_active" jdbcType="INTEGER"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        course_id,student_id,course_score,
+        this_attendance_time,last_attendance_time,attendance_score,
+        is_active
+    </sql>
+</mapper>

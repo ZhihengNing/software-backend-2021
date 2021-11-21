@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yuki.experiment.framework.mapper.ExperimentMapper">
+
+    <resultMap id="BaseResultMap" type="com.yuki.experiment.framework.entity.Experiment">
+            <id property="id" column="id" jdbcType="INTEGER"/>
+            <id property="courseId" column="course_id" jdbcType="INTEGER"/>
+            <result property="name" column="name" jdbcType="VARCHAR"/>
+            <result property="createTime" column="create_time" jdbcType="TIMESTAMP"/>
+            <result property="updateTime" column="update_time" jdbcType="TIMESTAMP"/>
+            <result property="teacherId" column="teacher_id" jdbcType="INTEGER"/>
+            <result property="experimentScore" column="experiment_score" jdbcType="DECIMAL"/>
+            <result property="experimentPurpose" column="experiment_purpose" jdbcType="VARCHAR"/>
+            <result property="experimentContent" column="experiment_content" jdbcType="VARCHAR"/>
+            <result property="experimentDeadline" column="experiment_deadline" jdbcType="TIMESTAMP"/>
+            <result property="experimentRemarks" column="experiment_remarks" jdbcType="VARCHAR"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        id,course_id,name,
+        create_time,update_time,teacher_id,
+        experiment_score,experiment_purpose,experiment_content,
+        experiment_deadline,experiment_remarks
+    </sql>
+</mapper>

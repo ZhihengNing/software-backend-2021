@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yuki.experiment.framework.mapper.StudentMapper">
+
+    <resultMap id="BaseResultMap" type="com.yuki.experiment.framework.entity.Student">
+            <id property="id" column="id" jdbcType="INTEGER"/>
+            <result property="administratorId" column="administrator_id" jdbcType="INTEGER"/>
+            <result property="name" column="name" jdbcType="VARCHAR"/>
+            <result property="password" column="password" jdbcType="VARCHAR"/>
+            <result property="gender" column="gender" jdbcType="CHAR"/>
+            <result property="year" column="year" jdbcType="VARCHAR"/>
+            <result property="phoneNum" column="phone_num" jdbcType="VARCHAR"/>
+            <result property="grade" column="grade" jdbcType="DECIMAL"/>
+            <result property="createTime" column="create_time" jdbcType="TIMESTAMP"/>
+            <result property="updateTime" column="update_time" jdbcType="TIMESTAMP"/>
+            <result property="major" column="major" jdbcType="VARCHAR"/>
+            <result property="mailbox" column="mailbox" jdbcType="VARCHAR"/>
+            <result property="url" column="url" jdbcType="VARCHAR"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        id,administrator_id,name,
+        password,gender,year,
+        phone_num,grade,create_time,
+        update_time,major,mailbox,
+        url
+    </sql>
+</mapper>

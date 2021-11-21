@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yuki.experiment.framework.mapper.StuExperimentMapper">
+
+    <resultMap id="BaseResultMap" type="com.yuki.experiment.framework.entity.StuExperiment">
+            <id property="studentId" column="student_id" jdbcType="INTEGER"/>
+            <id property="experimentId" column="experiment_id" jdbcType="INTEGER"/>
+            <result property="experimentScore" column="experiment_score" jdbcType="DECIMAL"/>
+            <result property="fileId" column="file_id" jdbcType="INTEGER"/>
+            <result property="jobContent" column="job_content" jdbcType="VARCHAR"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        student_id,experiment_id,experiment_score,
+        file_id,job_content
+    </sql>
+</mapper>
