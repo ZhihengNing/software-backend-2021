@@ -46,7 +46,7 @@ public class TestController {
     }
 
     @ApiOperation("这是一个测试controller")
-    @RequestMapping(value = "/demo1",method = RequestMethod.GET)
+    @RequestMapping(value = "/demo",method = RequestMethod.GET)
     public CommonResult<String> demo1(){
         System.out.println(JwtUtil.getKEY());
         return CommonResult.success("2333");

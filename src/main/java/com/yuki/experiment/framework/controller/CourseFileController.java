@@ -36,8 +36,10 @@ public class CourseFileController {
         List<String> result = new ArrayList<>();
         //生成文件夹的路径
         String path = FileUtil.generatorUrl(courseFileUploadPath, courseId);
+
+        String path1=FileUtil.generatorWebUrl(courseFileUploadPath,courseId);
         //保存到服务器
-        List<JSONObject> list = FileUtil.preserveFile(multipartFiles, path);
+        List<JSONObject> list = FileUtil.preserveFile(multipartFiles, path,path1);
         for (JSONObject item : list) {
             String url = item.getString("data");
             String name = item.getString("name");

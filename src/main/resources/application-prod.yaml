@@ -17,3 +17,6 @@ spring:
           socketFactory:
             class: javax.net.ssl.SSLSocketFactory
         debug: true
+file:
+  path: C:/upload
+  webPath: http://139.224.65.105:666

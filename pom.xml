@@ -11,8 +11,6 @@
     <groupId>com.yuki</groupId>
     <artifactId>experiment</artifactId>
     <version>0.0.1-SNAPSHOT</version>
-    <name>software-design</name>
-    <description>software-design</description>
     <properties>
         <java.version>9</java.version>
 
@@ -129,6 +127,7 @@
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
+                <version>2.5.6</version>
                 <configuration>
                     <excludes>
                         <exclude>

@@ -1,6 +1,8 @@
 package com.yuki.experiment.common.utils;
 
 import com.alibaba.fastjson.JSONObject;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
@@ -8,22 +10,34 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+@Component
 public class FileUtil {
-
-    private final static String PATH="C:"+File.separator+"upload";
-
-    public static String generatorUrl(Object...text) {
+//    private static String PATH="C:/upload";
+//
+//    private final static String WEBPATH = "http://139.224.65.105:666";
+    public static String generatorUrl(Object... text) {
         if (text == null) {
             return null;
         }
-        StringBuilder begin = new StringBuilder(PATH);
+        StringBuilder begin = new StringBuilder(FileInfo.PATH);
         for (Object item : text) {
             begin.append(File.separator).append(item);
         }
         return String.valueOf(begin);
     }
 
-    public static List<JSONObject> preserveFile(MultipartFile[] multipartFiles, String path) {
+    public static String generatorWebUrl(Object... text) {
+        if (text == null) {
+            return null;
+        }
+        StringBuilder begin = new StringBuilder(FileInfo.WEBPATH);
+        for (Object item : text) {
+            begin.append("/").append(item);
+        }
+        return String.valueOf(begin);
+    }
+
+    public static List<JSONObject> preserveFile(MultipartFile[] multipartFiles, String path, String webPath) {
         List<JSONObject> list = new ArrayList<>();
         for (MultipartFile item : multipartFiles) {
             JSONObject json = new JSONObject();
@@ -35,8 +49,7 @@ public class FileUtil {
                     temp.mkdirs();
                 }
                 String fileName = item.getOriginalFilename();
-                String path1 = path + File.separator + fileName;
-                File file = new File(path1);
+                File file = new File(path + File.separator + fileName);
                 try {
                     item.transferTo(file);
                 } catch (IOException e) {
@@ -44,7 +57,7 @@ public class FileUtil {
                 }
                 json.put("message", fileName + "上传成功");
                 json.put("name", fileName);
-                json.put("data", path1);
+                json.put("data", webPath + "/" + fileName);
                 list.add(json);
             }
         }
