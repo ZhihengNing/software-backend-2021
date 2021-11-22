@@ -39,7 +39,7 @@ public class ExperimentController {
         return CommonResult.success(byTeacherId);
     }
 
-    @ApiModelProperty("插入实验项目")
+    @ApiOperation("插入实验项目")
     @RequestMapping(value = "",method = RequestMethod.POST)
     public CommonResult insertExperiment(@RequestBody Experiment experiment){
         if(experiment.getCourseId()==null){
