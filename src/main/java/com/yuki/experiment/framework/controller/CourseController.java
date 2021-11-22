@@ -18,8 +18,13 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/course")
 @Slf4j
 public class CourseController {
-    @Autowired
+
     private CourseService courseService;
+
+    @Autowired
+    public void setCourseService(CourseService courseService) {
+        this.courseService = courseService;
+    }
 
     @Autowired
     private TeacherMapper mapper;

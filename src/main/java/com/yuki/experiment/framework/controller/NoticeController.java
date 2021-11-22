@@ -15,8 +15,12 @@ import java.util.List;
 @RequestMapping("/notice")
 public class NoticeController {
 
-    @Autowired
     private NoticeService noticeService;
+
+    @Autowired
+    public void setNoticeService(NoticeService noticeService) {
+        this.noticeService = noticeService;
+    }
 
     @ApiOperation("获取系统公告")
     @RequestMapping(value = "/info",method = RequestMethod.GET)

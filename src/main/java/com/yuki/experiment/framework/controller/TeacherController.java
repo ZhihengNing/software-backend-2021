@@ -11,8 +11,13 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/teacher")
 @Slf4j
 public class TeacherController {
-    @Autowired
+
     private TeacherService teacherService;
+    @Autowired
+    public void setTeacherService(TeacherService teacherService) {
+        this.teacherService = teacherService;
+    }
+
     @RequestMapping(value = "/info/{teacherName}",method = RequestMethod.POST)
     public CommonResult<Boolean> insert(@PathVariable String teacherName) {
         Teacher teacher = new Teacher();
