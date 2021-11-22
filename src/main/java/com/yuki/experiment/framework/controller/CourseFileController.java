@@ -1,12 +1,15 @@
 package com.yuki.experiment.framework.controller;
 
 import com.alibaba.fastjson.JSONObject;
+import com.yuki.experiment.common.exception.FileIsNullException;
 import com.yuki.experiment.common.result.CommonResult;
 import com.yuki.experiment.common.utils.FileUtil;
 import com.yuki.experiment.framework.entity.CourseFile;
 import com.yuki.experiment.framework.service.CourseFileService;
 import io.swagger.annotations.ApiOperation;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -15,6 +18,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/courseFile")
+@Slf4j
 public class CourseFileController {
 
     private CourseFileService courseFileService;
@@ -27,13 +31,10 @@ public class CourseFileController {
 
     @ApiOperation("上传课程文件")
     @RequestMapping(value = "/{courseId}/{teacherId}", method = RequestMethod.POST)
-    public CommonResult<List<String>> uploadFile(@RequestPart("courseFile") List<MultipartFile> multipartFiles,
+    @Transactional(rollbackFor= FileIsNullException.class)
+    public CommonResult uploadFile(@RequestPart("courseFile") List<MultipartFile> multipartFiles,
                                                  @PathVariable("courseId") Integer courseId,
                                                  @PathVariable("teacherId") Integer teacherId) {
-        if (multipartFiles == null) {
-            return CommonResult.failed();
-        }
-        List<String> result = new ArrayList<>();
         //生成文件夹的路径
         String path = FileUtil.generatorUrl(courseFileUploadPath, courseId);
 
@@ -45,10 +46,10 @@ public class CourseFileController {
             String name = item.getString("name");
             //保存到数据库
             if (url != null&&courseFileService.insertFile(name, courseId, teacherId, url)>0) {
-                result.add(item.getString("message"));
+                log.info(name+"插入数据库成功");
             }
         }
-        return CommonResult.success(result);
+        return CommonResult.success();
     }
     @ApiOperation("查看课程文件")
     @RequestMapping(value = "/course/{courseId}",method = RequestMethod.GET)

@@ -18,7 +18,7 @@ public class TeacherController {
         this.teacherService = teacherService;
     }
 
-    @RequestMapping(value = "/info/{teacherName}",method = RequestMethod.POST)
+    @RequestMapping(value = "/{teacherName}",method = RequestMethod.POST)
     public CommonResult<Boolean> insert(@PathVariable String teacherName) {
         Teacher teacher = new Teacher();
         teacher.setAdministratorId(1);

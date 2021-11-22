@@ -1,18 +1,23 @@
 package com.yuki.experiment.common.utils;
 
 import com.alibaba.fastjson.JSONObject;
+import com.yuki.experiment.common.exception.FileIsNullException;
 import javafx.util.Pair;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Locale;
 
 @Component
+@Slf4j
 public class FileUtil {
 //    private static String PATH="C:/upload";
 //
@@ -45,14 +50,11 @@ public class FileUtil {
         return new Pair<>(s,s1);
     }
 
-
     public static List<JSONObject> preserveFile(List<MultipartFile> multipartFiles, String path, String webPath) {
         List<JSONObject> list = new ArrayList<>();
         for (MultipartFile item : multipartFiles) {
             JSONObject json = new JSONObject();
-            if (item == null) {
-                json.put("message", "文件为空,上传失败");
-            } else {
+            if (item != null) {
                 File temp = new File(path);
                 if (!temp.exists()) {
                     temp.mkdirs();
@@ -62,9 +64,9 @@ public class FileUtil {
                 try {
                     item.transferTo(file);
                 } catch (IOException e) {
-                    json.put("message", fileName + "上传失败");
+                    log.info("message" + fileName + "上传失败");
+                    throw new FileIsNullException();
                 }
-                json.put("message", fileName + "上传成功");
                 json.put("name", fileName);
                 json.put("data", webPath + "/" + fileName);
                 list.add(json);
@@ -72,8 +74,8 @@ public class FileUtil {
         }
         return list;
     }
-    public static List<JSONObject> preserveFile(MultipartFile multipartFile, String path, String webPath) {
-        return preserveFile(List.of(multipartFile), path, webPath);
+    public static JSONObject preserveFile(MultipartFile multipartFile, String path, String webPath) {
+        return preserveFile(List.of(multipartFile), path, webPath).get(0);
     }
 
 

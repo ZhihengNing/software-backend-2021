@@ -12,5 +12,5 @@ spring:
     password: MWCDEEUTVNSBPTWX
     port:
 file:
-  path: C:/uploadTest
+  path: C:\\uploadTest
   webPath: C:/uploadTest

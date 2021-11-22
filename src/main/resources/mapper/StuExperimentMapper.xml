@@ -16,4 +16,13 @@
         student_id,experiment_id,experiment_score,
         file_id,job_content
     </sql>
+    <select id="getUrl" resultType="java.lang.String">
+        select url
+        from student_upload_file
+        where id in(
+            select file_id
+            from stu_experiment
+            where student_id=#{studentId} and experiment_id=#{experimentId}
+            )
+    </select>
 </mapper>

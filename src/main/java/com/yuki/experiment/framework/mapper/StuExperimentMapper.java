@@ -2,7 +2,10 @@ package com.yuki.experiment.framework.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.yuki.experiment.framework.entity.StuExperiment;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
+
+import java.util.List;
 
 /**
 * @author 86180
@@ -12,6 +15,8 @@ import org.springframework.stereotype.Repository;
 */
 @Repository
 public interface StuExperimentMapper extends BaseMapper<StuExperiment> {
+
+    String getUrl(@Param("studentId")Integer studentId, @Param("experimentId") Integer experimentId);
 
 }
 
