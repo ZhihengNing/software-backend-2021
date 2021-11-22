@@ -70,7 +70,7 @@ public class CourseFileController {
         return CommonResult.success(courseFileByTeacherId);
     }
 
-    @ApiOperation("删除指定文件")
+    @ApiOperation("删除课程文件")
     @RequestMapping(value = "/{fileIds}",method = RequestMethod.DELETE)
     public CommonResult deleteFile(@PathVariable List<Integer> fileIds) {
         if(courseFileService.deleteFile(fileIds)>0){

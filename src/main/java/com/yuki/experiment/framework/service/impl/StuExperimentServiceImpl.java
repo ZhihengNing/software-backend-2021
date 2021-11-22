@@ -1,5 +1,6 @@
 package com.yuki.experiment.framework.service.impl;
 
+import com.alibaba.fastjson.JSONObject;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import com.yuki.experiment.common.utils.FileUtil;
@@ -64,13 +65,13 @@ public class StuExperimentServiceImpl implements StuExperimentService {
         //保存到服务器
         FileUtil.preserveFile(multipartFile, path, webPath);
 
-        StudentUploadFile file=new StudentUploadFile();
+        StudentUploadFile file = new StudentUploadFile();
         file.setName(multipartFile.getOriginalFilename());
         file.setUrl(webPath);
         //插入到student_upload_file表进行保存
         studentUploadFileMapper.insert(file);
         Integer fileId;
-        if((fileId=file.getId())!=null){
+        if ((fileId = file.getId()) != null) {
             stuExperiment.setFileId(fileId);
             //插入到stu_experiment表进行保存
             return stuExperimentMapper.insert(stuExperiment);
@@ -79,11 +80,32 @@ public class StuExperimentServiceImpl implements StuExperimentService {
     }
 
     @Override
-    public int update(StuExperiment stuExperiment) {
+    public int update(MultipartFile multipartFile,StuExperiment stuExperiment) {
+        Integer experimentId = stuExperiment.getExperimentId();
+        Integer studentId = stuExperiment.getStudentId();
+        Pair<String, String> twoUrl = FileUtil.generatorTwoUrl(experimentFileUploadPath, experimentId, studentId);
+        String path = twoUrl.getKey();
+        String webPath = twoUrl.getValue();
+
+        //在服务器删除原来文件的url
+        String url = studentUploadFileMapper.selectOne(new QueryWrapper<StudentUploadFile>()
+                .eq("id", stuExperiment.getFileId())).getUrl();
+        if(url!=null) {
+            FileUtil.deleteFile(url);
+        }
+        //把新的文件url存入服务器
+        FileUtil.preserveFile(multipartFile,path,webPath);
+        //这里要更新student_upload_file
+        StudentUploadFile temp=new StudentUploadFile();
+        temp.setId(stuExperiment.getFileId());
+        temp.setName(multipartFile.getOriginalFilename());
+        temp.setUrl(webPath);
+        studentUploadFileMapper.updateById(temp);
+        //这里更新stu_experiment
         UpdateWrapper<StuExperiment> wrapper = new UpdateWrapper<>();
-        wrapper.set(stuExperiment.getExperimentScore() == null, "experiment_score", null)
-                .set(stuExperiment.getFileId() == null, "file_id", null)
-                .set(stuExperiment.getJobContent() == null, "job_content", null)
+        //.set(stuExperiment.getExperimentScore() == null, "experiment_score", null)
+                //.set(stuExperiment.getFileId() == null, "file_id", null)
+        wrapper.set(stuExperiment.getJobContent() == null, "job_content", null)
                 .eq("student_id", stuExperiment.getStudentId())
                 .eq("experiment_id", stuExperiment.getExperimentId());
         return stuExperimentMapper.update(stuExperiment, wrapper);

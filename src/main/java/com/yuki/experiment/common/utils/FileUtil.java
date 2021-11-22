@@ -78,7 +78,8 @@ public class FileUtil {
 
 
     public static boolean deleteFile(String path) {
-        File file = new File(path);
+        String replace = path.replace(FileInfo.WEBPATH, FileInfo.PATH);
+        File file = new File(replace);
         if (file.isFile() && file.exists()) {
             return file.delete();
         }

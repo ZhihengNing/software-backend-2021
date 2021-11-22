@@ -14,6 +14,6 @@ public interface StuExperimentService {
 
     int insert(MultipartFile multipartFile,StuExperiment stuExperiment);
 
-    int update(StuExperiment stuExperiment);
+    int update(MultipartFile multipartFile,StuExperiment stuExperiment);
 
 }

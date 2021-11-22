@@ -71,4 +71,22 @@ public class StuExperimentController {
         }
         return CommonResult.failed();
     }
+    @RequestMapping(value = "/{studentId}/{experimentId}",method = RequestMethod.PUT)
+    public CommonResult updateStuExperiment(@RequestPart MultipartFile multipartFile,
+                                            @PathVariable Integer studentId,
+                                            @PathVariable Integer experimentId,
+                                            @RequestParam("jobContent") String jobContent) {
+        if (studentId == null) {
+            return CommonResult.failed("学生Id不能为空");
+        } else if (experimentId == null) {
+            return CommonResult.failed("实验项目Id不能为空");
+        }
+        StuExperiment build = StuExperiment.builder().studentId(studentId)
+                .experimentId(experimentId)
+                .jobContent(jobContent).build();
+        if (stuExperimentService.update(multipartFile, build) > 0) {
+            return CommonResult.success();
+        }
+        return CommonResult.failed();
+    }
 }
