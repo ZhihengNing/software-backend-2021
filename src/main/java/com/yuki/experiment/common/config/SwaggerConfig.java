@@ -28,7 +28,7 @@ public class SwaggerConfig {
                 .title("软件工程课设接口文档")
                 .description("接口咨询qq--1094554173")
                 .contact(new Contact("nzh", "", "1094554173@qq.com"))
-                .version("1.0")
+                .version("2.0")
                 .build();
     }
 }

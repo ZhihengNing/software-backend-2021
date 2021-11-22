@@ -8,6 +8,7 @@ import java.io.Serializable;
 import java.math.BigDecimal;
 
 import io.swagger.annotations.ApiModelProperty;
+import lombok.Builder;
 import lombok.Data;
 
 /**
@@ -16,6 +17,7 @@ import lombok.Data;
  */
 @TableName(value ="stu_experiment")
 @Data
+@Builder
 public class StuExperiment implements Serializable {
     /**
      * 学生ID

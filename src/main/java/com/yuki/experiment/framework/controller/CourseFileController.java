@@ -27,7 +27,7 @@ public class CourseFileController {
 
     @ApiOperation("上传课程文件")
     @RequestMapping(value = "/{courseId}/{teacherId}", method = RequestMethod.POST)
-    public CommonResult<List<String>> uploadFile(@RequestPart("courseFile") MultipartFile[] multipartFiles,
+    public CommonResult<List<String>> uploadFile(@RequestPart("courseFile") List<MultipartFile> multipartFiles,
                                                  @PathVariable("courseId") Integer courseId,
                                                  @PathVariable("teacherId") Integer teacherId) {
         if (multipartFiles == null) {
@@ -37,9 +37,9 @@ public class CourseFileController {
         //生成文件夹的路径
         String path = FileUtil.generatorUrl(courseFileUploadPath, courseId);
 
-        String path1=FileUtil.generatorWebUrl(courseFileUploadPath,courseId);
+        String webPath=FileUtil.generatorWebUrl(courseFileUploadPath,courseId);
         //保存到服务器
-        List<JSONObject> list = FileUtil.preserveFile(multipartFiles, path,path1);
+        List<JSONObject> list = FileUtil.preserveFile(multipartFiles, path,webPath);
         for (JSONObject item : list) {
             String url = item.getString("data");
             String name = item.getString("name");
