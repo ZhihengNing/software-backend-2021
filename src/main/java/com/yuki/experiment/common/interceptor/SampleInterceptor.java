@@ -23,6 +23,7 @@ public class SampleInterceptor implements HandlerInterceptor {
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws IOException {
         String token = request.getHeader("Authorization");
+        //System.out.println(request.getPathInfo());
         System.out.println("\n进入拦截器");
         log.info("token:{}", token);
         try {

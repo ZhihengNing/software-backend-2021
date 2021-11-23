@@ -28,6 +28,7 @@ public class ExperimentFileController {
         }
         return CommonResult.success(experimentFileService.getInfo(experimentId,null));
     }
+
     @ApiOperation("获取实验项目资料")
     @RequestMapping(value = "/teacher/{teacherId}",method = RequestMethod.GET)
     public CommonResult<List<ExperimentFile>> getInfoByTeacherId(@PathVariable Integer teacherId){
@@ -36,6 +37,7 @@ public class ExperimentFileController {
         }
         return CommonResult.success(experimentFileService.getInfo(null,teacherId));
     }
+
     @ApiOperation("上传实验项目资料")
     @RequestMapping(value = "/{experimentId}/{teacherId}",method = RequestMethod.POST)
     public CommonResult insertExperimentFile(@RequestPart List<MultipartFile> multipartFiles,
@@ -52,7 +54,6 @@ public class ExperimentFileController {
         }
         return CommonResult.failed();
     }
-
 
 
 }

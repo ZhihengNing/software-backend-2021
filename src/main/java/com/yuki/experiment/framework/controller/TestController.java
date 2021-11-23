@@ -1,5 +1,6 @@
 package com.yuki.experiment.framework.controller;
 
+import com.alibaba.fastjson.JSONObject;
 import com.yuki.experiment.common.result.CommonResult;
 import com.yuki.experiment.common.utils.JwtUtil;
 import com.yuki.experiment.framework.entity.Administrator;
@@ -47,8 +48,7 @@ public class TestController {
 
     @ApiOperation("这是一个测试controller")
     @RequestMapping(value = "/demo",method = RequestMethod.GET)
-    public CommonResult<String> demo1(){
-        System.out.println(JwtUtil.getKEY());
+    public CommonResult<String> demo1() {
         return CommonResult.success("2333");
     }
 

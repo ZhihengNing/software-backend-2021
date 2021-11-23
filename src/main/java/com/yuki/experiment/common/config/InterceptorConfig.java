@@ -6,7 +6,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
-//@Component
+@Component
 public class InterceptorConfig implements WebMvcConfigurer {
     private final SampleInterceptor sampleInterceptor;
 
@@ -17,8 +17,8 @@ public class InterceptorConfig implements WebMvcConfigurer {
 
     public void addInterceptors(InterceptorRegistry registry) {
         registry.addInterceptor(sampleInterceptor)
-                .addPathPatterns("/**")
-                .excludePathPatterns("/**/sys/login/**", "/**/test/select/**","/**/doc.html");
+                //.addPathPatterns("/**")
+                .excludePathPatterns("/**/sys/login/**","/**/doc.html");
         WebMvcConfigurer.super.addInterceptors(registry);
     }
 }
