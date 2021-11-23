@@ -27,7 +27,7 @@ public class CourseNoticeController {
         if(courseId==null){
             return CommonResult.failed("课程ID不能为空");
         }
-        return CommonResult.success(courseNoticeService.getCourseNoticeByCourseId(courseId));
+        return CommonResult.success(courseNoticeService.getCourseNotice(courseId,null));
     }
     @ApiOperation("查看课程公告")
     @RequestMapping(value = "/teacher/{teacherId}",method = RequestMethod.GET)
@@ -35,7 +35,7 @@ public class CourseNoticeController {
         if(teacherId==null){
             return CommonResult.failed("教师ID不能为空");
         }
-        return CommonResult.success(courseNoticeService.getCourseNoticeByTeacherId(teacherId));
+        return CommonResult.success(courseNoticeService.getCourseNotice(null,teacherId));
     }
 
     @ApiOperation("添加课程公告")

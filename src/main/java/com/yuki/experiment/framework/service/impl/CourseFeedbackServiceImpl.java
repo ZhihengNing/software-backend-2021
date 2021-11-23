@@ -1,7 +1,6 @@
 package com.yuki.experiment.framework.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
-import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import com.yuki.experiment.framework.entity.CourseFeedback;
 import com.yuki.experiment.framework.mapper.CourseFeedbackMapper;
 import com.yuki.experiment.framework.service.CourseFeedbackService;
@@ -13,19 +12,14 @@ import java.util.List;
 public class CourseFeedbackServiceImpl implements CourseFeedbackService {
     @Autowired
     private CourseFeedbackMapper mapper;
-    @Override
-    public List<CourseFeedback> getFeedbackByCourseId(Integer courseId) {
+
+    public List<CourseFeedback>getFeedback(Integer courseId,Integer studentId){
         QueryWrapper<CourseFeedback>wrapper=new QueryWrapper<>();
-        wrapper.eq("course_id",courseId);
+        wrapper.eq(courseId!=null,"course_id",courseId)
+        .eq(studentId!=null,"student_id",studentId);
         return mapper.selectList(wrapper);
     }
 
-    @Override
-    public List<CourseFeedback> getFeedbackByStudentId(Integer studentId) {
-        QueryWrapper<CourseFeedback>wrapper=new QueryWrapper<>();
-        wrapper.eq("student_id",studentId);
-        return mapper.selectList(wrapper);
-    }
 
     @Override
     public int insertFeedback(CourseFeedback courseFeedback) {

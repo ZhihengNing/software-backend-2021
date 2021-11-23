@@ -24,13 +24,13 @@ public class CourseFeedbackController {
     @ApiOperation("查看课程反馈")
     @RequestMapping(value = "/course/{courseId}",method = RequestMethod.GET)
     public CommonResult<List<CourseFeedback>> getFeedbackByCourse(@PathVariable Integer courseId){
-        List<CourseFeedback> feedbackByCourseId = courseFeedbackService.getFeedbackByCourseId(courseId);
+        List<CourseFeedback> feedbackByCourseId = courseFeedbackService.getFeedback(null,courseId);
         return CommonResult.success(feedbackByCourseId);
     }
     @ApiOperation("查看课程反馈")
     @RequestMapping(value = "/student/{studentId}",method = RequestMethod.GET)
     public CommonResult<List<CourseFeedback>> getFeedbackByStudent(@PathVariable Integer studentId){
-        List<CourseFeedback> feedbackByStudentId = courseFeedbackService.getFeedbackByStudentId(studentId);
+        List<CourseFeedback> feedbackByStudentId = courseFeedbackService.getFeedback(studentId,null);
         return CommonResult.success(feedbackByStudentId);
     }
     @ApiOperation("插入课程反馈")

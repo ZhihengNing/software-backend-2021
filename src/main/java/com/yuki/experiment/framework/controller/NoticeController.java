@@ -5,9 +5,7 @@ import com.yuki.experiment.framework.entity.Notice;
 import com.yuki.experiment.framework.service.NoticeService;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -23,8 +21,44 @@ public class NoticeController {
     }
 
     @ApiOperation("获取系统公告")
-    @RequestMapping(value = "/info",method = RequestMethod.GET)
+    @RequestMapping(value = "",method = RequestMethod.GET)
     public CommonResult<List<Notice>> getNoticeInfo() {
         return CommonResult.success(noticeService.getAllNotice());
     }
+
+    @ApiOperation("添加系统公告")
+    @RequestMapping(value = "",method = RequestMethod.POST)
+    public CommonResult insertNotice(@RequestBody Notice notice){
+        if(notice.getAdministratorId()==null){
+            return CommonResult.failed("公告创建人Id不能为空");
+        }
+        else if(noticeService.insertNotice(notice)>0){
+            return CommonResult.success();
+        }
+        return CommonResult.failed();
+    }
+    @ApiOperation("更新系统公告")
+    @RequestMapping(value = "",method = RequestMethod.PUT)
+    public CommonResult updateNotice(@RequestBody Notice notice){
+        if(notice.getId()==null){
+            return CommonResult.failed("公告Id不能为空");
+        }
+        else if(notice.getAdministratorId()==null){
+            return CommonResult.failed("公告修改人Id不能为空");
+        }
+        else if(noticeService.updateNotice(notice)>0){
+            return CommonResult.success();
+        }
+        return CommonResult.failed();
+    }
+    @ApiOperation("删除系统公告")
+    @RequestMapping(value = "/{noticeId}",method = RequestMethod.DELETE)
+    public CommonResult deleteNotice(@PathVariable List<Integer> noticeId) {
+        if (noticeService.deleteNotice(noticeId) > 0) {
+            return CommonResult.success();
+        }
+        return CommonResult.failed();
+    }
+
+
 }

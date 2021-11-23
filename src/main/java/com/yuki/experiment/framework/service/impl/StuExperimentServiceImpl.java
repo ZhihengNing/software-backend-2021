@@ -38,24 +38,11 @@ public class StuExperimentServiceImpl implements StuExperimentService {
     }
 
     @Override
-    public List<StuExperiment> getStuExperimentByStudentId(Integer studentId) {
+    public List<StuExperiment> getStuExperiment(Integer studentId, Integer experimentId) {
         QueryWrapper<StuExperiment> queryWrapper = new QueryWrapper<>();
-        queryWrapper.eq("student_id", studentId);
+        queryWrapper.eq(experimentId!=null,"experiment_id", experimentId)
+                .eq(studentId!=null,"student_id", studentId);
         return stuExperimentMapper.selectList(queryWrapper);
-    }
-
-    @Override
-    public List<StuExperiment> getStuExperimentByExperimentId(Integer experimentId) {
-        QueryWrapper<StuExperiment> queryWrapper = new QueryWrapper<>();
-        queryWrapper.eq("experiment_id", experimentId);
-        return stuExperimentMapper.selectList(queryWrapper);
-    }
-
-    @Override
-    public StuExperiment getStuExperiment(Integer studentId, Integer experimentId) {
-        QueryWrapper<StuExperiment> queryWrapper = new QueryWrapper<>();
-        queryWrapper.eq("experiment_id", experimentId).eq("student_id", studentId);
-        return stuExperimentMapper.selectOne(queryWrapper);
     }
 
     @Override

@@ -6,9 +6,7 @@ import java.util.List;
 
 public interface CourseNoticeService {
 
-    List<CourseNotice> getCourseNoticeByCourseId(Integer courseId);
-
-    List<CourseNotice>getCourseNoticeByTeacherId(Integer teacherId);
+    List<CourseNotice> getCourseNotice(Integer courseId,Integer teacherId);
 
     int insertCourseNoticeInfo(CourseNotice notice);
 

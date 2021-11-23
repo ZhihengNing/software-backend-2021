@@ -12,17 +12,12 @@ import java.util.List;
 public class ExperimentServiceImpl implements ExperimentService {
     @Autowired
     private ExperimentMapper mapper;
-    @Override
-    public List<Experiment> getByCourseId(Integer courseId) {
-        QueryWrapper<Experiment> wrapper = new QueryWrapper<>();
-        wrapper.eq("course_id", courseId);
-        return mapper.selectList(wrapper);
-    }
 
     @Override
-    public List<Experiment> getByTeacherId(Integer teacherId) {
+    public List<Experiment> getExperiment(Integer courseId,Integer teacherId) {
         QueryWrapper<Experiment>wrapper=new QueryWrapper<>();
-        wrapper.eq("teacher_id",teacherId);
+        wrapper.eq(courseId!=null,"course_id",courseId)
+                .eq(teacherId!=null,"teacher_id",teacherId);
         return mapper.selectList(wrapper);
     }
 

@@ -25,7 +25,7 @@ public class ExperimentController {
         if (courseId == null) {
             return CommonResult.failed("课程Id不能为空");
         }
-        List<Experiment> byCourseId = experimentService.getByCourseId(courseId);
+        List<Experiment> byCourseId = experimentService.getExperiment(courseId,null);
         return CommonResult.success(byCourseId);
     }
 
@@ -35,7 +35,7 @@ public class ExperimentController {
         if (teacherId == null) {
             return CommonResult.failed("教师Id不能为空");
         }
-        List<Experiment> byTeacherId = experimentService.getByTeacherId(teacherId);
+        List<Experiment> byTeacherId = experimentService.getExperiment(null,teacherId);
         return CommonResult.success(byTeacherId);
     }
 

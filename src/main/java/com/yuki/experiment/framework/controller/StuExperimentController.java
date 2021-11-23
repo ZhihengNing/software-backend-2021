@@ -25,7 +25,7 @@ public class StuExperimentController {
 
     @ApiOperation("查看实验文件")
     @RequestMapping(value = "/{studentId}/{experimentId}", method = RequestMethod.GET)
-    public CommonResult<StuExperiment> getStuExperiment(@PathVariable Integer studentId,
+    public CommonResult<List<StuExperiment>> getStuExperiment(@PathVariable Integer studentId,
                                                         @PathVariable Integer experimentId) {
         if (studentId == null) {
             return CommonResult.failed("学生Id不能为空");
@@ -41,7 +41,7 @@ public class StuExperimentController {
         if(studentId==null){
             return CommonResult.failed("学生Id不能为空");
         }
-        return CommonResult.success(stuExperimentService.getStuExperimentByStudentId(studentId));
+        return CommonResult.success(stuExperimentService.getStuExperiment(studentId,null));
     }
 
     @ApiOperation("查看实验文件")
@@ -50,7 +50,7 @@ public class StuExperimentController {
         if(experimentId==null){
             return CommonResult.failed("实验项目Id不能为空");
         }
-        return CommonResult.success(stuExperimentService.getStuExperimentByExperimentId(experimentId));
+        return CommonResult.success(stuExperimentService.getStuExperiment(null,experimentId));
     }
 
     @ApiOperation("学生提交实验项目作业")

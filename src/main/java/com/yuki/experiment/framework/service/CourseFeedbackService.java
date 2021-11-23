@@ -6,9 +6,7 @@ import java.util.List;
 
 public interface CourseFeedbackService {
 
-    List<CourseFeedback> getFeedbackByCourseId(Integer courseId);
-
-    List<CourseFeedback>getFeedbackByStudentId(Integer studentId);
+    List<CourseFeedback> getFeedback(Integer studentId,Integer courseId);
 
     int insertFeedback(CourseFeedback courseFeedback);
 

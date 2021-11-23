@@ -16,4 +16,19 @@ public class NoticeServiceImp implements NoticeService {
     public List<Notice> getAllNotice() {
         return mapper.selectList(null);
     }
+
+    @Override
+    public int insertNotice(Notice notice) {
+        return mapper.insert(notice);
+    }
+
+    @Override
+    public int updateNotice(Notice notice) {
+        return mapper.updateById(notice);
+    }
+
+    @Override
+    public int deleteNotice(List<Integer> noticeId) {
+        return mapper.deleteBatchIds(noticeId);
+    }
 }
