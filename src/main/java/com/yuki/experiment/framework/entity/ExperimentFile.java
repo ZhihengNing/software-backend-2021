@@ -6,6 +6,7 @@ import java.io.Serializable;
 import java.util.Date;
 
 import io.swagger.annotations.ApiModelProperty;
+import lombok.Builder;
 import lombok.Data;
 
 /**
@@ -14,6 +15,7 @@ import lombok.Data;
  */
 @TableName(value ="experiment_file")
 @Data
+@Builder
 public class ExperimentFile implements Serializable {
     /**
      * 项目资料ID
