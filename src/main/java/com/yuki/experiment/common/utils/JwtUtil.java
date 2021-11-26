@@ -29,14 +29,6 @@ public class JwtUtil {
         KEY = key;
     }
 
-    public static int getTIME() {
-        return TIME;
-    }
-
-    public static String getKEY() {
-        return KEY;
-    }
-
     public static String getToken(JSONObject user) {
         Calendar instance = Calendar.getInstance();
         instance.add(Calendar.MINUTE, TIME);

@@ -50,6 +50,23 @@ public class FileUtil {
         return new Pair<>(s,s1);
     }
 
+    public static void preserveFile(List<MultipartFile> multipartFiles,String filePaths) {
+        for (MultipartFile item : multipartFiles) {
+            if (item != null) {
+                File temp = new File(filePaths);
+                if (!temp.exists()) {
+                    temp.mkdirs();
+                }
+                File file = new File(filePaths + "/" + item.getOriginalFilename());
+                try {
+                    item.transferTo(file);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+    }
+
     public static List<JSONObject> preserveFile(List<MultipartFile> multipartFiles, String path, String webPath) {
         List<JSONObject> list = new ArrayList<>();
         for (MultipartFile item : multipartFiles) {

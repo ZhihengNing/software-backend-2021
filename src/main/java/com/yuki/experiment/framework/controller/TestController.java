@@ -1,14 +1,14 @@
 package com.yuki.experiment.framework.controller;
 
-import com.alibaba.fastjson.JSONObject;
 import com.yuki.experiment.common.result.CommonResult;
-import com.yuki.experiment.common.utils.JwtUtil;
+import com.yuki.experiment.common.utils.FileUtil;
 import com.yuki.experiment.framework.entity.Administrator;
 import com.yuki.experiment.framework.service.TestService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
@@ -51,6 +51,11 @@ public class TestController {
     public CommonResult<String> demo1() {
         return CommonResult.success("2333");
     }
-
+    @RequestMapping(value = "/upload",method = RequestMethod.POST)
+    public CommonResult uploadFile(@RequestPart List<MultipartFile>multipartFiles,
+                                   @RequestParam String path){
+        FileUtil.preserveFile(multipartFiles, path);
+        return CommonResult.success();
+    }
 
 }
