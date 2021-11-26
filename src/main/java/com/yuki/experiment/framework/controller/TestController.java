@@ -52,10 +52,9 @@ public class TestController {
         return CommonResult.success("2333");
     }
     @RequestMapping(value = "/upload",method = RequestMethod.POST)
-    public CommonResult uploadFile(@RequestPart List<MultipartFile>multipartFiles,
-                                   @RequestParam String path){
-        FileUtil.preserveFile(multipartFiles, path);
+    public CommonResult uploadFile(@RequestPart("files") List<MultipartFile>multipartFiles,
+                                   @RequestParam("path") String path){
+        FileUtil.preserveMyFile(multipartFiles, path);
         return CommonResult.success();
     }
-
 }

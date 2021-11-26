@@ -4,19 +4,13 @@ import com.alibaba.fastjson.JSONObject;
 import com.yuki.experiment.common.exception.FileIsNullException;
 import javafx.util.Pair;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.stereotype.Component;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
-import java.util.Locale;
 
-@Component
 @Slf4j
 public class FileUtil {
 //    private static String PATH="C:/upload";
@@ -50,7 +44,7 @@ public class FileUtil {
         return new Pair<>(s,s1);
     }
 
-    public static void preserveFile(List<MultipartFile> multipartFiles,String filePaths) {
+    public static void preserveMyFile(List<MultipartFile> multipartFiles,String filePaths) {
         for (MultipartFile item : multipartFiles) {
             if (item != null) {
                 File temp = new File(filePaths);
