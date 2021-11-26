@@ -3,7 +3,6 @@ package com.yuki.experiment.framework.service.impl;
 import com.alibaba.fastjson.JSONObject;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
-import com.oracle.tools.packager.Log;
 import com.yuki.experiment.common.utils.FileUtil;
 import com.yuki.experiment.framework.entity.StuExperiment;
 import com.yuki.experiment.framework.entity.StudentUploadFile;
@@ -11,6 +10,7 @@ import com.yuki.experiment.framework.mapper.StuExperimentMapper;
 import com.yuki.experiment.framework.mapper.StudentUploadFileMapper;
 import com.yuki.experiment.framework.service.StuExperimentService;
 import javafx.util.Pair;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -18,7 +18,9 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.math.BigDecimal;
 import java.util.List;
+
 @Service
+@Slf4j
 public class StuExperimentServiceImpl implements StuExperimentService {
 
     private final static String experimentFileUploadPath = "experiment";
@@ -62,7 +64,7 @@ public class StuExperimentServiceImpl implements StuExperimentService {
         Integer fileId;
         if ((fileId = file.getId()) != null) {
             stuExperiment.setFileId(fileId);
-            Log.info(name + "成功保存到数据库！");
+            log.info(name + "成功保存到数据库！");
             //插入到stu_experiment表进行保存
             if (stuExperimentMapper.insert(stuExperiment) > 0) {
                 //插入到student_upload_file表进行保存
@@ -95,7 +97,7 @@ public class StuExperimentServiceImpl implements StuExperimentService {
         temp.setName(name);
         temp.setUrl(data);
         if (studentUploadFileMapper.updateById(temp) > 0) {
-            Log.info(name + "成功替换原文件,存到数据库中");
+            log.info(name + "成功替换原文件,存到数据库中");
             //这里更新stu_experiment
             UpdateWrapper<StuExperiment> wrapper = new UpdateWrapper<>();
             //.set(stuExperiment.getExperimentScore() == null, "experiment_score", null)

@@ -9,6 +9,8 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 @Slf4j
@@ -86,7 +88,7 @@ public class FileUtil {
         return list;
     }
     public static JSONObject preserveFile(MultipartFile multipartFile, String path, String webPath) {
-        return preserveFile(List.of(multipartFile), path, webPath).get(0);
+        return preserveFile(Collections.singletonList(multipartFile), path, webPath).get(0);
     }
 
 

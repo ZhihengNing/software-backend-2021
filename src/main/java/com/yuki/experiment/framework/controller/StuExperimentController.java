@@ -1,10 +1,10 @@
 package com.yuki.experiment.framework.controller;
 
-import com.oracle.tools.packager.Log;
 import com.yuki.experiment.common.result.CommonResult;
 import com.yuki.experiment.framework.entity.StuExperiment;
 import com.yuki.experiment.framework.service.StuExperimentService;
 import io.swagger.annotations.ApiOperation;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -14,6 +14,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/studentExperiment")
+@Slf4j
 public class StuExperimentController {
 
     private StuExperimentService stuExperimentService;
@@ -59,7 +60,6 @@ public class StuExperimentController {
                                            @PathVariable("studentId") Integer studentId,
                                            @PathVariable("experimentId") Integer experimentId,
                                            @RequestParam("jobContent") String jobContent) {
-        Log.info((multipartFile==null?"1":"0"));
         if (studentId == null) {
             return CommonResult.failed("学生Id不能为空");
         } else if (experimentId == null) {
