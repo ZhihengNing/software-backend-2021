@@ -112,7 +112,11 @@ public class StuExperimentServiceImpl implements StuExperimentService {
 
     @Override
     public int uploadGrade(Integer studentId, Integer experimentId, BigDecimal grade) {
-        StuExperiment build = StuExperiment.builder().experimentId(experimentId).studentId(studentId).experimentScore(grade).build();
+        StuExperiment build = StuExperiment.builder()
+                .experimentId(experimentId)
+                .studentId(studentId)
+                .experimentScore(grade)
+                .build();
         return stuExperimentMapper.updateById(build);
     }
 }
