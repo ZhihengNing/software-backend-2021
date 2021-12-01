@@ -6,11 +6,9 @@ import com.github.xiaoymin.knife4j.annotations.DynamicParameters;
 import com.yuki.experiment.common.result.CommonResult;
 import com.yuki.experiment.common.utils.JwtUtil;
 import com.yuki.experiment.framework.service.AdministratorService;
-import com.yuki.experiment.framework.service.CourseScoreService;
 import com.yuki.experiment.framework.service.StudentService;
 import com.yuki.experiment.framework.service.TeacherService;
 import io.swagger.annotations.ApiOperation;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -20,9 +18,8 @@ import org.springframework.web.bind.annotation.RestController;
 import javax.servlet.http.HttpServletRequest;
 
 @RestController
-@RequestMapping("/sys")
-@Slf4j
-public class SystemController {
+@RequestMapping("/user")
+public class UserController {
     private final StudentService studentService;
 
     private final AdministratorService administratorService;
@@ -30,7 +27,7 @@ public class SystemController {
     private final TeacherService teacherService;
 
     @Autowired
-    public SystemController(StudentService studentService, AdministratorService administratorService, TeacherService teacherService) {
+    public UserController(StudentService studentService, AdministratorService administratorService, TeacherService teacherService) {
         this.studentService = studentService;
         this.administratorService = administratorService;
         this.teacherService = teacherService;

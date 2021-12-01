@@ -1,7 +1,9 @@
 package com.yuki.experiment.framework.controller;
 
+import com.alibaba.fastjson.JSONObject;
 import com.yuki.experiment.common.result.CommonResult;
 import com.yuki.experiment.framework.entity.Student;
+import com.yuki.experiment.framework.service.CourseScoreService;
 import com.yuki.experiment.framework.service.StudentService;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,13 +15,20 @@ import java.util.List;
 @RequestMapping("/student")
 public class StudentController {
     private StudentService studentService;
+
+    private CourseScoreService courseScoreService;
+
     @Autowired
     public void setStudentService(StudentService studentService) {
         this.studentService = studentService;
     }
+    @Autowired
+    public void setCourseScoreService(CourseScoreService courseScoreService) {
+        this.courseScoreService = courseScoreService;
+    }
 
     @ApiOperation("查看学生信息")
-    @RequestMapping(value = "/{studentId}",method = RequestMethod.GET)
+    @RequestMapping(value = "/studentId/{studentId}",method = RequestMethod.GET)
     public CommonResult<Student> getInfo( @PathVariable Integer studentId) {
         if (studentId == null) {
             return CommonResult.failed("学生Id不能为空");
@@ -57,7 +66,7 @@ public class StudentController {
         return CommonResult.failed();
     }
     @ApiOperation("删除学生信息")
-    @RequestMapping(value = "/{studentId}",method = RequestMethod.DELETE)
+    @RequestMapping(value = "/studentId/{studentId}",method = RequestMethod.DELETE)
     public CommonResult deleteInfo(@PathVariable List<Integer> studentId){
         if(studentId==null){
             return CommonResult.failed("学生Id不能为空");
@@ -68,4 +77,15 @@ public class StudentController {
         }
         return CommonResult.failed();
     }
+
+    @ApiOperation("查看学生选课的课程")
+    @RequestMapping(value = "/takes/{studentId}", method = RequestMethod.GET)
+    public CommonResult<List<JSONObject>> getCourseInfo(@PathVariable("studentId") Integer studentId) {
+        if (studentId == null) {
+            return CommonResult.failed("学生Id不能为空");
+        }
+        List<JSONObject> courses = courseScoreService.getCourseInfoAndIsActive(studentId);
+        return CommonResult.success(courses);
+    }
+
 }

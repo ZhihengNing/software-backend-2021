@@ -57,4 +57,11 @@ public class TestController {
         FileUtil.preserveMyFile(multipartFiles, path);
         return CommonResult.success();
     }
+
+    @RequestMapping(value = "/canshu",method = RequestMethod.GET)
+    public CommonResult test(@RequestParam("id") Integer id, @RequestParam("password") String password) {
+        System.out.println(1);
+        return null;
+
+    }
 }
