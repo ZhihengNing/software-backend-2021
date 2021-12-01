@@ -12,7 +12,7 @@
     <artifactId>experiment</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <properties>
-        <java.version>9</java.version>
+        <java.version>8</java.version>
 
         <spring-boot.version>2.5.6</spring-boot.version>
 

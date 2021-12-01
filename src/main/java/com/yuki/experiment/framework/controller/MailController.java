@@ -14,7 +14,7 @@ import java.util.UUID;
 
 @RestController
 @RequestMapping("/mail")
-@Api(description = "邮箱模块")
+@Api(tags= "邮箱模块")
 @Slf4j
 public class MailController {
 

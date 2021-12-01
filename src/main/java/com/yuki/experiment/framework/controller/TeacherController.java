@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/teacher")
-@Api(description = "教师模块")
+@Api(tags = "教师模块")
 @Slf4j
 public class TeacherController {
 

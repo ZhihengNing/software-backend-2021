@@ -12,7 +12,7 @@ import java.math.BigDecimal;
 
 @RestController
 @RequestMapping("/grade")
-@Api(description = "成绩模块")
+@Api(tags = "成绩模块")
 @Slf4j
 public class GradeController {
 

@@ -21,7 +21,7 @@ import javax.servlet.http.HttpServletRequest;
 
 @RestController
 @RequestMapping("/user")
-@Api(description = "学生模块")
+@Api(tags = "学生模块")
 @Slf4j
 public class UserController {
     private final StudentService studentService;

@@ -16,7 +16,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/student")
-@Api(description = "学生模块")
+@Api(tags = "学生模块")
 @Slf4j
 public class StudentController {
     private StudentService studentService;

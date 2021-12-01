@@ -14,8 +14,8 @@ import org.springframework.web.multipart.MultipartFile;
 import java.util.List;
 
 @RestController
-@Api(description = "测试模块,don't use")
 @RequestMapping("/test")
+@Api(tags= "测试模块(禁用)")
 @Slf4j
 public class TestController {
     private final TestService service;

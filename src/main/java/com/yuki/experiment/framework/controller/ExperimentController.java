@@ -18,7 +18,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/experiment")
-@Api(description ="实验模块")
+@Api(tags ="实验模块")
 @Slf4j
 public class ExperimentController {
 
