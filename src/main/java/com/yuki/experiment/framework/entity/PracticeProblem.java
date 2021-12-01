@@ -4,51 +4,48 @@ import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
-import java.io.Serializable;
-
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
+import java.io.Serializable;
+
 /**
  * 
- * @TableName topic_options
+ * @TableName practice_problem
  */
-@TableName(value ="topic_options")
+@TableName(value ="practice_problem")
 @Data
-public class TopicOptions implements Serializable {
+public class PracticeProblem implements Serializable {
     /**
-     * 选项ID
+     * 自增主键
      */
+    @ApiModelProperty("自增主键")
     @TableId(type = IdType.AUTO)
-    @ApiModelProperty("选项ID")
     private Integer id;
 
     /**
-     * 题目ID
+     * 对抗练习题目ID
      */
-    @TableId
-    @ApiModelProperty("题目ID")
+    @ApiModelProperty("对抗练习题目ID")
     private Integer problemId;
 
     /**
      * 对抗练习ID
      */
-    @TableId
-    @ApiModelProperty("对抗练习ID")
-    private Integer counterPracticeId;
+    @ApiModelProperty("对抗练习自增ID")
+    private Integer counterPracticeAutoId;
 
     /**
-     * 课程ID
+     * 题干
      */
-    @TableId
-    @ApiModelProperty("课程ID")
-    private Integer courseId;
+    @ApiModelProperty("题干")
+    private String stem;
 
     /**
-     * 题目内容
+     * 参考答案
      */
-    @ApiModelProperty("选项内容")
-    private String content;
+    @ApiModelProperty("参考答案")
+    private String referenceAnswer;
 
     @TableField(exist = false)
     private static final long serialVersionUID = 1L;

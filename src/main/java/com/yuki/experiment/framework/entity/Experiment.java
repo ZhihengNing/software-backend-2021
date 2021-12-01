@@ -1,13 +1,16 @@
 package com.yuki.experiment.framework.entity;
 
-import com.baomidou.mybatisplus.annotation.*;
+import com.baomidou.mybatisplus.annotation.IdType;
+import com.baomidou.mybatisplus.annotation.TableField;
+import com.baomidou.mybatisplus.annotation.TableId;
+import com.baomidou.mybatisplus.annotation.TableName;
+import io.swagger.annotations.ApiModelProperty;
+import io.swagger.annotations.ApiOperation;
+import lombok.Data;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Date;
-
-import io.swagger.annotations.ApiModelProperty;
-import lombok.Data;
 
 /**
  * 
@@ -19,14 +22,14 @@ public class Experiment implements Serializable {
     /**
      * 实验项目ID
      */
-    @ApiModelProperty("实验项目ID")
+    @ApiModelProperty("实验项目Id")
     @TableId(type = IdType.AUTO)
     private Integer id;
 
     /**
      * 课程ID
      */
-    @ApiModelProperty("课程ID")
+    @ApiModelProperty("课程Id")
     @TableId
     private Integer courseId;
 
@@ -40,20 +43,18 @@ public class Experiment implements Serializable {
      * 创建时间
      */
     @ApiModelProperty("创建时间")
-    @TableField(fill = FieldFill.INSERT)
     private Date createTime;
 
     /**
      * 修改时间
      */
     @ApiModelProperty("修改时间")
-    @TableField(fill = FieldFill.INSERT_UPDATE)
     private Date updateTime;
 
     /**
      * 创建人ID
      */
-    @ApiModelProperty("创建人ID")
+    @ApiModelProperty("创建人Id")
     private Integer teacherId;
 
     /**
@@ -63,9 +64,15 @@ public class Experiment implements Serializable {
     private BigDecimal experimentScore;
 
     /**
+     * 实验项目分数比例
+     */
+    @ApiModelProperty("实验项目分数比例")
+    private BigDecimal experimentScoreRatio;
+
+    /**
      * 实验项目目的
      */
-    @ApiModelProperty("实验项目ID")
+    @ApiModelProperty("实验项目目的")
     private String experimentPurpose;
 
     /**
@@ -77,7 +84,7 @@ public class Experiment implements Serializable {
     /**
      * 实验项目截至时间
      */
-    @ApiModelProperty("实验项目截止时间")
+    @ApiModelProperty("实验项目截至时间")
     private Date experimentDeadline;
 
     /**

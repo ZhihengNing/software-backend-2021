@@ -1,12 +1,14 @@
 package com.yuki.experiment.framework.entity;
 
-import com.baomidou.mybatisplus.annotation.*;
+import com.baomidou.mybatisplus.annotation.IdType;
+import com.baomidou.mybatisplus.annotation.TableField;
+import com.baomidou.mybatisplus.annotation.TableId;
+import com.baomidou.mybatisplus.annotation.TableName;
+import io.swagger.annotations.ApiModelProperty;
+import lombok.Data;
 
 import java.io.Serializable;
 import java.util.Date;
-
-import io.swagger.annotations.ApiModelProperty;
-import lombok.Data;
 
 /**
  * 
@@ -18,7 +20,7 @@ public class Course implements Serializable {
     /**
      * 课程ID
      */
-    @ApiModelProperty("课程ID")
+    @ApiModelProperty("课程Id")
     @TableId(type = IdType.AUTO)
     private Integer id;
 
@@ -44,21 +46,25 @@ public class Course implements Serializable {
      * 课程信息创建时间
      */
     @ApiModelProperty("课程信息创建时间")
-    @TableField(fill= FieldFill.INSERT)
     private Date createTime;
 
     /**
      * 课程信息修改时间
      */
     @ApiModelProperty("课程信息修改时间")
-    @TableField(fill=FieldFill.INSERT_UPDATE)
     private Date updateTime;
 
     /**
-     * 课程创建人ID
+     * 课程创建人ID(即责任教师）
      */
-    @ApiModelProperty("课程创建人ID(即责任教师)")
+    @ApiModelProperty("课程创建人Id")
     private Integer teacherId;
+
+    /**
+     * 考勤得分比例
+     */
+    @ApiModelProperty("考勤得分比例")
+    private Integer attendanceRatio;
 
     /**
      * 课程学分

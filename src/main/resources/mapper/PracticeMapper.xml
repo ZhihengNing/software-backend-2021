@@ -2,21 +2,25 @@
 <!DOCTYPE mapper
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.yuki.experiment.framework.mapper.CounterPracticeMapper">
+<mapper namespace="generator.mapper.PracticeMapper">
 
-    <resultMap id="BaseResultMap" type="com.yuki.experiment.framework.entity.CounterPractice">
+    <resultMap id="BaseResultMap" type="com.yuki.experiment.framework.entity.Practice">
             <id property="id" column="id" jdbcType="INTEGER"/>
-            <id property="courseId" column="course_id" jdbcType="INTEGER"/>
+            <result property="counterPracticeId" column="counter_practice_id" jdbcType="INTEGER"/>
+            <result property="courseId" column="course_id" jdbcType="INTEGER"/>
             <result property="createTime" column="create_time" jdbcType="TIMESTAMP"/>
             <result property="updateTime" column="update_time" jdbcType="TIMESTAMP"/>
             <result property="startTime" column="start_time" jdbcType="TIMESTAMP"/>
             <result property="endTime" column="end_time" jdbcType="TIMESTAMP"/>
             <result property="teacherId" column="teacher_id" jdbcType="INTEGER"/>
+            <result property="score" column="score" jdbcType="DECIMAL"/>
+            <result property="ratio" column="ratio" jdbcType="DECIMAL"/>
     </resultMap>
 
     <sql id="Base_Column_List">
-        id,course_id,create_time,
-        update_time,start_time,end_time,
-        teacher_id
+        id,counter_practice_id,course_id,
+        create_time,update_time,start_time,
+        end_time,teacher_id,score,
+        ratio
     </sql>
 </mapper>

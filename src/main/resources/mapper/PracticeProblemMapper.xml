@@ -2,18 +2,18 @@
 <!DOCTYPE mapper
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.yuki.experiment.framework.mapper.ProblemMapper">
+<mapper namespace="generator.mapper.PracticeProblemMapper">
 
-    <resultMap id="BaseResultMap" type="com.yuki.experiment.framework.entity.Problem">
+    <resultMap id="BaseResultMap" type="com.yuki.experiment.framework.entity.PracticeProblem">
             <id property="id" column="id" jdbcType="INTEGER"/>
-            <id property="counterPracticeId" column="counter_practice_id" jdbcType="INTEGER"/>
-            <id property="courseId" column="course_id" jdbcType="INTEGER"/>
+            <result property="problemId" column="problem_id" jdbcType="INTEGER"/>
+            <result property="counterPracticeAutoId" column="counter_practice_auto_id" jdbcType="INTEGER"/>
             <result property="stem" column="stem" jdbcType="VARCHAR"/>
             <result property="referenceAnswer" column="reference_answer" jdbcType="VARCHAR"/>
     </resultMap>
 
     <sql id="Base_Column_List">
-        id,counter_practice_id,course_id,
+        id,problem_id,counter_practice_auto_id,
         stem,reference_answer
     </sql>
 </mapper>

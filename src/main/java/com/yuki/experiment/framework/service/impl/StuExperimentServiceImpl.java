@@ -1,11 +1,15 @@
 package com.yuki.experiment.framework.service.impl;
 
+import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import com.yuki.experiment.common.utils.FileUtil;
+import com.yuki.experiment.common.utils.JsonUtil;
+import com.yuki.experiment.framework.entity.CourseScore;
 import com.yuki.experiment.framework.entity.StuExperiment;
 import com.yuki.experiment.framework.entity.StudentUploadFile;
+import com.yuki.experiment.framework.mapper.CourseScoreMapper;
 import com.yuki.experiment.framework.mapper.StuExperimentMapper;
 import com.yuki.experiment.framework.mapper.StudentUploadFileMapper;
 import com.yuki.experiment.framework.service.StuExperimentService;
@@ -25,9 +29,13 @@ public class StuExperimentServiceImpl implements StuExperimentService {
 
     private final static String experimentFileUploadPath = "experiment";
 
+    private static final String scoreRatioPath="src/main/resources/scoreRatio.json";
+
     private StuExperimentMapper stuExperimentMapper;
 
     private StudentUploadFileMapper studentUploadFileMapper;
+
+    private CourseScoreMapper courseScoreMapper;
 
     @Autowired
     public void setStuExperimentMapper(StuExperimentMapper stuExperimentMapper) {
@@ -37,6 +45,10 @@ public class StuExperimentServiceImpl implements StuExperimentService {
     @Autowired
     public void setStudentUploadFileMapper(StudentUploadFileMapper studentUploadFileMapper) {
         this.studentUploadFileMapper = studentUploadFileMapper;
+    }
+
+    public void setCourseScoreMapper(CourseScoreMapper courseScoreMapper) {
+        this.courseScoreMapper = courseScoreMapper;
     }
 
     @Override
@@ -118,5 +130,30 @@ public class StuExperimentServiceImpl implements StuExperimentService {
                 .experimentScore(grade)
                 .build();
         return stuExperimentMapper.updateById(build);
+    }
+
+    @Override
+    public BigDecimal getStudentGrade(Integer studentId,Integer courseId) {
+        JSONObject jsonObject = JsonUtil.readJson(scoreRatioPath);
+        jsonObject.getBigDecimal("attendance");
+        JSONObject experiment = jsonObject.getJSONObject("experiment");
+
+        QueryWrapper<CourseScore> wrapper = new QueryWrapper<>();
+        wrapper.eq("student_id", studentId).eq("course_id", courseId);
+        CourseScore courseScore = courseScoreMapper.selectOne(wrapper);
+        //得到某门课的考勤得分
+        BigDecimal attendanceScore = courseScore.getAttendanceScore() == null ?
+                new BigDecimal(0) : courseScore.getAttendanceScore();
+        QueryWrapper<StuExperiment> wrapper1 = new QueryWrapper<>();
+        wrapper1.eq("student_id", studentId);
+        List<StuExperiment> stuExperiments = stuExperimentMapper.selectList(wrapper1);
+        for (StuExperiment item : stuExperiments) {
+            if (item.getExperimentScore() != null) {
+                attendanceScore * 0.1
+            }
+        }
+
+
+        return null;
     }
 }

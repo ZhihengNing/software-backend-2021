@@ -164,7 +164,7 @@ public class CourseController {
         return CommonResult.success();
     }
 
-    @ApiOperation("查看课程文件")
+    @ApiOperation("查看课程文件by课程Id")
     @RequestMapping(value = "/file/courseId/{courseId}",method = RequestMethod.GET)
     public CommonResult<List<CourseFile>> getFileListByCourseId(@PathVariable Integer courseId){
         if(courseId==null){
@@ -174,7 +174,7 @@ public class CourseController {
         return CommonResult.success(courseFileByCourseId);
     }
 
-    @ApiOperation("查看课程文件")
+    @ApiOperation("查看课程文件by教师Id")
     @RequestMapping(value = "/file/teacherId/{teacherId}",method = RequestMethod.GET)
     public CommonResult<List<CourseFile>> getFileListByTeacherId(@PathVariable Integer teacherId){
         if(teacherId==null){

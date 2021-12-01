@@ -2,26 +2,39 @@ package com.yuki.experiment.common.utils;
 
 import com.alibaba.fastjson.JSONObject;
 import com.alibaba.fastjson.JSONReader;
+import com.alibaba.fastjson.JSONWriter;
 import com.yuki.experiment.common.exception.MyException;
 import org.springframework.stereotype.Component;
 
 import java.io.FileNotFoundException;
 import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.Map;
 
 @Component
 public class JsonUtil {
-    private JSONObject readJson(String path)throws MyException {
-        if(path.endsWith(".json")) {
+
+    public static JSONObject readJson(String path) {
+        if (path.endsWith(".json")) {
             try {
                 JSONReader reader = new JSONReader(new FileReader(path));
                 return reader.readObject(JSONObject.class);
             } catch (FileNotFoundException e) {
-                throw new MyException("file is not be found");
+                return null;
             }
         }
-        throw new MyException("can't solve other types of files except .json");
+        return null;
     }
 
+    public static boolean writeJson(String path,JSONObject object) {
+        try {
+            JSONWriter writer = new JSONWriter(new FileWriter(path));
+            writer.writeObject(object);
+            return true;
+        } catch (IOException e) {
+            return false;
+        }
+    }
 
 }

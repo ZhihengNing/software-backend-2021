@@ -1,6 +1,7 @@
 package com.yuki.experiment.framework.controller;
 
 import com.yuki.experiment.common.result.CommonResult;
+import com.yuki.experiment.common.utils.JsonUtil;
 import com.yuki.experiment.framework.service.StuExperimentService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -15,6 +16,8 @@ import java.math.BigDecimal;
 @Api(tags = "成绩模块")
 @Slf4j
 public class GradeController {
+
+    private static final String scoreRatioPath="src/main/resources/scoreRatio.json";
 
     private StuExperimentService stuExperimentService;
 
@@ -39,5 +42,19 @@ public class GradeController {
             return CommonResult.success();
         }
         return CommonResult.failed();
+    }
+
+    @ApiOperation("获取学生成绩")
+    @RequestMapping(value = "/get/{studentId}/{courseId}",method = RequestMethod.GET)
+    public CommonResult<BigDecimal> getGrade(@PathVariable Integer studentId, @PathVariable Integer courseId){
+        if(studentId==null){
+            return CommonResult.failed("学生Id不能为空");
+        }
+        if(JsonUtil.readJson(scoreRatioPath)==null){
+            return CommonResult.failed("评分标准都没给，怎么算分，真是可恶！！！");
+        }
+        stuExperimentService.getStudentGrade(studentId,courseId);
+        return CommonResult.failed();
+
     }
 }
