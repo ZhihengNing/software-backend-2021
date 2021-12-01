@@ -33,8 +33,10 @@ public class MailController {
         } else if (courseId == null) {
             return CommonResult.failed("课程Id不能为空");
         }
-        String activeCode = UUID.randomUUID().toString().replace("-", "").toUpperCase();
-        String text = "同济大学教学实验管理平台发来验证码" + activeCode + "来激活课程号为" + courseId + "的课程，请确认是否为本人操作";
+        String activeCode = UUID.randomUUID().toString().replace("-", "").toUpperCase().substring(0,6);
+        String text = "【同济大学教学实验管理平台】您的课程(courseId:"+courseId+  ")验证码是："
+                + activeCode +
+                "，有效时间为10分钟,请尽快认证";
         if (mailService.mailSend(studentMailbox,
                 "激活码",
                 text)) {
