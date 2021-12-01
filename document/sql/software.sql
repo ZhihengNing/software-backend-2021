@@ -11,7 +11,7 @@
  Target Server Version : 80027
  File Encoding         : 65001
 
- Date: 21/11/2021 22:02:15
+ Date: 02/12/2021 01:08:07
 */
 
 SET NAMES utf8mb4;
@@ -31,25 +31,7 @@ CREATE TABLE `administrator`  (
   `mailbox` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '管理员邮箱',
   `url` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '管理员头像url',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 100000 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = DYNAMIC;
-
--- ----------------------------
--- Table structure for counter_practice
--- ----------------------------
-DROP TABLE IF EXISTS `counter_practice`;
-CREATE TABLE `counter_practice`  (
-  `id` int UNSIGNED NOT NULL AUTO_INCREMENT COMMENT '对抗练习ID',
-  `course_id` int UNSIGNED NOT NULL COMMENT '课程ID',
-  `create_time` datetime NOT NULL COMMENT '练习创建时间',
-  `update_time` datetime NOT NULL COMMENT '练习修改时间',
-  `start_time` datetime NULL DEFAULT NULL COMMENT '练习开始时间',
-  `end_time` datetime NULL DEFAULT NULL COMMENT '练习结束时间',
-  `teacher_id` int UNSIGNED NOT NULL COMMENT '创建人ID',
-  PRIMARY KEY (`id`, `course_id`) USING BTREE,
-  INDEX `course_id`(`course_id`) USING BTREE,
-  INDEX `id`(`id`) USING BTREE,
-  CONSTRAINT `counter_practice_ibfk_1` FOREIGN KEY (`course_id`) REFERENCES `course` (`id`) ON DELETE RESTRICT ON UPDATE RESTRICT
-) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 100032 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Table structure for course
@@ -63,11 +45,12 @@ CREATE TABLE `course`  (
   `create_time` datetime NOT NULL COMMENT '课程信息创建时间',
   `update_time` datetime NOT NULL COMMENT '课程信息修改时间',
   `teacher_id` int UNSIGNED NOT NULL COMMENT '课程创建人ID(即责任教师）',
+  `attendance_ratio` decimal(10, 0) NULL DEFAULT NULL COMMENT '考勤得分比例',
   `credit` int NULL DEFAULT NULL COMMENT '课程学分',
   `college` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '课程所属学院',
   PRIMARY KEY (`id`) USING BTREE,
   INDEX `teacher_id`(`teacher_id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 60000 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 60021 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Table structure for course_feedback
@@ -81,12 +64,12 @@ CREATE TABLE `course_feedback`  (
   `content` varchar(5000) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '内容',
   `create_time` datetime NOT NULL COMMENT '创建时间',
   `update_time` datetime NOT NULL COMMENT '修改时间',
-  PRIMARY KEY (`id`, `student_id`, `course_id`) USING BTREE,
+  PRIMARY KEY (`id`) USING BTREE,
   INDEX `student_id`(`student_id`) USING BTREE,
   INDEX `course_id`(`course_id`) USING BTREE,
   CONSTRAINT `course_feedback_ibfk_1` FOREIGN KEY (`student_id`) REFERENCES `student` (`id`) ON DELETE RESTRICT ON UPDATE RESTRICT,
   CONSTRAINT `course_feedback_ibfk_2` FOREIGN KEY (`course_id`) REFERENCES `course` (`id`) ON DELETE RESTRICT ON UPDATE RESTRICT
-) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 4 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Table structure for course_file
@@ -100,12 +83,12 @@ CREATE TABLE `course_file`  (
   `update_time` datetime NOT NULL COMMENT '文件修改时间',
   `teacher_id` int UNSIGNED NOT NULL COMMENT '上传人ID',
   `url` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '文件链接',
-  PRIMARY KEY (`id`, `course_id`) USING BTREE,
+  PRIMARY KEY (`id`) USING BTREE,
   INDEX `course_id`(`course_id`) USING BTREE,
   INDEX `teacher_id`(`teacher_id`) USING BTREE,
   CONSTRAINT `course_file_ibfk_1` FOREIGN KEY (`course_id`) REFERENCES `course` (`id`) ON DELETE RESTRICT ON UPDATE RESTRICT,
   CONSTRAINT `course_file_ibfk_2` FOREIGN KEY (`teacher_id`) REFERENCES `teacher` (`id`) ON DELETE RESTRICT ON UPDATE RESTRICT
-) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 36 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Table structure for course_notice
@@ -119,12 +102,12 @@ CREATE TABLE `course_notice`  (
   `create_time` datetime NOT NULL COMMENT '公告发布时间',
   `update_time` datetime NOT NULL ON UPDATE CURRENT_TIMESTAMP COMMENT '公告修改时间',
   `teacher_id` int UNSIGNED NOT NULL COMMENT '创建人ID',
-  PRIMARY KEY (`id`, `course_id`) USING BTREE,
+  PRIMARY KEY (`id`) USING BTREE,
   INDEX `course_id`(`course_id`) USING BTREE,
   INDEX `teacher_id`(`teacher_id`) USING BTREE,
   CONSTRAINT `course_notice_ibfk_1` FOREIGN KEY (`course_id`) REFERENCES `course` (`id`) ON DELETE RESTRICT ON UPDATE RESTRICT,
   CONSTRAINT `course_notice_ibfk_2` FOREIGN KEY (`teacher_id`) REFERENCES `teacher` (`id`) ON DELETE RESTRICT ON UPDATE RESTRICT
-) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 4 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Table structure for course_score
@@ -154,11 +137,12 @@ CREATE TABLE `experiment`  (
   `update_time` datetime NOT NULL COMMENT '修改时间',
   `teacher_id` int UNSIGNED NOT NULL COMMENT '创建人ID',
   `experiment_score` decimal(10, 3) NULL DEFAULT NULL COMMENT '实验项目分值',
+  `experiment_score_ratio` decimal(10, 3) NULL DEFAULT NULL COMMENT '实验项目分数比例',
   `experiment_purpose` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '实验项目目的',
   `experiment_content` varchar(2000) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '实验项目内容',
   `experiment_deadline` datetime NULL DEFAULT NULL COMMENT '实验项目截至时间',
   `experiment_remarks` varchar(500) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '实验项目备注',
-  PRIMARY KEY (`id`, `course_id`) USING BTREE,
+  PRIMARY KEY (`id`) USING BTREE,
   INDEX `course_id`(`course_id`) USING BTREE,
   INDEX `teacher_id`(`teacher_id`) USING BTREE,
   INDEX `id`(`id`) USING BTREE,
@@ -201,21 +185,47 @@ CREATE TABLE `notice`  (
 ) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
--- Table structure for problem
+-- Table structure for practice
 -- ----------------------------
-DROP TABLE IF EXISTS `problem`;
-CREATE TABLE `problem`  (
-  `id` int UNSIGNED NOT NULL AUTO_INCREMENT COMMENT '对抗练习题目ID',
+DROP TABLE IF EXISTS `practice`;
+CREATE TABLE `practice`  (
+  `id` int UNSIGNED NOT NULL AUTO_INCREMENT COMMENT '自增主键',
   `counter_practice_id` int UNSIGNED NOT NULL COMMENT '对抗练习ID',
   `course_id` int UNSIGNED NOT NULL COMMENT '课程ID',
+  `create_time` datetime NOT NULL COMMENT '练习创建时间',
+  `update_time` datetime NOT NULL COMMENT '练习修改时间',
+  `start_time` datetime NULL DEFAULT NULL COMMENT '练习开始时间',
+  `end_time` datetime NULL DEFAULT NULL COMMENT '练习结束时间',
+  `teacher_id` int UNSIGNED NOT NULL COMMENT '创建人ID',
+  `score` decimal(10, 3) NULL DEFAULT NULL COMMENT '练习分值',
+  `ratio` decimal(10, 3) NULL DEFAULT NULL COMMENT '练习所占比例',
+  PRIMARY KEY (`id`) USING BTREE,
+  INDEX `course_id`(`course_id`) USING BTREE
+) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Table structure for practice_problem
+-- ----------------------------
+DROP TABLE IF EXISTS `practice_problem`;
+CREATE TABLE `practice_problem`  (
+  `id` int UNSIGNED NOT NULL AUTO_INCREMENT COMMENT '自增主键',
+  `problem_id` int UNSIGNED NOT NULL COMMENT '对抗练习题目ID',
+  `counter_practice_auto_id` int UNSIGNED NOT NULL COMMENT '对抗练习ID',
   `stem` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '题干',
   `reference_answer` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '参考答案',
-  PRIMARY KEY (`id`, `counter_practice_id`, `course_id`) USING BTREE,
-  INDEX `counter_practice_id`(`counter_practice_id`) USING BTREE,
-  INDEX `id`(`id`) USING BTREE,
-  INDEX `problem_ibfk_2`(`course_id`) USING BTREE,
-  CONSTRAINT `problem_ibfk_1` FOREIGN KEY (`counter_practice_id`) REFERENCES `counter_practice` (`id`) ON DELETE RESTRICT ON UPDATE RESTRICT,
-  CONSTRAINT `problem_ibfk_2` FOREIGN KEY (`course_id`) REFERENCES `counter_practice` (`course_id`) ON DELETE RESTRICT ON UPDATE RESTRICT
+  PRIMARY KEY (`id`) USING BTREE
+) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Table structure for practice_problem_options
+-- ----------------------------
+DROP TABLE IF EXISTS `practice_problem_options`;
+CREATE TABLE `practice_problem_options`  (
+  `id` int UNSIGNED NOT NULL AUTO_INCREMENT COMMENT '主码',
+  `topic_options_id` int UNSIGNED NOT NULL COMMENT '选项ID',
+  `problem_auto_id` int UNSIGNED NOT NULL COMMENT '对抗练习题目ID',
+  `content` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '题目内容',
+  PRIMARY KEY (`id`) USING BTREE
 ) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
@@ -264,7 +274,7 @@ CREATE TABLE `student`  (
   `url` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '头像url',
   PRIMARY KEY (`id`) USING BTREE,
   INDEX `administrator_id`(`administrator_id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 200000 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 200006 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Table structure for student_upload_file
@@ -277,7 +287,7 @@ CREATE TABLE `student_upload_file`  (
   `update_time` datetime NOT NULL COMMENT '文件修改时间',
   `url` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '文件修改时间',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Table structure for teacher
@@ -295,7 +305,7 @@ CREATE TABLE `teacher`  (
   `url` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '教师头像url',
   PRIMARY KEY (`id`) USING BTREE,
   INDEX `administrator_id`(`administrator_id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 300000 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Table structure for teacher_course
@@ -312,20 +322,5 @@ CREATE TABLE `teacher_course`  (
   CONSTRAINT `teacher_course_ibfk_2` FOREIGN KEY (`course_id`) REFERENCES `course` (`id`) ON DELETE RESTRICT ON UPDATE RESTRICT,
   CONSTRAINT `teacher_course_ibfk_3` FOREIGN KEY (`role_id`) REFERENCES `role` (`id`) ON DELETE RESTRICT ON UPDATE RESTRICT
 ) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
-
--- ----------------------------
--- Table structure for topic_options
--- ----------------------------
-DROP TABLE IF EXISTS `topic_options`;
-CREATE TABLE `topic_options`  (
-  `id` int UNSIGNED NOT NULL AUTO_INCREMENT COMMENT '选项ID',
-  `problem_id` int UNSIGNED NOT NULL COMMENT '题目ID',
-  `counter_practice_id` int UNSIGNED NOT NULL COMMENT '对抗练习ID',
-  `course_id` int UNSIGNED NOT NULL COMMENT '课程ID',
-  `content` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '题目内容',
-  PRIMARY KEY (`id`, `problem_id`, `counter_practice_id`, `course_id`) USING BTREE,
-  INDEX `course_id`(`course_id`) USING BTREE,
-  CONSTRAINT `topic_options_ibfk_3` FOREIGN KEY (`course_id`) REFERENCES `problem` (`course_id`) ON DELETE RESTRICT ON UPDATE RESTRICT
-) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
 
 SET FOREIGN_KEY_CHECKS = 1;

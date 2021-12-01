@@ -30,7 +30,6 @@ public class Experiment implements Serializable {
      * 课程ID
      */
     @ApiModelProperty("课程Id")
-    @TableId
     private Integer courseId;
 
     /**

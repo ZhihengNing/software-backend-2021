@@ -25,7 +25,6 @@ public class CourseFile implements Serializable {
     /**
      * 课程ID
      */
-    @TableId
     @ApiModelProperty("课程ID")
     private Integer courseId;
 

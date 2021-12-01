@@ -86,6 +86,21 @@ public class CourseController {
         return CommonResult.success(true);
     }
 
+    @ApiOperation("查看已激活课程的信息")
+    @RequestMapping(value = "/{studentId}/{courseId}",method = RequestMethod.GET)
+    public CommonResult<Course> getCourseInfoByCourseId(@PathVariable Integer studentId,
+                                                        @PathVariable Integer courseId) {
+        if (courseId == null) {
+            return CommonResult.failed("课程Id不能为空");
+        }
+        Course courseInfoByID = courseService.getCourseInfoByID(studentId, courseId);
+        if (courseInfoByID != null) {
+            return CommonResult.success(courseInfoByID);
+        }
+        return CommonResult.failed("都没激活呢，肯定看不了啦");
+    }
+
+
     @ApiOperation("查看课程反馈")
     @RequestMapping(value = "/feedback/courseId/{courseId}",method = RequestMethod.GET)
     public CommonResult<List<CourseFeedback>> getFeedbackByCourse(@PathVariable Integer courseId){

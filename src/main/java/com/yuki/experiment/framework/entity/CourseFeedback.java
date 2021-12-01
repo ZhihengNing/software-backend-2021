@@ -25,14 +25,12 @@ public class CourseFeedback implements Serializable {
     /**
      * 学生ID
      */
-    @TableId
     @ApiModelProperty("学生ID")
     private Integer studentId;
 
     /**
      * 课程ID
      */
-    @TableId
     @ApiModelProperty("课程ID")
     private Integer courseId;
 

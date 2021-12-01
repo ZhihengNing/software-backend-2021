@@ -32,7 +32,8 @@ public class CourseNoticeServiceImpl implements CourseNoticeService {
     }
 
     @Override
-    public int updateCourseNoticeInfo(CourseNotice courseNotice) {
-        return mapper.updateById(courseNotice);
+    public CourseNotice updateCourseNoticeInfo(CourseNotice courseNotice) {
+        mapper.updateById(courseNotice);
+        return mapper.selectById(courseNotice.getId());
     }
 }

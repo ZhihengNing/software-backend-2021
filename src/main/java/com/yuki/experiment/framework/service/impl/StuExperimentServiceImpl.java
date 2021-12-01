@@ -6,9 +6,11 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import com.yuki.experiment.common.utils.FileUtil;
 import com.yuki.experiment.common.utils.JsonUtil;
+import com.yuki.experiment.framework.entity.Course;
 import com.yuki.experiment.framework.entity.CourseScore;
 import com.yuki.experiment.framework.entity.StuExperiment;
 import com.yuki.experiment.framework.entity.StudentUploadFile;
+import com.yuki.experiment.framework.mapper.CourseMapper;
 import com.yuki.experiment.framework.mapper.CourseScoreMapper;
 import com.yuki.experiment.framework.mapper.StuExperimentMapper;
 import com.yuki.experiment.framework.mapper.StudentUploadFileMapper;
@@ -22,6 +24,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.math.BigDecimal;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @Slf4j
@@ -29,13 +32,13 @@ public class StuExperimentServiceImpl implements StuExperimentService {
 
     private final static String experimentFileUploadPath = "experiment";
 
-    private static final String scoreRatioPath="src/main/resources/scoreRatio.json";
-
     private StuExperimentMapper stuExperimentMapper;
 
     private StudentUploadFileMapper studentUploadFileMapper;
 
     private CourseScoreMapper courseScoreMapper;
+
+    private CourseMapper courseMapper;
 
     @Autowired
     public void setStuExperimentMapper(StuExperimentMapper stuExperimentMapper) {
@@ -46,9 +49,14 @@ public class StuExperimentServiceImpl implements StuExperimentService {
     public void setStudentUploadFileMapper(StudentUploadFileMapper studentUploadFileMapper) {
         this.studentUploadFileMapper = studentUploadFileMapper;
     }
-
+    @Autowired
     public void setCourseScoreMapper(CourseScoreMapper courseScoreMapper) {
         this.courseScoreMapper = courseScoreMapper;
+    }
+
+    @Autowired
+    public void setCourseMapper(CourseMapper courseMapper){
+        this.courseMapper=courseMapper;
     }
 
     @Override
@@ -133,27 +141,17 @@ public class StuExperimentServiceImpl implements StuExperimentService {
     }
 
     @Override
-    public BigDecimal getStudentGrade(Integer studentId,Integer courseId) {
-        JSONObject jsonObject = JsonUtil.readJson(scoreRatioPath);
-        jsonObject.getBigDecimal("attendance");
-        JSONObject experiment = jsonObject.getJSONObject("experiment");
+    public List<BigDecimal> getStudentGrade(Integer studentId,Integer courseId) {
+//        QueryWrapper<CourseScore> wrapper = new QueryWrapper<>();
+//        wrapper.eq("student_id", studentId).eq("course_id", courseId);
+//        CourseScore courseScore = courseScoreMapper.selectOne(wrapper);
+//        //得到某门课的考勤得分
+//        BigDecimal attendanceScore = courseScore.getAttendanceScore() == null ?
+//                new BigDecimal(0) : courseScore.getAttendanceScore();
 
-        QueryWrapper<CourseScore> wrapper = new QueryWrapper<>();
-        wrapper.eq("student_id", studentId).eq("course_id", courseId);
-        CourseScore courseScore = courseScoreMapper.selectOne(wrapper);
-        //得到某门课的考勤得分
-        BigDecimal attendanceScore = courseScore.getAttendanceScore() == null ?
-                new BigDecimal(0) : courseScore.getAttendanceScore();
         QueryWrapper<StuExperiment> wrapper1 = new QueryWrapper<>();
         wrapper1.eq("student_id", studentId);
         List<StuExperiment> stuExperiments = stuExperimentMapper.selectList(wrapper1);
-        for (StuExperiment item : stuExperiments) {
-            if (item.getExperimentScore() != null) {
-                attendanceScore * 0.1
-            }
-        }
-
-
-        return null;
+        return stuExperiments.stream().map(StuExperiment::getExperimentScore).collect(Collectors.toList());
     }
 }

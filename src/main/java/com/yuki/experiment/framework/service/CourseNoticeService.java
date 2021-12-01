@@ -12,5 +12,5 @@ public interface CourseNoticeService {
 
     int deleteCourseNoticeInfo(List<Integer> courseNoticeIds);
 
-    int updateCourseNoticeInfo(CourseNotice courseNotice);
+    CourseNotice updateCourseNoticeInfo(CourseNotice courseNotice);
 }

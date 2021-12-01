@@ -23,8 +23,9 @@ public class NoticeServiceImp implements NoticeService {
     }
 
     @Override
-    public int updateNotice(Notice notice) {
-        return mapper.updateById(notice);
+    public Notice updateNotice(Notice notice) {
+        mapper.updateById(notice);
+        return mapper.selectById(notice.getId());
     }
 
     @Override

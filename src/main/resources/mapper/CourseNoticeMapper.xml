@@ -6,7 +6,7 @@
 
     <resultMap id="BaseResultMap" type="com.yuki.experiment.framework.entity.CourseNotice">
             <id property="id" column="id" jdbcType="INTEGER"/>
-            <id property="courseId" column="course_id" jdbcType="INTEGER"/>
+            <result property="courseId" column="course_id" jdbcType="INTEGER"/>
             <result property="title" column="title" jdbcType="VARCHAR"/>
             <result property="content" column="content" jdbcType="VARCHAR"/>
             <result property="createTime" column="create_time" jdbcType="TIMESTAMP"/>

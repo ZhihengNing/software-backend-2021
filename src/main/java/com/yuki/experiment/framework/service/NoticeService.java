@@ -10,7 +10,7 @@ public interface NoticeService {
 
     int insertNotice(Notice notice);
 
-    int updateNotice(Notice notice);
+    Notice updateNotice(Notice notice);
 
     int deleteNotice(List<Integer>noticeId);
 }

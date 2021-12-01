@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.math.BigDecimal;
+import java.util.List;
 
 @RestController
 @RequestMapping("/grade")
@@ -44,17 +45,15 @@ public class GradeController {
         return CommonResult.failed();
     }
 
-    @ApiOperation("获取学生成绩")
+    @ApiOperation("获取学生某课程所有实验成绩")
     @RequestMapping(value = "/get/{studentId}/{courseId}",method = RequestMethod.GET)
-    public CommonResult<BigDecimal> getGrade(@PathVariable Integer studentId, @PathVariable Integer courseId){
-        if(studentId==null){
+    public CommonResult<List<BigDecimal>> getGrade(@PathVariable Integer studentId, @PathVariable Integer courseId) {
+        if (studentId == null) {
             return CommonResult.failed("学生Id不能为空");
         }
-        if(JsonUtil.readJson(scoreRatioPath)==null){
+        if (JsonUtil.readJson(scoreRatioPath) == null) {
             return CommonResult.failed("评分标准都没给，怎么算分，真是可恶！！！");
         }
-        stuExperimentService.getStudentGrade(studentId,courseId);
-        return CommonResult.failed();
-
+        return CommonResult.success(stuExperimentService.getStudentGrade(studentId, courseId));
     }
 }

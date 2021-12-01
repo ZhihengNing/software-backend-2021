@@ -41,26 +41,26 @@ public class NoticeController {
 
     @ApiOperation("添加系统公告")
     @RequestMapping(value = "/system",method = RequestMethod.POST)
-    public CommonResult insertNotice(@RequestBody Notice notice){
+    public CommonResult<Notice> insertNotice(@RequestBody Notice notice){
         if(notice.getAdministratorId()==null){
             return CommonResult.failed("公告创建人Id不能为空");
         }
         else if(noticeService.insertNotice(notice)>0){
-            return CommonResult.success();
+            return CommonResult.success(notice);
         }
         return CommonResult.failed();
     }
     @ApiOperation("更新系统公告")
     @RequestMapping(value = "/system",method = RequestMethod.PUT)
-    public CommonResult updateNotice(@RequestBody Notice notice){
-        if(notice.getId()==null){
+    public CommonResult<Notice> updateNotice(@RequestBody Notice notice) {
+        if (notice.getId() == null) {
             return CommonResult.failed("公告Id不能为空");
-        }
-        else if(notice.getAdministratorId()==null){
+        } else if (notice.getAdministratorId() == null) {
             return CommonResult.failed("公告修改人Id不能为空");
         }
-        else if(noticeService.updateNotice(notice)>0){
-            return CommonResult.success();
+        Notice notice1 = noticeService.updateNotice(notice);
+        if (notice1 != null) {
+            return CommonResult.success(notice1);
         }
         return CommonResult.failed();
     }
@@ -92,14 +92,14 @@ public class NoticeController {
 
     @ApiOperation("添加课程公告")
     @RequestMapping(value = "/course",method = RequestMethod.POST)
-    public CommonResult insertInfo(@RequestBody CourseNotice courseNotice){
+    public CommonResult<CourseNotice> insertInfo(@RequestBody CourseNotice courseNotice){
         if(courseNotice.getCourseId()==null){
             return CommonResult.failed("课程Id不能为空");
         }else if(courseNotice.getTeacherId()==null){
             return CommonResult.failed("创建人Id不能为空");
         }
         else if(courseNoticeService.insertCourseNoticeInfo(courseNotice)>0){
-            return CommonResult.success();
+            return CommonResult.success(courseNotice);
         }
         return CommonResult.failed();
     }
@@ -116,18 +116,17 @@ public class NoticeController {
     }
     @ApiOperation("更新课程公告")
     @RequestMapping(value = "/course",method = RequestMethod.PUT)
-    public CommonResult updateInfo(@RequestBody CourseNotice courseNotice){
-        if(courseNotice.getId()==null){
+    public CommonResult<CourseNotice> updateInfo(@RequestBody CourseNotice courseNotice) {
+        if (courseNotice.getId() == null) {
             return CommonResult.failed("课程公告Id不能为空");
+        } else if (courseNotice.getTeacherId() == null) {
+            return CommonResult.failed("课程公告修改人(教师Id)不能为空");
         }
-        else if(courseNotice.getTeacherId()==null) {
-            return CommonResult.failed("课程公告修改Id不能为空");
-        }
-        if(courseNoticeService.updateCourseNoticeInfo(courseNotice)>0){
-            return CommonResult.success();
+        CourseNotice courseNotice1 = courseNoticeService.updateCourseNoticeInfo(courseNotice);
+        if (courseNotice1 != null) {
+            return CommonResult.success(courseNotice1);
         }
         return CommonResult.failed();
     }
-
 
 }
