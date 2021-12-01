@@ -83,7 +83,7 @@ public class NoticeController {
     }
     @ApiOperation("查看课程公告")
     @RequestMapping(value = "/course/teacherId/{teacherId}",method = RequestMethod.GET)
-    public CommonResult<List<CourseNotice>>getInfoByTeacherId(@PathVariable Integer teacherId){
+    public CommonResult<List<CourseNotice>>getCourseInfoByTeacherId(@PathVariable Integer teacherId){
         if(teacherId==null){
             return CommonResult.failed("教师ID不能为空");
         }

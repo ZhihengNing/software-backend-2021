@@ -106,9 +106,9 @@ public class ExperimentController {
         return CommonResult.success(experimentFileService.getInfo(experimentId,null));
     }
 
-    @ApiOperation("获取实验项目资料by项目Id")
+    @ApiOperation("获取实验项目资料by教师Id")
     @RequestMapping(value = "/file/teacherId/{teacherId}",method = RequestMethod.GET)
-    public CommonResult<List<ExperimentFile>> getInfoByTeacherId(@PathVariable Integer teacherId){
+    public CommonResult<List<ExperimentFile>> getExperimentFileByTeacherId(@PathVariable Integer teacherId){
         if(teacherId==null){
             return CommonResult.failed("教师Id不能为空");
         }

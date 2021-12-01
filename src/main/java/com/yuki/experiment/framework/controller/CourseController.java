@@ -144,9 +144,9 @@ public class CourseController {
     @ApiOperation("上传课程文件")
     @RequestMapping(value = "/file/{courseId}/{teacherId}", method = RequestMethod.POST)
     @Transactional(rollbackFor= FileIsNullException.class)
-    public CommonResult uploadFile(@RequestPart("courseFile") List<MultipartFile> multipartFiles,
-                                   @PathVariable("courseId") Integer courseId,
-                                   @PathVariable("teacherId") Integer teacherId) {
+    public CommonResult uploadCourseFile(@RequestPart("courseFile") List<MultipartFile> multipartFiles,
+                                         @PathVariable("courseId") Integer courseId,
+                                         @PathVariable("teacherId") Integer teacherId) {
         //生成文件夹的路径
         String path = FileUtil.generatorUrl(courseFileUploadPath, courseId);
 

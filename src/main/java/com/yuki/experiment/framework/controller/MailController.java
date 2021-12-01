@@ -45,7 +45,7 @@ public class MailController {
 
     @ApiOperation("发送带附件邮件")
     @RequestMapping(value = "/sendFile",method = RequestMethod.POST)
-    public CommonResult<Object> sendMail(@RequestParam("studentMailbox")String studentMailbox,
+    public CommonResult<Object> sendMailWithFile(@RequestParam("studentMailbox")String studentMailbox,
                                           @RequestPart("file") MultipartFile[] files) {
         try {
             if (mailService.mailSend(studentMailbox,
