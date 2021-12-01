@@ -26,7 +26,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/course")
-@Api("课程模块")
+@Api(description ="课程模块")
 @Slf4j
 public class CourseController {
 

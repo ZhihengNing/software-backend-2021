@@ -1,5 +1,6 @@
 package com.yuki.experiment.framework.controller;
 
+import com.alibaba.druid.pool.vendor.DB2ExceptionSorter;
 import com.alibaba.fastjson.JSONObject;
 import com.yuki.experiment.common.result.CommonResult;
 import com.yuki.experiment.framework.entity.Student;
@@ -15,7 +16,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/student")
-@Api("学生模块")
+@Api(description = "学生模块")
 @Slf4j
 public class StudentController {
     private StudentService studentService;
