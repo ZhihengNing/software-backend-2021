@@ -129,8 +129,8 @@ public class ExperimentController {
         return CommonResult.failed();
     }
 
-    @ApiOperation("查看学生上传实验作业by学生Id,实验Id")
-    @RequestMapping(value = "/{experimentId}/{studentId}", method = RequestMethod.GET)
+    @ApiOperation("查看学生实验作业by学生Id,实验Id")
+    @RequestMapping(value = "/work/{experimentId}/{studentId}", method = RequestMethod.GET)
     public CommonResult<List<StuExperiment>> getStuExperiment(@PathVariable Integer studentId,
                                                               @PathVariable Integer experimentId) {
         if (studentId == null) {
@@ -141,8 +141,8 @@ public class ExperimentController {
         return CommonResult.success(stuExperimentService.getStuExperiment(studentId, experimentId));
     }
 
-    @ApiOperation("查看学生上传实验作业by学生Id")
-    @RequestMapping(value = "/file/studentId/{studentId}", method = RequestMethod.GET)
+    @ApiOperation("查看学生实验作业by学生Id")
+    @RequestMapping(value = "/work/studentId/{studentId}", method = RequestMethod.GET)
     public CommonResult<List<StuExperiment>> getStuExperimentByStudentId(@PathVariable Integer studentId) {
         if(studentId==null){
             return CommonResult.failed("学生Id不能为空");
@@ -150,8 +150,8 @@ public class ExperimentController {
         return CommonResult.success(stuExperimentService.getStuExperiment(studentId,null));
     }
 
-    @ApiOperation("查看学生上传实验作业by实验Id")
-    @RequestMapping(value = "/file/experimentId/{experimentId}",method = RequestMethod.GET)
+    @ApiOperation("查看学生实验作业by实验Id")
+    @RequestMapping(value = "/work/experimentId/{experimentId}",method = RequestMethod.GET)
     public CommonResult<List<StuExperiment>>getStuExperimentByExperimentId(@PathVariable Integer experimentId){
         if(experimentId==null){
             return CommonResult.failed("实验项目Id不能为空");
@@ -159,9 +159,9 @@ public class ExperimentController {
         return CommonResult.success(stuExperimentService.getStuExperiment(null,experimentId));
     }
 
-    @ApiOperation("学生提交实验项目作业")
-    @RequestMapping(value = "/{experimentId}/{studentId}", method = RequestMethod.POST)
-    public CommonResult insetStuExperiment(@RequestPart("file") MultipartFile multipartFile,
+    @ApiOperation("学生提交实验作业")
+    @RequestMapping(value = "/work/{experimentId}/{studentId}", method = RequestMethod.POST)
+    public CommonResult insetStuExperiment(@RequestPart(value = "file",required = false) MultipartFile multipartFile,
                                            @PathVariable("studentId") Integer studentId,
                                            @PathVariable("experimentId") Integer experimentId,
                                            @RequestParam("jobContent") String jobContent) {
@@ -180,8 +180,8 @@ public class ExperimentController {
     }
 
     @ApiOperation("学生更新实验作业")
-    @RequestMapping(value = "/{experimentId}/{studentId}",method = RequestMethod.PUT)
-    public CommonResult updateStuExperiment(@RequestPart("file") MultipartFile multipartFile,
+    @RequestMapping(value = "/work/{experimentId}/{studentId}",method = RequestMethod.PUT)
+    public CommonResult updateStuExperiment(@RequestPart(value = "file",required = false) MultipartFile multipartFile,
                                             @PathVariable Integer studentId,
                                             @PathVariable Integer experimentId,
                                             @RequestParam("jobContent") String jobContent) {

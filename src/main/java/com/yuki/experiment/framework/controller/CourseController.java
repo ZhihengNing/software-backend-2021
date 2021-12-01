@@ -89,12 +89,14 @@ public class CourseController {
         List<CourseFeedback> feedbackByCourseId = courseFeedbackService.getFeedback(null,courseId);
         return CommonResult.success(feedbackByCourseId);
     }
+
     @ApiOperation("查看课程反馈")
     @RequestMapping(value = "/feedback/studentId/{studentId}",method = RequestMethod.GET)
     public CommonResult<List<CourseFeedback>> getFeedbackByStudent(@PathVariable Integer studentId){
         List<CourseFeedback> feedbackByStudentId = courseFeedbackService.getFeedback(studentId,null);
         return CommonResult.success(feedbackByStudentId);
     }
+
     @ApiOperation("插入课程反馈")
     @RequestMapping(value = "/feedback",method =RequestMethod.POST)
     public CommonResult insertFeedback(@RequestBody CourseFeedback courseFeedback){
@@ -111,6 +113,7 @@ public class CourseController {
             return CommonResult.failed();
         }
     }
+
     @ApiOperation("更新课程反馈")
     @RequestMapping(value = "/feedback",method = RequestMethod.PUT)
     public CommonResult updateFeedback(@RequestBody CourseFeedback courseFeedback) {
@@ -157,6 +160,7 @@ public class CourseController {
         }
         return CommonResult.success();
     }
+
     @ApiOperation("查看课程文件")
     @RequestMapping(value = "/file/courseId/{courseId}",method = RequestMethod.GET)
     public CommonResult<List<CourseFile>> getFileListByCourseId(@PathVariable Integer courseId){

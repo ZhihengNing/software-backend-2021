@@ -1,11 +1,9 @@
 package com.yuki.experiment.framework.controller;
 
-import com.sun.mail.auth.MD4;
 import com.yuki.experiment.common.result.CommonResult;
 import com.yuki.experiment.framework.manage.impl.MailServiceImpl;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.tomcat.util.security.MD5Encoder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;

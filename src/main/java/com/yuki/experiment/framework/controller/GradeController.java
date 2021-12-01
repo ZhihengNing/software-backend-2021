@@ -20,7 +20,7 @@ public class GradeController {
     }
 
     @ApiOperation("上传学生实验项目成绩")
-    @RequestMapping(value = "/grade/{studentId}/{experimentId}",method = RequestMethod.POST)
+    @RequestMapping(value = "/{studentId}/{experimentId}",method = RequestMethod.POST)
     public CommonResult uploadStudentGrade(@PathVariable Integer studentId,
                                            @PathVariable Integer experimentId,
                                            @RequestParam("grade") BigDecimal grade){

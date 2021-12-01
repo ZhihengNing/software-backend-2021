@@ -35,6 +35,7 @@ public class StudentController {
         }
         return CommonResult.success(studentService.getInfo(studentId));
     }
+
     @ApiOperation("插入学生信息")
     @RequestMapping(value = "",method = RequestMethod.POST)
     public CommonResult insertInfo(@RequestBody Student student) {
@@ -49,6 +50,7 @@ public class StudentController {
         }
         return CommonResult.failed();
     }
+
     @ApiOperation("更新学生信息")
     @RequestMapping(value = "",method = RequestMethod.PUT)
     public CommonResult updateInfo(@RequestBody Student student) {
@@ -65,6 +67,7 @@ public class StudentController {
         }
         return CommonResult.failed();
     }
+
     @ApiOperation("删除学生信息")
     @RequestMapping(value = "/studentId/{studentId}",method = RequestMethod.DELETE)
     public CommonResult deleteInfo(@PathVariable List<Integer> studentId){
