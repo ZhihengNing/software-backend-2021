@@ -38,7 +38,7 @@ public class MailController {
                 + activeCode +
                 "，有效时间为10分钟,请尽快认证";
         if (mailService.mailSend(studentMailbox,
-                "激活码",
+                "课程激活码",
                 text)) {
             return CommonResult.success();
         }
