@@ -8,7 +8,9 @@ import com.yuki.experiment.common.utils.JwtUtil;
 import com.yuki.experiment.framework.service.AdministratorService;
 import com.yuki.experiment.framework.service.StudentService;
 import com.yuki.experiment.framework.service.TeacherService;
+import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -19,6 +21,8 @@ import javax.servlet.http.HttpServletRequest;
 
 @RestController
 @RequestMapping("/user")
+@Api("学生模块")
+@Slf4j
 public class UserController {
     private final StudentService studentService;
 

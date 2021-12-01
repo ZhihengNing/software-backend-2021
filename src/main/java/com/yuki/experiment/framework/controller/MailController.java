@@ -2,6 +2,7 @@ package com.yuki.experiment.framework.controller;
 
 import com.yuki.experiment.common.result.CommonResult;
 import com.yuki.experiment.framework.manage.impl.MailServiceImpl;
+import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,6 +14,7 @@ import java.util.UUID;
 
 @RestController
 @RequestMapping("/mail")
+@Api("邮箱模块")
 @Slf4j
 public class MailController {
 

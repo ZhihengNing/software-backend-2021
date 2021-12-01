@@ -5,7 +5,9 @@ import com.yuki.experiment.common.result.CommonResult;
 import com.yuki.experiment.framework.entity.Student;
 import com.yuki.experiment.framework.service.CourseScoreService;
 import com.yuki.experiment.framework.service.StudentService;
+import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -13,6 +15,8 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/student")
+@Api("学生模块")
+@Slf4j
 public class StudentController {
     private StudentService studentService;
 

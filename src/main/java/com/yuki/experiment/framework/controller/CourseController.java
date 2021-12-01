@@ -14,6 +14,7 @@ import com.yuki.experiment.framework.service.CourseFeedbackService;
 import com.yuki.experiment.framework.service.CourseFileService;
 import com.yuki.experiment.framework.service.CourseScoreService;
 import com.yuki.experiment.framework.service.CourseService;
+import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,6 +26,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/course")
+@Api("课程模块")
 @Slf4j
 public class CourseController {
 
@@ -61,6 +63,7 @@ public class CourseController {
     @Autowired
     private TeacherMapper mapper;
 
+    @ApiOperation("这个不要用")
     @RequestMapping(value = "", method = RequestMethod.POST)
     public CommonResult<Boolean> insert(@RequestBody JSONObject json) {
         String name = json.getString("name");

@@ -3,12 +3,15 @@ package com.yuki.experiment.framework.controller;
 import com.yuki.experiment.common.result.CommonResult;
 import com.yuki.experiment.framework.entity.Teacher;
 import com.yuki.experiment.framework.service.TeacherService;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/teacher")
+@Api("教师模块")
 @Slf4j
 public class TeacherController {
 
@@ -18,6 +21,7 @@ public class TeacherController {
         this.teacherService = teacherService;
     }
 
+    @ApiOperation("这个不要用")
     @RequestMapping(value = "/{teacherName}",method = RequestMethod.POST)
     public CommonResult<Boolean> insert(@PathVariable String teacherName) {
         Teacher teacher = new Teacher();
