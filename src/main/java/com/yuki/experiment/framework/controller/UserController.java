@@ -91,7 +91,7 @@ public class UserController {
     }
 
     @ApiOperation("发送邮件")
-    @RequestMapping(value = "/send",method = RequestMethod.POST)
+    @RequestMapping(value = "/email/send",method = RequestMethod.POST)
     public CommonResult<Object> sendMail(@RequestParam("studentMailbox")String studentMailbox,
                                          @RequestParam("courseId") Integer courseId) {
         if (studentMailbox == null) {
@@ -112,7 +112,7 @@ public class UserController {
     }
 
     @ApiOperation("发送带附件邮件")
-    @RequestMapping(value = "/sendFile",method = RequestMethod.POST)
+    @RequestMapping(value = "/email/sendFile",method = RequestMethod.POST)
     public CommonResult<Object> sendMailWithFile(@RequestParam("studentMailbox")String studentMailbox,
                                                  @RequestPart("file") MultipartFile[] files) {
         try {

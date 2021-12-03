@@ -36,7 +36,7 @@ public class JwtUtil {
 
         Integer id = user.getInteger("id");
         String name = user.getString("name");
-        Integer type = user.getInteger("type");
+        String type = user.getString("type");
 
         builder.withClaim("id", id);
         builder.withClaim("name", name);
@@ -55,7 +55,7 @@ public class JwtUtil {
         JSONObject json = new JSONObject();
         json.put("id", jwt.getClaim("id").asInt());
         json.put("name", jwt.getClaim("name").asString());
-        json.put("type", jwt.getClaim("type").asInt());
+        json.put("type", jwt.getClaim("type").asString());
         return json;
     }
 
