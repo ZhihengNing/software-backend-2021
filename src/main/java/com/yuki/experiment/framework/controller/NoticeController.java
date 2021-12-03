@@ -11,6 +11,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Date;
 import java.util.List;
 
 @RestController
@@ -33,15 +34,45 @@ public class NoticeController {
         this.courseNoticeService = courseNoticeService;
     }
 
-    @ApiOperation("获取系统公告")
+    @ApiOperation("获取所有系统公告")
     @RequestMapping(value = "/system",method = RequestMethod.GET)
-    public CommonResult<List<Notice>> getNoticeInfo() {
+    public CommonResult<List<Notice>> getSysNotice() {
         return CommonResult.success(noticeService.getAllNotice());
     }
 
+    @ApiOperation("获取系统公告by公告Id")
+    @RequestMapping("/system/noticeId/{noticeId}")
+    public CommonResult<Notice>getSysNotice(@PathVariable Integer noticeId) {
+        if (noticeId == null) {
+            return CommonResult.failed("公告Id不能为空");
+        }
+        return CommonResult.success(noticeService.getNoticeById(noticeId));
+    }
+
+    @ApiOperation("模糊查询系统公告")
+    @RequestMapping(value = "/system/fuzzyQuery",method = RequestMethod.GET)
+    public CommonResult<List<Notice>> fuzzyQuerySysNotice(@RequestParam("keyword")String keyword){
+        return CommonResult.success(noticeService.fuzzyQuery(keyword));
+    }
+
+    @ApiOperation("时间段查询系统公告")
+    @RequestMapping(value = "/system/getByTime",method = RequestMethod.GET)
+    public CommonResult<List<Notice>> querySysByTime(@RequestParam("beginDate")Date beginDate,
+                                                  @RequestParam(value = "endDate",required = false)Date endDate) {
+        endDate = endDate == null ? beginDate : endDate;
+        if (beginDate == null) {
+            return CommonResult.failed("开始时间不能为空");
+        } else if (endDate.compareTo(beginDate) < 0) {
+            return CommonResult.failed("结束时间不能小于开始时间");
+        }
+        return CommonResult.success(noticeService.queryByTime(beginDate, endDate));
+    }
+
+
+
     @ApiOperation("添加系统公告")
     @RequestMapping(value = "/system",method = RequestMethod.POST)
-    public CommonResult<Notice> insertNotice(@RequestBody Notice notice){
+    public CommonResult<Notice> insertSysNotice(@RequestBody Notice notice){
         if(notice.getAdministratorId()==null){
             return CommonResult.failed("公告创建人Id不能为空");
         }
@@ -50,9 +81,10 @@ public class NoticeController {
         }
         return CommonResult.failed();
     }
+
     @ApiOperation("更新系统公告")
     @RequestMapping(value = "/system",method = RequestMethod.PUT)
-    public CommonResult<Notice> updateNotice(@RequestBody Notice notice) {
+    public CommonResult<Notice> updateSysNotice(@RequestBody Notice notice) {
         if (notice.getId() == null) {
             return CommonResult.failed("公告Id不能为空");
         } else if (notice.getAdministratorId() == null) {
@@ -64,30 +96,51 @@ public class NoticeController {
         }
         return CommonResult.failed();
     }
+
     @ApiOperation("删除系统公告")
     @RequestMapping(value = "/system/noticeId/{noticeId}",method = RequestMethod.DELETE)
-    public CommonResult deleteNotice(@PathVariable List<Integer> noticeId) {
+    public CommonResult deleteSysNotice(@PathVariable List<Integer> noticeId) {
         if (noticeService.deleteNotice(noticeId) > 0) {
             return CommonResult.success();
         }
         return CommonResult.failed();
     }
 
-    @ApiOperation("查看课程公告")
+    @ApiOperation("查询课程公告by课程Id")
     @RequestMapping(value = "/course/courseId/{courseId}",method = RequestMethod.GET)
-    public CommonResult<List<CourseNotice>>getInfoByCourseId(@PathVariable("courseId") Integer courseId){
+    public CommonResult<List<CourseNotice>>getCourseNoticeByCourseId(@PathVariable("courseId") Integer courseId){
         if(courseId==null){
             return CommonResult.failed("课程ID不能为空");
         }
         return CommonResult.success(courseNoticeService.getCourseNotice(courseId,null));
     }
-    @ApiOperation("查看课程公告")
+
+    @ApiOperation("查询课程公告by老师Id")
     @RequestMapping(value = "/course/teacherId/{teacherId}",method = RequestMethod.GET)
-    public CommonResult<List<CourseNotice>>getCourseInfoByTeacherId(@PathVariable Integer teacherId){
+    public CommonResult<List<CourseNotice>>getCourseNoticeByTeacherId(@PathVariable("teacherId") Integer teacherId){
         if(teacherId==null){
             return CommonResult.failed("教师ID不能为空");
         }
         return CommonResult.success(courseNoticeService.getCourseNotice(null,teacherId));
+    }
+
+    @ApiOperation("模糊查询课程公告")
+    @RequestMapping(value = "/course/fuzzyQuery",method = RequestMethod.GET)
+    public CommonResult<List<CourseNotice>> fuzzyQueryCourseNotice(@RequestParam("keyword") String keyword) {
+        return CommonResult.success(courseNoticeService.fuzzyQueryCourseNoticeInfo(keyword));
+    }
+
+    @ApiOperation("时间段查询课程公告")
+    @RequestMapping(value = "/course/getByTime",method = RequestMethod.GET)
+    public CommonResult<List<CourseNotice>> queryByTime(@RequestParam("beginDate")Date beginDate,
+                                                        @RequestParam(value = "endDate",required = false) Date endDate) {
+        endDate=endDate==null?beginDate:endDate;
+        if (beginDate == null) {
+            return CommonResult.failed("开始时间不能为空");
+        } else if (endDate.compareTo(beginDate) < 0) {
+            return CommonResult.failed("结束时间不能小于开始时间");
+        }
+        return CommonResult.success(courseNoticeService.queryByTime(beginDate, endDate));
     }
 
     @ApiOperation("添加课程公告")
@@ -103,9 +156,10 @@ public class NoticeController {
         }
         return CommonResult.failed();
     }
+
     @ApiOperation("删除课程公告")
     @RequestMapping(value="/course/courseNoticeId/{courseNoticeId}",method = RequestMethod.DELETE)
-    public CommonResult deleteInfo(@PathVariable List<Integer> courseNoticeId){
+    public CommonResult deleteInfo(@PathVariable("courseNoticeId") List<Integer> courseNoticeId){
         if(courseNoticeId==null){
             return CommonResult.failed("课程公告Id不能为空");
         }

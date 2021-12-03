@@ -19,4 +19,13 @@
         content,create_time,update_time,
         teacher_id
     </sql>
+
+    <select id="fuzzyGet" resultType="com.yuki.experiment.framework.entity.CourseNotice">
+        select cn.id, cn.course_id, cn.title, cn.content, cn.create_time, cn.update_time, cn.teacher_id
+        from course_notice cn left join teacher t on t.id = cn.teacher_id
+        where cn.title like '%${keyword}%'
+           or cn.content like '%${keyword}%'
+           or t.name like '%${keyword}%'
+    </select>
+
 </mapper>

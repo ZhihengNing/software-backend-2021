@@ -3,14 +3,17 @@ package com.yuki.experiment.framework.controller;
 import com.yuki.experiment.common.result.CommonResult;
 import com.yuki.experiment.common.utils.FileUtil;
 import com.yuki.experiment.framework.entity.Administrator;
+import com.yuki.experiment.framework.mapper.CourseNoticeMapper;
 import com.yuki.experiment.framework.service.TestService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.swing.*;
 import java.util.List;
 
 @RestController
@@ -18,8 +21,12 @@ import java.util.List;
 @Api(tags= "测试模块(禁用)")
 @Slf4j
 public class TestController {
+
     private final TestService service;
+
     @Autowired
+    private CourseNoticeMapper courseNoticeMapper;
+
     public TestController(TestService service){
         this.service=service;
     }
@@ -53,10 +60,12 @@ public class TestController {
     public CommonResult<String> demo1() {
         return CommonResult.success("2333");
     }
+
     @RequestMapping(value = "/upload",method = RequestMethod.POST)
-    public CommonResult uploadFile(@RequestPart("files") List<MultipartFile>multipartFiles,
-                                   @RequestParam("path") String path){
-        FileUtil.preserveMyFile(multipartFiles, path);
+    public CommonResult uploadFile(@RequestPart("files") List<MultipartFile>multipartFiles){
+        for(MultipartFile item:multipartFiles){
+            System.out.println(item.getOriginalFilename());
+        }
         return CommonResult.success();
     }
 
