@@ -2,6 +2,7 @@ package com.yuki.experiment.framework.controller;
 
 import com.alibaba.fastjson.JSONObject;
 import com.yuki.experiment.common.result.CommonResult;
+import com.yuki.experiment.common.utils.FileUtil;
 import com.yuki.experiment.framework.entity.Student;
 import com.yuki.experiment.framework.service.CourseScoreService;
 import com.yuki.experiment.framework.service.StudentService;
@@ -10,6 +11,7 @@ import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
@@ -21,6 +23,8 @@ public class StudentController {
     private StudentService studentService;
 
     private CourseScoreService courseScoreService;
+
+    private static final String STUDENT_PATH="student";
 
     @Autowired
     public void setStudentService(StudentService studentService) {
@@ -68,6 +72,22 @@ public class StudentController {
             return CommonResult.failed("密码不能为空");
         } else if (studentService.updateInfo(student) > 0) {
             return CommonResult.success();
+        }
+        return CommonResult.failed();
+    }
+
+    @ApiOperation("上传学生头像")
+    @RequestMapping(value = "/uploadPic/{studentId}",method = RequestMethod.POST)
+    public CommonResult<String> uploadStudentPic(@PathVariable("studentId") Integer studentId,
+                                         @RequestPart("pic")MultipartFile pic){
+        if(studentId==null){
+            return CommonResult.failed("学生Id不能为空");
+        }
+        String url = FileUtil.generatorUrl(STUDENT_PATH, studentId);
+        String webUrl=FileUtil.generatorWebUrl(STUDENT_PATH,studentId);
+        String picUrl=studentService.uploadPic(studentId,url,webUrl,pic);
+        if(picUrl!=null){
+            return CommonResult.success(picUrl);
         }
         return CommonResult.failed();
     }

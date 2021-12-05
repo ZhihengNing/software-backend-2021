@@ -3,6 +3,7 @@ package com.yuki.experiment.framework.service.impl;
 import com.alibaba.fastjson.JSONObject;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.yuki.experiment.common.utils.FileUtil;
+import com.yuki.experiment.framework.dto.FileInfo;
 import com.yuki.experiment.framework.entity.Experiment;
 import com.yuki.experiment.framework.entity.ExperimentFile;
 import com.yuki.experiment.framework.mapper.ExperimentFileMapper;
@@ -43,14 +44,14 @@ public class ExperimentFileServiceImpl implements ExperimentFileService {
             Pair<String, String> twoUrl = FileUtil.generatorTwoUrl(PATH, courseId, experimentId);
             String path = twoUrl.getKey();
             String webPath = twoUrl.getValue();
-            List<JSONObject> json= FileUtil.preserveFile(multipartFiles, path, webPath);
-            for(JSONObject item:json){
-                String data = item.getString("data");
-                String name = item.getString("name");
+            List<FileInfo> fileInfos= FileUtil.preserveFile(multipartFiles, path, webPath);
+            for(FileInfo item:fileInfos){
+                String url = item.getFileUrl();
+                String name = item.getFileName();
                 ExperimentFile build = ExperimentFile.builder()
                         .experimentId(experimentId)
                         .name(name)
-                        .url(data)
+                        .url(url)
                         .teacherId(teacherId).build();
                 //保存到数据库
                 experimentFileMapper.insert(build);

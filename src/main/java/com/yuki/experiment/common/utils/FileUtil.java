@@ -2,14 +2,16 @@ package com.yuki.experiment.common.utils;
 
 import com.alibaba.fastjson.JSONObject;
 import com.yuki.experiment.common.exception.FileIsNullException;
+import com.yuki.experiment.framework.dto.FileInfo;
 import javafx.util.Pair;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.web.client.RestTemplate;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
 import java.io.IOException;
+import java.net.URI;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
@@ -22,7 +24,7 @@ public class FileUtil {
         if (text == null) {
             return null;
         }
-        StringBuilder begin = new StringBuilder(FileInfo.PATH);
+        StringBuilder begin = new StringBuilder(UrlInfo.PATH);
         for (Object item : text) {
             begin.append(File.separator).append(item);
         }
@@ -33,7 +35,7 @@ public class FileUtil {
         if (text == null) {
             return null;
         }
-        StringBuilder begin = new StringBuilder(FileInfo.WEBPATH);
+        StringBuilder begin = new StringBuilder(UrlInfo.WEBPATH);
         for (Object item : text) {
             begin.append("/").append(item);
         }
@@ -46,14 +48,11 @@ public class FileUtil {
         return new Pair<>(s,s1);
     }
 
-    public static void preserveMyFile(List<MultipartFile> multipartFiles,String filePaths) {
+    public static void preserveMyFile(List<MultipartFile> multipartFiles) {
         for (MultipartFile item : multipartFiles) {
             if (item != null) {
-                File temp = new File(filePaths);
-                if (!temp.exists()) {
-                    temp.mkdirs();
-                }
-                File file = new File(filePaths + "/" + item.getOriginalFilename());
+                File file=new File("\\\\139.224.65.105:666\\course\\60020\\摩尔庄园.pptx");
+                //File file = new File(filePaths + "/" + item.getOriginalFilename());
                 try {
                     item.transferTo(file);
                 } catch (IOException e) {
@@ -63,10 +62,10 @@ public class FileUtil {
         }
     }
 
-    public static List<JSONObject> preserveFile(List<MultipartFile> multipartFiles, String path, String webPath) {
-        List<JSONObject> list = new ArrayList<>();
+    public static List<FileInfo> preserveFile(List<MultipartFile> multipartFiles, String path, String webPath) {
+        List<FileInfo> list = new ArrayList<>();
         for (MultipartFile item : multipartFiles) {
-            JSONObject json = new JSONObject();
+            FileInfo fileInfo=new FileInfo();
             if (item != null) {
                 File temp = new File(path);
                 if (!temp.exists()) {
@@ -80,20 +79,20 @@ public class FileUtil {
                     log.info("message" + fileName + "上传失败");
                     throw new FileIsNullException();
                 }
-                json.put("name", fileName);
-                json.put("data", webPath + "/" + fileName);
-                list.add(json);
+                fileInfo.setFileName(fileName);
+                fileInfo.setFileUrl(webPath+"/"+fileName);
+                list.add(fileInfo);
             }
         }
         return list;
     }
-    public static JSONObject preserveFile(MultipartFile multipartFile, String path, String webPath) {
+    public static FileInfo preserveFile(MultipartFile multipartFile, String path, String webPath) {
         return preserveFile(Collections.singletonList(multipartFile), path, webPath).get(0);
     }
 
 
     public static boolean deleteFile(String path) {
-        String replace = path.replace(FileInfo.WEBPATH, FileInfo.PATH);
+        String replace = path.replace(UrlInfo.WEBPATH, UrlInfo.PATH);
         File file = new File(replace);
         if (file.isFile() && file.exists()) {
             return file.delete();

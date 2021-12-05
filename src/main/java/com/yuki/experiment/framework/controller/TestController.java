@@ -62,10 +62,8 @@ public class TestController {
     }
 
     @RequestMapping(value = "/upload",method = RequestMethod.POST)
-    public CommonResult uploadFile(@RequestPart("files") List<MultipartFile>multipartFiles){
-        for(MultipartFile item:multipartFiles){
-            System.out.println(item.getOriginalFilename());
-        }
+    public CommonResult uploadFile(@RequestPart("files") List<MultipartFile>multipartFiles) {
+
         return CommonResult.success();
     }
 

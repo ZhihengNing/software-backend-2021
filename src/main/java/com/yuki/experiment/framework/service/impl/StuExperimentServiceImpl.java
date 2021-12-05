@@ -6,6 +6,7 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import com.yuki.experiment.common.utils.FileUtil;
 import com.yuki.experiment.common.utils.JsonUtil;
+import com.yuki.experiment.framework.dto.FileInfo;
 import com.yuki.experiment.framework.entity.Course;
 import com.yuki.experiment.framework.entity.CourseScore;
 import com.yuki.experiment.framework.entity.StuExperiment;
@@ -75,15 +76,14 @@ public class StuExperimentServiceImpl implements StuExperimentService {
         String path = twoUrl.getKey();
         String webPath = twoUrl.getValue();
         //保存到服务器
-        JSONObject json = FileUtil.preserveFile(multipartFile, path, webPath);
-        String data = json.getString("data");
-        String name = json.getString("name");
+        FileInfo fileInfo = FileUtil.preserveFile(multipartFile, path, webPath);
+        String url = fileInfo.getFileUrl();
+        String name = fileInfo.getFileName();
         StudentUploadFile file = new StudentUploadFile();
         file.setName(name);
-        file.setUrl(data);
-        Integer fileId;
-        if ((fileId = file.getId()) != null) {
-            stuExperiment.setFileId(fileId);
+        file.setUrl(url);
+        if (file.getId() != null) {
+            stuExperiment.setFileId(file.getId());
             log.info(name + "成功保存到数据库！");
             //插入到stu_experiment表进行保存
             if (stuExperimentMapper.insert(stuExperiment) > 0) {
@@ -109,9 +109,9 @@ public class StuExperimentServiceImpl implements StuExperimentService {
             FileUtil.deleteFile(url);
         }
         //把新的文件url存入服务器
-        JSONObject json = FileUtil.preserveFile(multipartFile, path, webPath);
-        String data = json.getString("data");
-        String name = json.getString("name");
+        FileInfo fileInfo = FileUtil.preserveFile(multipartFile, path, webPath);
+        String data = fileInfo.getFileUrl();
+        String name = fileInfo.getFileName();
         //这里要更新student_upload_file
         StudentUploadFile temp = new StudentUploadFile();
         temp.setId(fileId);
