@@ -23,4 +23,9 @@
         teacher_id,attendance_ratio,credit,
         college
     </sql>
+    <select id="getCourseInfo" resultType="com.alibaba.fastjson.JSONObject">
+        select c.name,c.place,c.open_period,c.attendance_ratio,c.credit,c.college
+        from course c
+        where c.id=#{courseId}
+    </select>
 </mapper>

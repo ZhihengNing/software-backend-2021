@@ -7,6 +7,7 @@ import com.yuki.experiment.framework.entity.Course;
 import com.yuki.experiment.framework.entity.CourseScore;
 import com.yuki.experiment.framework.mapper.CourseMapper;
 import com.yuki.experiment.framework.mapper.CourseScoreMapper;
+import com.yuki.experiment.framework.mapper.TeacherCourseMapper;
 import com.yuki.experiment.framework.service.CourseScoreService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -22,19 +23,25 @@ public class CourseScoreServiceImpl implements CourseScoreService {
 
     @Autowired
     private CourseMapper courseMapper;
+    @Autowired
+    private TeacherCourseMapper teacherCourseMapper;
     @Override
     public List<JSONObject> getCourseInfoAndIsActive(Integer studentID) {
         QueryWrapper<CourseScore>queryWrapper=new QueryWrapper<>();
         queryWrapper.eq("student_id",studentID);
         List<CourseScore> courseScores = courseScoreMapper.selectList(queryWrapper);
         List<JSONObject> list=new ArrayList<>();
+        System.out.println(courseScores.size());
         for (CourseScore item : courseScores) {
             Integer isActive = item.getIsActive();
             JSONObject json = new JSONObject();
             Integer courseId = item.getCourseId();
-            Course course = courseMapper.selectOne(new QueryWrapper<Course>().eq("id", courseId));
+            json.put("courseId",courseId);
+            JSONObject courseInfo = courseMapper.getCourseInfo(courseId);
+            List<JSONObject> teacherInfo = teacherCourseMapper.getInfo(courseId);
+            courseInfo.put("teacherInfo",teacherInfo);
             json.put("isActive", isActive);
-            json.put("courseInfo", course);
+            json.put("courseInfo", courseInfo);
             list.add(json);
         }
         return list;

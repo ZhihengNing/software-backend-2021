@@ -18,7 +18,6 @@ import java.util.List;
 @Slf4j
 public class GradeController {
 
-    private static final String scoreRatioPath="src/main/resources/scoreRatio.json";
 
     private StuExperimentService stuExperimentService;
 
@@ -51,9 +50,8 @@ public class GradeController {
         if (studentId == null) {
             return CommonResult.failed("学生Id不能为空");
         }
-        if (JsonUtil.readJson(scoreRatioPath) == null) {
-            return CommonResult.failed("评分标准都没给，怎么算分，真是可恶！！！");
-        }
         return CommonResult.success(stuExperimentService.getStudentGrade(studentId, courseId));
     }
+
+
 }

@@ -80,7 +80,7 @@ public class UserController {
 
     @ApiOperation("校验用户权限")
     @RequestMapping(value = "/verify", method = RequestMethod.GET)
-    public CommonResult<Object> verify(HttpServletRequest request) {
+    public CommonResult verify(HttpServletRequest request) {
         String token = request.getHeader("Authorization");
         try {
             JwtUtil.checkToken(token);
@@ -92,7 +92,7 @@ public class UserController {
 
     @ApiOperation("发送邮件")
     @RequestMapping(value = "/email/send",method = RequestMethod.POST)
-    public CommonResult<Object> sendMail(@RequestParam("studentMailbox")String studentMailbox,
+    public CommonResult sendMail(@RequestParam("studentMailbox")String studentMailbox,
                                          @RequestParam("courseId") Integer courseId) {
         if (studentMailbox == null) {
             return CommonResult.failed("用户邮箱账号不能为空");
@@ -113,7 +113,7 @@ public class UserController {
 
     @ApiOperation("发送带附件邮件")
     @RequestMapping(value = "/email/sendFile",method = RequestMethod.POST)
-    public CommonResult<Object> sendMailWithFile(@RequestParam("studentMailbox")String studentMailbox,
+    public CommonResult sendMailWithFile(@RequestParam("studentMailbox")String studentMailbox,
                                                  @RequestPart("file") MultipartFile[] files) {
         try {
             if (mailService.mailSend(studentMailbox,

@@ -41,7 +41,7 @@ public class NoticeController {
     }
 
     @ApiOperation("获取系统公告by公告Id")
-    @RequestMapping("/system/noticeId/{noticeId}")
+    @RequestMapping(value = "/system/noticeId/{noticeId}",method = RequestMethod.GET)
     public CommonResult<Notice>getSysNotice(@PathVariable Integer noticeId) {
         if (noticeId == null) {
             return CommonResult.failed("公告Id不能为空");
@@ -67,7 +67,6 @@ public class NoticeController {
         }
         return CommonResult.success(noticeService.queryByTime(beginDate, endDate));
     }
-
 
 
     @ApiOperation("添加系统公告")

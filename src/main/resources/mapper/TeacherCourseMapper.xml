@@ -7,10 +7,16 @@
     <resultMap id="BaseResultMap" type="com.yuki.experiment.framework.entity.TeacherCourse">
             <id property="teacherId" column="teacher_id" jdbcType="INTEGER"/>
             <id property="courseId" column="course_id" jdbcType="INTEGER"/>
-            <id property="roleId" column="role_id" jdbcType="INTEGER"/>
+            <id property="characterName" column="character_name" jdbcType="VARCHAR"/>
     </resultMap>
 
     <sql id="Base_Column_List">
-        teacher_id,course_id,role_id
+        teacher_id,course_id,character_name
     </sql>
+    <select id="getInfo" resultType="com.alibaba.fastjson.JSONObject">
+        select tc.character_name characterName,t.name teacherName,t.gender gender
+        from  teacher_course tc left join teacher t on t.id=tc.teacher_id
+        where tc.course_id=#{courseId}
+    </select>
+
 </mapper>

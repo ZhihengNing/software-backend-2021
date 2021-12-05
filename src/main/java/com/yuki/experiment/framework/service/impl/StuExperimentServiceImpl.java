@@ -93,7 +93,8 @@ public class StuExperimentServiceImpl implements StuExperimentService {
         }
         return 0;
     }
-    @Transactional
+
+
     @Override
     public int update(MultipartFile multipartFile, Integer studentId,Integer experimentId,String jobContent) {
         Pair<String, String> twoUrl = FileUtil.generatorTwoUrl(experimentFileUploadPath, experimentId, studentId);
