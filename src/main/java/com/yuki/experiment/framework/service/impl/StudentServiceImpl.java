@@ -6,6 +6,7 @@ import com.yuki.experiment.framework.dto.FileInfo;
 import com.yuki.experiment.framework.entity.Student;
 import com.yuki.experiment.framework.mapper.StudentMapper;
 import com.yuki.experiment.framework.service.StudentService;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -13,6 +14,7 @@ import org.springframework.web.multipart.MultipartFile;
 import java.util.List;
 
 @Service
+@Slf4j
 public class StudentServiceImpl implements StudentService{
 
     @Autowired
