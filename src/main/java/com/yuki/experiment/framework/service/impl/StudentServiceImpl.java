@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.File;
 import java.util.List;
 
 @Service
@@ -49,6 +50,7 @@ public class StudentServiceImpl implements StudentService{
 
     @Override
     public String uploadPic(Integer studentId,String url, String webUrl, MultipartFile multipartFile) {
+        FileUtil.deleteFile(studentMapper.selectById(studentId).getUrl());
         FileInfo fileInfo = FileUtil.preserveFile(multipartFile, url, webUrl);
         String fileUrl = fileInfo.getFileUrl();
         Student student = new Student();

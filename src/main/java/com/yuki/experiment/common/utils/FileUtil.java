@@ -91,12 +91,11 @@ public class FileUtil {
     }
 
 
-    public static boolean deleteFile(String path) {
+    public static void deleteFile(String path) {
         String replace = path.replace(UrlInfo.WEBPATH, UrlInfo.PATH);
         File file = new File(replace);
         if (file.isFile() && file.exists()) {
-            return file.delete();
+            file.delete();
         }
-        return false;
     }
 }
