@@ -79,13 +79,16 @@ public class StudentController {
     @ApiOperation("上传学生头像")
     @RequestMapping(value = "/uploadPic/{studentId}",method = RequestMethod.POST)
     public CommonResult<String> uploadStudentPic(@PathVariable("studentId") Integer studentId,
-                                         @RequestPart("pic")MultipartFile pic){
+                                         @RequestPart("file")MultipartFile pic){
         if(studentId==null){
             return CommonResult.failed("学生Id不能为空");
         }
         String url = FileUtil.generatorUrl(STUDENT_PATH, studentId);
+        log.info("url"+url);
         String webUrl=FileUtil.generatorWebUrl(STUDENT_PATH,studentId);
+        log.info("webUrl"+webUrl);
         String picUrl=studentService.uploadPic(studentId,url,webUrl,pic);
+        log.info("picUrl"+picUrl);
         if(picUrl!=null){
             return CommonResult.success(picUrl);
         }
