@@ -5,6 +5,7 @@ import com.github.xiaoymin.knife4j.annotations.DynamicParameter;
 import com.github.xiaoymin.knife4j.annotations.DynamicParameters;
 import com.yuki.experiment.common.result.CommonResult;
 import com.yuki.experiment.common.role.MyRole;
+import com.yuki.experiment.common.utils.FileUtil;
 import com.yuki.experiment.common.utils.JwtUtil;
 import com.yuki.experiment.framework.manage.impl.MailServiceImpl;
 import com.yuki.experiment.framework.service.AdministratorService;
@@ -19,6 +20,9 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.mail.MessagingException;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import java.util.UUID;
 
 @RestController
@@ -126,6 +130,18 @@ public class UserController {
             log.info(e.getMessage());
         }
         return CommonResult.failed();
+    }
+
+    @ApiOperation("下载文件")
+    @RequestMapping(value = "/download",method = RequestMethod.GET)
+    public void testDownload(@RequestParam("url")String url, HttpServletResponse response) {
+        String name = url.substring(url.lastIndexOf("/") + 1, url.length());
+
+        response.setContentType("application/force-download");
+        response.addHeader("Content-Disposition", "attachment; fileName=" +
+                new String(name.getBytes(StandardCharsets.UTF_8), StandardCharsets.ISO_8859_1));
+
+        FileUtil.downloadFile(url, response);
     }
 
 }

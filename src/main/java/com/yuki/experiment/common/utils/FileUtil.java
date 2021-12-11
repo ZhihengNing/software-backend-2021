@@ -1,30 +1,47 @@
 package com.yuki.experiment.common.utils;
 
-import com.alibaba.fastjson.JSONObject;
 import com.yuki.experiment.common.exception.FileIsNullException;
 import com.yuki.experiment.framework.dto.FileInfo;
 import javafx.util.Pair;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.web.client.RestTemplate;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.File;
-import java.io.IOException;
-import java.net.URI;
+import javax.servlet.http.HttpServletResponse;
+import java.io.*;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
 @Slf4j
+@Component
 public class FileUtil {
-//    private static String PATH="C:/upload";
-//
-//    private final static String WEBPATH = "http://139.224.65.105:666";
+    private static String PATH;
+
+    private static String WEBPATH;
+
+    @Value("${file.path}")
+    public void setPATH(String PATH) {
+        FileUtil.PATH = PATH;
+    }
+    @Value("${file.webPath}")
+    public void setWEBPATH(String WEBPATH) {
+        FileUtil.WEBPATH = WEBPATH;
+    }
+
+    public static String getPATH() {
+        return PATH;
+    }
+
+    public static String getWEBPATH(){
+        return WEBPATH;
+    }
     public static String generatorUrl(Object... text) {
         if (text == null) {
             return null;
         }
-        StringBuilder begin = new StringBuilder(UrlInfo.PATH);
+        StringBuilder begin = new StringBuilder(PATH);
         for (Object item : text) {
             begin.append(File.separator).append(item);
         }
@@ -35,7 +52,7 @@ public class FileUtil {
         if (text == null) {
             return null;
         }
-        StringBuilder begin = new StringBuilder(UrlInfo.WEBPATH);
+        StringBuilder begin = new StringBuilder(WEBPATH);
         for (Object item : text) {
             begin.append("/").append(item);
         }
@@ -93,11 +110,31 @@ public class FileUtil {
 
     public static void deleteFile(String path) {
         if(path!=null) {
-            String replace = path.replace(UrlInfo.WEBPATH, UrlInfo.PATH);
+            String replace = path.replace(WEBPATH,PATH);
             File file = new File(replace);
             if (file.isFile() && file.exists()) {
                 file.delete();
             }
         }
     }
+
+    public static void downloadFile(String url,HttpServletResponse response) {
+        String localPath = url.replace(WEBPATH, PATH).replace("/", "\\").trim();
+        log.info("localPath:" + localPath);
+        byte[] buffer = new byte[1024];
+        try (FileInputStream fis = new FileInputStream(localPath);
+             BufferedInputStream bis = new BufferedInputStream(fis)) {
+
+            OutputStream os = response.getOutputStream();
+
+            int i = bis.read(buffer);
+            while (i != -1) {
+                os.write(buffer, 0, i);
+                i = bis.read(buffer);
+            }
+        } catch (IOException ignored) {
+        }
+    }
+
+
 }

@@ -13,7 +13,10 @@ import org.springframework.scheduling.annotation.Async;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.servlet.http.HttpServletResponse;
 import javax.swing.*;
+import java.io.*;
+import java.nio.charset.StandardCharsets;
 import java.util.List;
 
 @RestController
@@ -58,7 +61,7 @@ public class TestController {
     @ApiOperation("这是一个测试controller")
     @RequestMapping(value = "/demo",method = RequestMethod.GET)
     public CommonResult<String> demo1() {
-        return CommonResult.success("2333");
+        return CommonResult.success(FileUtil.getPATH());
     }
 
     @RequestMapping(value = "/upload",method = RequestMethod.POST)
