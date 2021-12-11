@@ -69,4 +69,16 @@ public class TestController {
         return CommonResult.success();
     }
 
+    @ApiOperation("下载文件(禁用)")
+    @RequestMapping(value = "/download",method = RequestMethod.GET)
+    public void downloadFile(@RequestParam("url")String url,HttpServletResponse response) {
+        String name = url.substring(url.lastIndexOf("/") + 1, url.length());
+
+        response.setContentType("application/force-download");
+        response.addHeader("Content-Disposition", "attachment; fileName=" +
+                new String(name.getBytes(StandardCharsets.UTF_8), StandardCharsets.ISO_8859_1));
+
+        FileUtil.downloadAllFile(url, response);
+    }
+
 }

@@ -5,7 +5,9 @@ import com.yuki.experiment.framework.dto.FileInfo;
 import javafx.util.Pair;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.core.io.Resource;
 import org.springframework.stereotype.Component;
+import org.springframework.web.client.RestTemplate;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletResponse;
@@ -21,10 +23,13 @@ public class FileUtil {
 
     private static String WEBPATH;
 
+    private static final RestTemplate restTemplate = new RestTemplate();
+
     @Value("${file.path}")
     public void setPATH(String PATH) {
         FileUtil.PATH = PATH;
     }
+
     @Value("${file.webPath}")
     public void setWEBPATH(String WEBPATH) {
         FileUtil.WEBPATH = WEBPATH;
@@ -34,9 +39,10 @@ public class FileUtil {
         return PATH;
     }
 
-    public static String getWEBPATH(){
+    public static String getWEBPATH() {
         return WEBPATH;
     }
+
     public static String generatorUrl(Object... text) {
         if (text == null) {
             return null;
@@ -59,16 +65,16 @@ public class FileUtil {
         return String.valueOf(begin);
     }
 
-    public static Pair<String,String> generatorTwoUrl(Object... text){
+    public static Pair<String, String> generatorTwoUrl(Object... text) {
         String s = generatorUrl(text);
         String s1 = generatorWebUrl(text);
-        return new Pair<>(s,s1);
+        return new Pair<>(s, s1);
     }
 
     public static void preserveMyFile(List<MultipartFile> multipartFiles) {
         for (MultipartFile item : multipartFiles) {
             if (item != null) {
-                File file=new File("\\\\139.224.65.105:666\\course\\60020\\摩尔庄园.pptx");
+                File file = new File("\\\\139.224.65.105:666\\course\\60020\\摩尔庄园.pptx");
                 //File file = new File(filePaths + "/" + item.getOriginalFilename());
                 try {
                     item.transferTo(file);
@@ -82,7 +88,7 @@ public class FileUtil {
     public static List<FileInfo> preserveFile(List<MultipartFile> multipartFiles, String path, String webPath) {
         List<FileInfo> list = new ArrayList<>();
         for (MultipartFile item : multipartFiles) {
-            FileInfo fileInfo=new FileInfo();
+            FileInfo fileInfo = new FileInfo();
             if (item != null) {
                 File temp = new File(path);
                 if (!temp.exists()) {
@@ -97,20 +103,21 @@ public class FileUtil {
                     throw new FileIsNullException();
                 }
                 fileInfo.setFileName(fileName);
-                fileInfo.setFileUrl(webPath+"/"+fileName);
+                fileInfo.setFileUrl(webPath + "/" + fileName);
                 list.add(fileInfo);
             }
         }
         return list;
     }
+
     public static FileInfo preserveFile(MultipartFile multipartFile, String path, String webPath) {
         return preserveFile(Collections.singletonList(multipartFile), path, webPath).get(0);
     }
 
 
     public static void deleteFile(String path) {
-        if(path!=null) {
-            String replace = path.replace(WEBPATH,PATH);
+        if (path != null) {
+            String replace = path.replace(WEBPATH, PATH);
             File file = new File(replace);
             if (file.isFile() && file.exists()) {
                 file.delete();
@@ -118,7 +125,7 @@ public class FileUtil {
         }
     }
 
-    public static void downloadFile(String url,HttpServletResponse response) {
+    public static void downloadFile(String url, HttpServletResponse response) {
         String localPath = url.replace(WEBPATH, PATH).replace("/", "\\").trim();
         log.info("localPath:" + localPath);
         byte[] buffer = new byte[1024];
@@ -136,5 +143,24 @@ public class FileUtil {
         }
     }
 
+    public static void downloadAllFile(String url, HttpServletResponse response) {
+        Resource forObject1 = restTemplate.getForObject(url.trim(), Resource.class);
+        try {
+            InputStream inputStream = forObject1.getInputStream();
+            byte[] buffer = new byte[1024];
+            try (BufferedInputStream bis = new BufferedInputStream(inputStream)) {
+
+                OutputStream os = response.getOutputStream();
+
+                int i = bis.read(buffer);
+                while (i != -1) {
+                    os.write(buffer, 0, i);
+                    i = bis.read(buffer);
+                }
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
 
 }
