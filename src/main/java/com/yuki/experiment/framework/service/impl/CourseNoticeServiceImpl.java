@@ -1,6 +1,8 @@
 package com.yuki.experiment.framework.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.yuki.experiment.common.utils.SimilarityUtil;
+import com.yuki.experiment.framework.dto.CourseNoticeTeacher;
 import com.yuki.experiment.framework.entity.CourseNotice;
 import com.yuki.experiment.framework.mapper.CourseNoticeMapper;
 import com.yuki.experiment.framework.service.CourseNoticeService;
@@ -9,6 +11,8 @@ import org.springframework.stereotype.Service;
 
 import java.util.Date;
 import java.util.List;
+import java.util.stream.Collectors;
+
 @Service
 public class CourseNoticeServiceImpl implements CourseNoticeService {
     @Autowired
@@ -38,13 +42,19 @@ public class CourseNoticeServiceImpl implements CourseNoticeService {
     }
 
     @Override
-    public List<CourseNotice> fuzzyQueryCourseNoticeInfo(String keyword) {
+    public List<CourseNoticeTeacher> fuzzyQueryCourseNoticeInfo(String keyword) {
 //        QueryWrapper<CourseNotice>wrapper=new QueryWrapper<>();
 //        wrapper.like("title",keyword)
 //                .or()
 //                .like("content",keyword);
 //        return courseNoticeMapper.selectList(wrapper);
-        return courseNoticeMapper.fuzzyGet(keyword);
+        List<CourseNoticeTeacher> list = courseNoticeMapper.getCourseNoticeTeacher();
+        return list.stream().filter((s) -> {
+            double v = SimilarityUtil.similarScoreCos(s.getTitle(), keyword);
+            double v1 = SimilarityUtil.similarScoreCos(s.getContent(), keyword);
+            double v2 = SimilarityUtil.similarScoreCos(s.getName(), keyword);
+            return v>0.3 || v1 > 0.3 || v2 > 0.3;
+        }).collect(Collectors.toList());
     }
 
     @Override

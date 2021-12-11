@@ -1,5 +1,6 @@
 package com.yuki.experiment.framework.service;
 
+import com.yuki.experiment.framework.dto.CourseNoticeTeacher;
 import com.yuki.experiment.framework.entity.CourseNotice;
 
 import java.util.Date;
@@ -15,7 +16,7 @@ public interface CourseNoticeService {
 
     CourseNotice updateCourseNoticeInfo(CourseNotice courseNotice);
 
-    List<CourseNotice> fuzzyQueryCourseNoticeInfo(String keyword);
+    List<CourseNoticeTeacher> fuzzyQueryCourseNoticeInfo(String keyword);
 
     List<CourseNotice> queryByTime(Date beginDate,Date endDate);
 }

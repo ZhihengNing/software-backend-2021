@@ -2,6 +2,7 @@ package com.yuki.experiment.framework.mapper;
 
 import com.alibaba.fastjson.JSONObject;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import com.yuki.experiment.framework.dto.CourseNoticeTeacher;
 import com.yuki.experiment.framework.entity.CourseNotice;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
@@ -18,7 +19,7 @@ import java.util.List;
 @Repository
 public interface CourseNoticeMapper extends BaseMapper<CourseNotice> {
 
-    List<CourseNotice> fuzzyGet(@Param("keyword") String keyword);
+    List<CourseNoticeTeacher> getCourseNoticeTeacher();
 
 
 }

@@ -1,6 +1,7 @@
 package com.yuki.experiment.framework.controller;
 
 import com.yuki.experiment.common.result.CommonResult;
+import com.yuki.experiment.framework.dto.CourseNoticeTeacher;
 import com.yuki.experiment.framework.entity.CourseNotice;
 import com.yuki.experiment.framework.entity.Notice;
 import com.yuki.experiment.framework.service.CourseNoticeService;
@@ -125,7 +126,7 @@ public class NoticeController {
 
     @ApiOperation("模糊查询课程公告")
     @RequestMapping(value = "/course/fuzzyQuery",method = RequestMethod.GET)
-    public CommonResult<List<CourseNotice>> fuzzyQueryCourseNotice(@RequestParam("keyword") String keyword) {
+    public CommonResult<List<CourseNoticeTeacher>> fuzzyQueryCourseNotice(@RequestParam("keyword") String keyword) {
         return CommonResult.success(courseNoticeService.fuzzyQueryCourseNoticeInfo(keyword));
     }
 

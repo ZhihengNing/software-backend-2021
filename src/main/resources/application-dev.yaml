@@ -11,6 +11,6 @@ spring:
     username: nzh1094554173@126.com
     password: MWCDEEUTVNSBPTWX
     port:
-#file:
-#  path: C:\\uploadTest
-#  webPath: C:/uploadTest
+file:
+  path: C:\\uploadTest
+  webPath: C:/uploadTest
