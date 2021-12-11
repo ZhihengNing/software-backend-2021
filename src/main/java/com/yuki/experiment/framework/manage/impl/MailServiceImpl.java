@@ -11,6 +11,7 @@ import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.annotation.Resource;
 import javax.mail.MessagingException;
 import javax.mail.internet.MimeMessage;
 import java.io.File;
@@ -23,17 +24,14 @@ public class MailServiceImpl implements MailService {
     private static String username;
 
     //下面一定要用注入的方式2333
-    private final JavaMailSender mailSender;
+    @Resource
+    private JavaMailSender mailSender;
 
     @Value("${spring.mail.username}")
     public void setUsername(String user){
         username=user;
     }
 
-    @Autowired
-    public MailServiceImpl(JavaMailSender mailSender){
-        this.mailSender=mailSender;
-    }
 
     @Override
     public boolean mailSend(String addressee,

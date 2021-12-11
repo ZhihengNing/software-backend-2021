@@ -49,7 +49,7 @@ public class CourseNoticeServiceImpl implements CourseNoticeService {
 //                .like("content",keyword);
 //        return courseNoticeMapper.selectList(wrapper);
         List<CourseNoticeTeacher> list = courseNoticeMapper.getCourseNoticeTeacher();
-        return list.stream().filter((s) -> {
+        return list.parallelStream().filter((s) -> {
             double v = SimilarityUtil.similarScoreCos(s.getTitle(), keyword);
             double v1 = SimilarityUtil.similarScoreCos(s.getContent(), keyword);
             double v2 = SimilarityUtil.similarScoreCos(s.getName(), keyword);
