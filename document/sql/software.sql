@@ -11,7 +11,7 @@
  Target Server Version : 80027
  File Encoding         : 65001
 
- Date: 05/12/2021 19:31:20
+ Date: 13/12/2021 12:08:36
 */
 
 SET NAMES utf8mb4;
@@ -34,6 +34,19 @@ CREATE TABLE `administrator`  (
 ) ENGINE = InnoDB AUTO_INCREMENT = 100032 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
+-- Records of administrator
+-- ----------------------------
+INSERT INTO `administrator` VALUES (100001, '123456', '男', '宁吱吱', '2021-11-14 13:59:41', '2021-11-15 10:52:37', NULL, NULL);
+INSERT INTO `administrator` VALUES (100006, '123456', NULL, 'nzhnzh', '2021-11-14 14:29:26', '2021-11-15 10:52:37', NULL, NULL);
+INSERT INTO `administrator` VALUES (100007, '123456', NULL, 'nzhnzh', '2021-11-14 14:31:36', '2021-11-15 10:52:37', NULL, NULL);
+INSERT INTO `administrator` VALUES (100021, '45678', NULL, '宁之恒', '2021-11-16 14:34:21', '2021-11-16 14:34:21', NULL, NULL);
+INSERT INTO `administrator` VALUES (100027, '45678', NULL, '宁之恒', '2021-11-16 15:00:14', '2021-11-16 15:00:14', NULL, NULL);
+INSERT INTO `administrator` VALUES (100028, '45678', NULL, '宁之恒', '2021-11-16 15:46:24', '2021-11-16 15:46:24', NULL, NULL);
+INSERT INTO `administrator` VALUES (100029, '45678', NULL, '宁之恒', '2021-11-16 16:01:03', '2021-11-16 16:01:03', NULL, NULL);
+INSERT INTO `administrator` VALUES (100030, '12345', NULL, 'nzh', '2021-11-17 08:21:03', '2021-11-17 08:21:03', NULL, NULL);
+INSERT INTO `administrator` VALUES (100031, '45678', '女', 'nyw', '2021-11-17 10:59:35', '2021-11-17 10:59:38', NULL, NULL);
+
+-- ----------------------------
 -- Table structure for course
 -- ----------------------------
 DROP TABLE IF EXISTS `course`;
@@ -50,7 +63,32 @@ CREATE TABLE `course`  (
   `college` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '课程所属学院',
   PRIMARY KEY (`id`) USING BTREE,
   INDEX `teacher_id`(`teacher_id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 60021 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 60022 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Records of course
+-- ----------------------------
+INSERT INTO `course` VALUES (60001, '离散数学', '广楼G307', ' 星期一5-6节 [1-17]  星期三7-8节 [1-17]', '2021-11-16 23:25:29', '2021-11-16 23:25:29', 300001, NULL, 4, '软件学院');
+INSERT INTO `course` VALUES (60002, '计算机组成原理', '济事楼419', '星期三10-11节 [1-17]', '2021-11-17 00:15:13', '2021-11-17 00:15:13', 300003, NULL, 2, '软件学院');
+INSERT INTO `course` VALUES (60003, '软件工程课程设计', '安楼A314', '星期一10-11节 [10-17]', '2021-11-17 00:17:53', '2021-11-17 00:17:53', 300004, NULL, 1, '软件学院');
+INSERT INTO `course` VALUES (60004, '计算机网络实验', '济事楼330', '星期二1-2节 [1-17]', '2021-11-17 00:19:35', '2021-11-17 00:19:35', 300006, NULL, 2, '软件学院');
+INSERT INTO `course` VALUES (60005, '数据结构', '广楼G206', '星期一3-4节 [1-17]', '2021-11-17 00:21:28', '2021-11-17 00:21:28', 300009, NULL, 4, '软件学院');
+INSERT INTO `course` VALUES (60006, '汇编语言', '济事楼416', '星期三7-8节 [1-17]', '2021-11-17 00:22:41', '2021-11-17 00:22:41', 300010, NULL, 2, '软件学院');
+INSERT INTO `course` VALUES (60007, '数据结构课程设计', '济事楼430', '星期一10-11节 [2-16双]', '2021-11-17 10:30:49', '2021-11-17 10:30:49', 300009, NULL, 1, '软件学院');
+INSERT INTO `course` VALUES (60008, '计算机网络', '安楼A321', '星期一1-2节 [2-16双]', '2021-11-17 10:32:14', '2021-11-17 10:32:14', 300006, NULL, 3, '软件学院');
+INSERT INTO `course` VALUES (60009, '云计算技术', '济事楼434', '星期二3-4节 [1-17]', '2021-11-17 10:33:15', '2021-11-17 10:33:15', 300012, NULL, 2, '软件学院');
+INSERT INTO `course` VALUES (60010, '容错与安全计算', '济事楼434', '星期一5-6节 [1-17]', '2021-11-17 10:34:08', '2021-11-17 10:34:08', 300013, NULL, 2, '软件学院');
+INSERT INTO `course` VALUES (60011, '地学大数据原理与应用', '北322', '星期一10-11节 [1-17]', '2021-11-17 10:36:11', '2021-11-17 10:36:11', 300012, NULL, 2, '软件学院');
+INSERT INTO `course` VALUES (60012, 'Java EE程序设计', '济事楼430', '星期五2-4节 [1-17]', '2021-11-17 10:37:02', '2021-11-17 10:37:02', 300014, NULL, 3, '软件学院');
+INSERT INTO `course` VALUES (60013, '分布式系统', '博楼B312', '星期二3-4节 [1-17]', '2021-11-17 10:39:02', '2021-11-17 10:39:02', 300015, NULL, 2, '软件学院');
+INSERT INTO `course` VALUES (60014, 'WEB服务与SOA', '济事楼518', '星期四10-11节 [1-17]', '2021-11-17 10:39:55', '2021-11-17 10:39:55', 300016, NULL, 2, '软件学院');
+INSERT INTO `course` VALUES (60015, '物联网应用基础', '济事楼416', '星期一5-6节 [2-16双]', '2021-11-17 10:41:07', '2021-11-17 10:41:07', 300007, NULL, 3, '软件学院');
+INSERT INTO `course` VALUES (60016, '数字图像处理', '学院专用教室', '星期六5-7节 [3-13]', '2021-11-17 10:42:00', '2021-11-17 10:42:00', 300017, NULL, 2, '软件学院');
+INSERT INTO `course` VALUES (60017, '计算机图形学', '济事楼426', '星期一5-6节 [1-17]', '2021-11-17 10:46:11', '2021-11-17 10:46:11', 300025, NULL, 2, '软件学院');
+INSERT INTO `course` VALUES (60018, '语音识别', '博楼B213', '星期四1-2节 [1-17]', '2021-11-17 10:47:45', '2021-11-17 10:47:45', 300020, NULL, 2, '软件学院');
+INSERT INTO `course` VALUES (60019, '最优化理论', '济事楼426', '星期二3-4节 [1-17]', '2021-11-17 10:48:47', '2021-11-17 10:48:47', 300017, NULL, 2, '软件学院');
+INSERT INTO `course` VALUES (60020, 'test课程', '20号楼437', 'day1 to day7', '2021-11-19 09:28:53', '2021-11-19 09:28:55', 300026, NULL, 5, '20号楼');
+INSERT INTO `course` VALUES (60021, '软件工程', '安楼A404', '星期一1-2节', '2021-12-05 19:06:25', '2021-12-05 19:06:27', 300005, NULL, 3, '软件学院');
 
 -- ----------------------------
 -- Table structure for course_feedback
@@ -72,6 +110,13 @@ CREATE TABLE `course_feedback`  (
 ) ENGINE = InnoDB AUTO_INCREMENT = 5 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
+-- Records of course_feedback
+-- ----------------------------
+INSERT INTO `course_feedback` VALUES (1, 200000, 60020, '课程评价', '老师给分很好，讲课很清楚', '2021-11-19 23:12:56', '2021-11-19 23:12:56');
+INSERT INTO `course_feedback` VALUES (3, 200000, 60020, '45612', '老师给分很好，讲课很清楚', '2021-11-19 23:23:44', '2021-11-19 23:23:44');
+INSERT INTO `course_feedback` VALUES (4, 200001, 60020, '45611', '老师给分不好，讲课很清楚', '2021-11-19 23:25:57', '2021-11-19 23:26:46');
+
+-- ----------------------------
 -- Table structure for course_file
 -- ----------------------------
 DROP TABLE IF EXISTS `course_file`;
@@ -88,7 +133,15 @@ CREATE TABLE `course_file`  (
   INDEX `teacher_id`(`teacher_id`) USING BTREE,
   CONSTRAINT `course_file_ibfk_1` FOREIGN KEY (`course_id`) REFERENCES `course` (`id`) ON DELETE RESTRICT ON UPDATE RESTRICT,
   CONSTRAINT `course_file_ibfk_2` FOREIGN KEY (`teacher_id`) REFERENCES `teacher` (`id`) ON DELETE RESTRICT ON UPDATE RESTRICT
-) ENGINE = InnoDB AUTO_INCREMENT = 36 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 39 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Records of course_file
+-- ----------------------------
+INSERT INTO `course_file` VALUES (32, 60020, '全国大学生数学建模竞赛系统使用手册-学生账号.pdf', '2021-11-21 20:50:05', '2021-11-21 20:50:05', 300026, 'http://139.224.65.105:666/course/60020/全国大学生数学建模竞赛系统使用手册-学生账号.pdf');
+INSERT INTO `course_file` VALUES (33, 60020, '设计模式举例.pdf', '2021-11-21 20:50:05', '2021-11-21 20:50:05', 300026, 'http://139.224.65.105:666/course/60020/设计模式举例.pdf');
+INSERT INTO `course_file` VALUES (34, 60020, '摩尔庄园.pptx', '2021-11-21 21:44:47', '2021-11-21 21:44:47', 300026, 'http://139.224.65.105:666/course/60020/摩尔庄园.pptx');
+INSERT INTO `course_file` VALUES (35, 60020, '公告管理模块.png', '2021-11-26 11:39:22', '2021-11-26 11:39:22', 300026, 'http://139.224.65.105:666/course/60020/公告管理模块.png');
 
 -- ----------------------------
 -- Table structure for course_notice
@@ -110,6 +163,13 @@ CREATE TABLE `course_notice`  (
 ) ENGINE = InnoDB AUTO_INCREMENT = 5 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
+-- Records of course_notice
+-- ----------------------------
+INSERT INTO `course_notice` VALUES (2, 60020, '47//88', 'testtest', '2021-11-19 09:33:13', '2021-11-19 10:03:42', 300026);
+INSERT INTO `course_notice` VALUES (3, 60020, '47//88', 'testtest', '2021-11-19 09:33:59', '2021-11-19 10:03:42', 300026);
+INSERT INTO `course_notice` VALUES (4, 60019, '关于印发国务院xxx的通知', '学生为什么要减负呢,后端人下人属于是了', '2021-11-19 09:40:45', '2021-11-19 10:08:49', 300025);
+
+-- ----------------------------
 -- Table structure for course_score
 -- ----------------------------
 DROP TABLE IF EXISTS `course_score`;
@@ -124,6 +184,18 @@ CREATE TABLE `course_score`  (
   PRIMARY KEY (`course_id`, `student_id`) USING BTREE,
   INDEX `student_id`(`student_id`) USING BTREE
 ) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Records of course_score
+-- ----------------------------
+INSERT INTO `course_score` VALUES (60002, 200000, NULL, NULL, NULL, NULL, 1);
+INSERT INTO `course_score` VALUES (60002, 200002, NULL, NULL, NULL, NULL, 0);
+INSERT INTO `course_score` VALUES (60003, 200002, NULL, NULL, NULL, NULL, 0);
+INSERT INTO `course_score` VALUES (60004, 200001, NULL, NULL, NULL, NULL, 0);
+INSERT INTO `course_score` VALUES (60006, 200000, NULL, NULL, NULL, NULL, 0);
+INSERT INTO `course_score` VALUES (60006, 200002, NULL, NULL, NULL, NULL, 0);
+INSERT INTO `course_score` VALUES (60008, 200002, NULL, NULL, NULL, NULL, 0);
+INSERT INTO `course_score` VALUES (60018, 200002, NULL, NULL, NULL, NULL, 0);
 
 -- ----------------------------
 -- Table structure for experiment
@@ -151,6 +223,11 @@ CREATE TABLE `experiment`  (
 ) ENGINE = InnoDB AUTO_INCREMENT = 2 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
+-- Records of experiment
+-- ----------------------------
+INSERT INTO `experiment` VALUES (1, 60020, 'test实验', '2021-11-22 15:37:45', '2021-11-22 15:37:45', 300026, 50.000, NULL, '为了test', '为了test内容', NULL, '这是test实验备注');
+
+-- ----------------------------
 -- Table structure for experiment_file
 -- ----------------------------
 DROP TABLE IF EXISTS `experiment_file`;
@@ -170,6 +247,10 @@ CREATE TABLE `experiment_file`  (
 ) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
+-- Records of experiment_file
+-- ----------------------------
+
+-- ----------------------------
 -- Table structure for notice
 -- ----------------------------
 DROP TABLE IF EXISTS `notice`;
@@ -183,6 +264,10 @@ CREATE TABLE `notice`  (
   PRIMARY KEY (`id`) USING BTREE,
   INDEX `administrator_id`(`administrator_id`) USING BTREE
 ) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Records of notice
+-- ----------------------------
 
 -- ----------------------------
 -- Table structure for practice
@@ -204,6 +289,10 @@ CREATE TABLE `practice`  (
 ) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
+-- Records of practice
+-- ----------------------------
+
+-- ----------------------------
 -- Table structure for practice_problem
 -- ----------------------------
 DROP TABLE IF EXISTS `practice_problem`;
@@ -217,6 +306,10 @@ CREATE TABLE `practice_problem`  (
 ) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
+-- Records of practice_problem
+-- ----------------------------
+
+-- ----------------------------
 -- Table structure for practice_problem_options
 -- ----------------------------
 DROP TABLE IF EXISTS `practice_problem_options`;
@@ -227,6 +320,10 @@ CREATE TABLE `practice_problem_options`  (
   `content` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '题目内容',
   PRIMARY KEY (`id`) USING BTREE
 ) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Records of practice_problem_options
+-- ----------------------------
 
 -- ----------------------------
 -- Table structure for stu_experiment
@@ -243,6 +340,10 @@ CREATE TABLE `stu_experiment`  (
   CONSTRAINT `stu_experiment_ibfk_1` FOREIGN KEY (`student_id`) REFERENCES `student` (`id`) ON DELETE RESTRICT ON UPDATE RESTRICT,
   CONSTRAINT `stu_experiment_ibfk_2` FOREIGN KEY (`experiment_id`) REFERENCES `experiment` (`id`) ON DELETE RESTRICT ON UPDATE RESTRICT
 ) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Records of stu_experiment
+-- ----------------------------
 
 -- ----------------------------
 -- Table structure for student
@@ -267,6 +368,14 @@ CREATE TABLE `student`  (
 ) ENGINE = InnoDB AUTO_INCREMENT = 200006 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
+-- Records of student
+-- ----------------------------
+INSERT INTO `student` VALUES (200000, 100001, '宁之恒', '123456', '男', '大三', '18007756601', NULL, '2021-11-16 22:52:39', '2021-12-11 12:14:55', '软件工程', '1094554173@qq.com', 'http://139.224.65.105:666/student/200000/头像3.jpg');
+INSERT INTO `student` VALUES (200001, 100001, 'nzh', '123456', '男', '', '18007756601', NULL, '2021-11-17 08:26:31', '2021-12-11 21:01:59', '软件工程', NULL, 'http://139.224.65.105:666/student/200001/21.jpg');
+INSERT INTO `student` VALUES (200002, 100001, '曹峰源', '123456', '男', '大三', NULL, NULL, '2021-11-17 09:51:44', '2021-11-17 09:51:47', '软件工程', 'dearcfy@126.com', NULL);
+INSERT INTO `student` VALUES (200003, 100001, '邓泉', '123456', '男', '大三', NULL, NULL, '2021-11-17 09:52:28', '2021-11-17 09:52:30', '软件工程', '1953871@tongji.edu.cn', NULL);
+
+-- ----------------------------
 -- Table structure for student_upload_file
 -- ----------------------------
 DROP TABLE IF EXISTS `student_upload_file`;
@@ -278,6 +387,10 @@ CREATE TABLE `student_upload_file`  (
   `url` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '文件修改时间',
   PRIMARY KEY (`id`) USING BTREE
 ) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Records of student_upload_file
+-- ----------------------------
 
 -- ----------------------------
 -- Table structure for teacher
@@ -298,6 +411,36 @@ CREATE TABLE `teacher`  (
 ) ENGINE = InnoDB AUTO_INCREMENT = 300029 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
+-- Records of teacher
+-- ----------------------------
+INSERT INTO `teacher` VALUES (300001, '123456', '唐剑锋', '男', '2021-11-16 23:24:46', '2021-11-16 23:24:46', NULL, 100001, NULL);
+INSERT INTO `teacher` VALUES (300002, '123456', '史扬', '男', '2021-11-16 23:45:53', '2021-11-16 23:45:53', NULL, 100001, NULL);
+INSERT INTO `teacher` VALUES (300003, '123456', '张晶', '男', '2021-11-16 23:46:33', '2021-11-16 23:46:33', NULL, 100001, NULL);
+INSERT INTO `teacher` VALUES (300004, '123456', '杜庆峰', '男', '2021-11-16 23:46:46', '2021-11-16 23:46:46', NULL, 100001, NULL);
+INSERT INTO `teacher` VALUES (300005, '123456', '黄杰', '男', '2021-11-16 23:46:56', '2021-11-16 23:46:56', NULL, 100001, NULL);
+INSERT INTO `teacher` VALUES (300006, '123456', '金伟祖', '男', '2021-11-16 23:47:07', '2021-11-16 23:47:07', NULL, 100001, NULL);
+INSERT INTO `teacher` VALUES (300007, '123456', '夏波涌', '男', '2021-11-16 23:47:24', '2021-11-16 23:47:24', NULL, 100001, NULL);
+INSERT INTO `teacher` VALUES (300008, '123456', '严海洲', '男', '2021-11-16 23:47:44', '2021-11-16 23:47:44', NULL, 100001, NULL);
+INSERT INTO `teacher` VALUES (300009, '123456', '张颖', '男', '2021-11-16 23:47:53', '2021-11-16 23:47:53', NULL, 100001, NULL);
+INSERT INTO `teacher` VALUES (300010, '123456', '王冬青', '女', '2021-11-16 23:48:06', '2021-11-16 23:48:06', NULL, 100001, NULL);
+INSERT INTO `teacher` VALUES (300011, '123456', '高珍', '女', '2021-11-16 23:48:23', '2021-11-16 23:48:23', NULL, 100001, NULL);
+INSERT INTO `teacher` VALUES (300012, '123456', '李江峰', '男', '2021-11-16 23:48:35', '2021-11-16 23:48:35', NULL, 100001, NULL);
+INSERT INTO `teacher` VALUES (300013, '123456', '江建慧', '男', '2021-11-16 23:48:53', '2021-11-16 23:48:53', NULL, 100001, NULL);
+INSERT INTO `teacher` VALUES (300014, '123456', '范鸿飞', '男', '2021-11-16 23:49:02', '2021-11-16 23:49:02', NULL, 100001, NULL);
+INSERT INTO `teacher` VALUES (300015, '123456', '饶卫雄', '男', '2021-11-16 23:49:17', '2021-11-16 23:49:17', NULL, 100001, NULL);
+INSERT INTO `teacher` VALUES (300016, '123456', '刘岩', '女', '2021-11-16 23:49:27', '2021-11-16 23:49:27', NULL, 100001, NULL);
+INSERT INTO `teacher` VALUES (300017, '123456', '史清江', '男', '2021-11-16 23:49:46', '2021-11-16 23:49:46', NULL, 100001, NULL);
+INSERT INTO `teacher` VALUES (300018, '123456', '贾金源', '男', '2021-11-16 23:50:03', '2021-11-16 23:50:03', NULL, 100001, NULL);
+INSERT INTO `teacher` VALUES (300019, '123456', '陈梁', '男', '2021-11-16 23:50:23', '2021-11-16 23:50:23', NULL, 100001, NULL);
+INSERT INTO `teacher` VALUES (300020, '123456', '沈莹', '女', '2021-11-16 23:50:37', '2021-11-16 23:50:37', NULL, 100001, NULL);
+INSERT INTO `teacher` VALUES (300021, '123456', '朱宏明', '男', '2021-11-16 23:50:55', '2021-11-16 23:50:55', NULL, 100001, NULL);
+INSERT INTO `teacher` VALUES (300022, '123456', '冯巾松', '女', '2021-11-16 23:51:15', '2021-11-16 23:51:15', NULL, 100001, NULL);
+INSERT INTO `teacher` VALUES (300023, '123456', '袁时金', '女', '2021-11-16 23:52:00', '2021-11-16 23:52:00', NULL, 100001, NULL);
+INSERT INTO `teacher` VALUES (300024, '123456', '张惠娟', '女', '2021-11-16 23:52:15', '2021-11-16 23:52:15', NULL, 100001, NULL);
+INSERT INTO `teacher` VALUES (300025, '123456', '贾金原', '男', '2021-11-17 10:44:25', '2021-11-17 10:44:27', NULL, 100001, NULL);
+INSERT INTO `teacher` VALUES (300026, '12345', 'nzh', '男', '2021-11-17 11:01:31', '2021-11-19 09:29:34', NULL, 100001, NULL);
+
+-- ----------------------------
 -- Table structure for teacher_course
 -- ----------------------------
 DROP TABLE IF EXISTS `teacher_course`;
@@ -310,5 +453,18 @@ CREATE TABLE `teacher_course`  (
   CONSTRAINT `teacher_course_ibfk_1` FOREIGN KEY (`teacher_id`) REFERENCES `teacher` (`id`) ON DELETE RESTRICT ON UPDATE RESTRICT,
   CONSTRAINT `teacher_course_ibfk_2` FOREIGN KEY (`course_id`) REFERENCES `course` (`id`) ON DELETE RESTRICT ON UPDATE RESTRICT
 ) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Records of teacher_course
+-- ----------------------------
+INSERT INTO `teacher_course` VALUES (300004, 60003, '教师');
+INSERT INTO `teacher_course` VALUES (300005, 60003, '教师');
+INSERT INTO `teacher_course` VALUES (300005, 60003, '责任教师');
+INSERT INTO `teacher_course` VALUES (300006, 60004, '教师');
+INSERT INTO `teacher_course` VALUES (300006, 60004, '责任教师');
+INSERT INTO `teacher_course` VALUES (300007, 60004, '教师');
+INSERT INTO `teacher_course` VALUES (300004, 60021, '教师');
+INSERT INTO `teacher_course` VALUES (300005, 60021, '教师');
+INSERT INTO `teacher_course` VALUES (300005, 60021, '责任教师');
 
 SET FOREIGN_KEY_CHECKS = 1;
