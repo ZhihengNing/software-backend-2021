@@ -89,7 +89,7 @@ public class FileUtil {
         List<FileInfo> list = new ArrayList<>();
         for (MultipartFile item : multipartFiles) {
             FileInfo fileInfo = new FileInfo();
-            if (item != null) {
+            if (item != null&&item.getSize()!=0) {
                 File temp = new File(path);
                 if (!temp.exists()) {
                     temp.mkdirs();
