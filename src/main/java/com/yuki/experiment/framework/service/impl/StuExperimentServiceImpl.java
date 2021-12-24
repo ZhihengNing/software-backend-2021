@@ -1,14 +1,9 @@
 package com.yuki.experiment.framework.service.impl;
 
-import com.alibaba.fastjson.JSONArray;
-import com.alibaba.fastjson.JSONObject;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import com.yuki.experiment.common.utils.FileUtil;
-import com.yuki.experiment.common.utils.JsonUtil;
-import com.yuki.experiment.framework.dto.FileInfo;
-import com.yuki.experiment.framework.entity.Course;
-import com.yuki.experiment.framework.entity.CourseScore;
+import com.yuki.experiment.framework.dto.FileInfoDTO;
 import com.yuki.experiment.framework.entity.StuExperiment;
 import com.yuki.experiment.framework.entity.StudentUploadFile;
 import com.yuki.experiment.framework.mapper.CourseMapper;
@@ -20,7 +15,6 @@ import javafx.util.Pair;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.math.BigDecimal;
@@ -76,9 +70,9 @@ public class StuExperimentServiceImpl implements StuExperimentService {
         String path = twoUrl.getKey();
         String webPath = twoUrl.getValue();
         //保存到服务器
-        FileInfo fileInfo = FileUtil.preserveFile(multipartFile, path, webPath);
-        String url = fileInfo.getFileUrl();
-        String name = fileInfo.getFileName();
+        FileInfoDTO fileInfoDTO = FileUtil.preserveFile(multipartFile, path, webPath);
+        String url = fileInfoDTO.getFileUrl();
+        String name = fileInfoDTO.getFileName();
         StudentUploadFile file = new StudentUploadFile();
         file.setName(name);
         file.setUrl(url);
@@ -109,9 +103,9 @@ public class StuExperimentServiceImpl implements StuExperimentService {
             FileUtil.deleteFile(url);
         }
         //把新的文件url存入服务器
-        FileInfo fileInfo = FileUtil.preserveFile(multipartFile, path, webPath);
-        String data = fileInfo.getFileUrl();
-        String name = fileInfo.getFileName();
+        FileInfoDTO fileInfoDTO = FileUtil.preserveFile(multipartFile, path, webPath);
+        String data = fileInfoDTO.getFileUrl();
+        String name = fileInfoDTO.getFileName();
         //这里要更新student_upload_file
         StudentUploadFile temp = new StudentUploadFile();
         temp.setId(fileId);

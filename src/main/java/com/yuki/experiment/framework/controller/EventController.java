@@ -22,6 +22,9 @@ public class EventController {
     public CommonResult<List<JSONObject>>getInfo(@RequestParam("beginDate") Date beginDate,
                                     @RequestParam(value = "endDate",required = false) Date endDate){
         endDate=(endDate==null?beginDate:endDate);
+        if(endDate.getTime()<beginDate.getTime()){
+            return CommonResult.failed("后者时间不能小于前者时间");
+        }
         return CommonResult.success(eventService.getInfo(beginDate,endDate));
     }
 

@@ -66,9 +66,6 @@ public class EventServiceImpl implements EventService {
             List<Experiment> experiments = experimentList.stream()
                     .filter((s) -> DateUtil.equals(s.getExperimentDeadline(), item))
                     .collect(Collectors.toList());
-            if(experiments.size()!=0){
-                System.out.println(experiments.get(0).getExperimentDeadline());
-            }
             json.put("experiment", experiments);
 
             List<Event> events = eventList.stream()

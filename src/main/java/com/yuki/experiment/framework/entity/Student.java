@@ -97,6 +97,12 @@ public class Student implements Serializable {
     @ApiModelProperty("头像url")
     private String url;
 
+    /**
+     * 地址
+     */
+    @ApiModelProperty("地址")
+    private String address;
+
     @TableField(exist = false)
     private static final long serialVersionUID = 1L;
 }

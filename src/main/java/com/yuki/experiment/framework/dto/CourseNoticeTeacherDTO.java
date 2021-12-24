@@ -5,7 +5,7 @@ import lombok.Data;
 import java.util.Date;
 
 @Data
-public class CourseNoticeTeacher {
+public class CourseNoticeTeacherDTO {
 
     private Integer id;
 
