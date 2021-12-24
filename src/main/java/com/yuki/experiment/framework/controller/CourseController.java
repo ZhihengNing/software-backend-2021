@@ -5,7 +5,7 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.yuki.experiment.common.exception.FileIsNullException;
 import com.yuki.experiment.common.result.CommonResult;
 import com.yuki.experiment.common.utils.FileUtil;
-import com.yuki.experiment.framework.dto.FileInfo;
+import com.yuki.experiment.framework.dto.FileInfoDTO;
 import com.yuki.experiment.framework.entity.Course;
 import com.yuki.experiment.framework.entity.CourseFeedback;
 import com.yuki.experiment.framework.entity.CourseFile;
@@ -168,8 +168,8 @@ public class CourseController {
 
         String webPath=FileUtil.generatorWebUrl(courseFileUploadPath,courseId);
         //保存到服务器
-        List<FileInfo> list = FileUtil.preserveFile(multipartFiles, path,webPath);
-        for (FileInfo item : list) {
+        List<FileInfoDTO> list = FileUtil.preserveFile(multipartFiles, path,webPath);
+        for (FileInfoDTO item : list) {
             String url = item.getFileUrl();
             String name = item.getFileName();
             //保存到数据库

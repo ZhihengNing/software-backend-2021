@@ -2,7 +2,7 @@ package com.yuki.experiment.framework.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.yuki.experiment.common.utils.FileUtil;
-import com.yuki.experiment.framework.dto.FileInfo;
+import com.yuki.experiment.framework.dto.FileInfoDTO;
 import com.yuki.experiment.framework.entity.Student;
 import com.yuki.experiment.framework.mapper.StudentMapper;
 import com.yuki.experiment.framework.service.StudentService;
@@ -11,7 +11,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.File;
 import java.util.List;
 
 @Service
@@ -51,8 +50,8 @@ public class StudentServiceImpl implements StudentService{
     @Override
     public String uploadPic(Integer studentId,String url, String webUrl, MultipartFile multipartFile) {
         FileUtil.deleteFile(studentMapper.selectById(studentId).getUrl());
-        FileInfo fileInfo = FileUtil.preserveFile(multipartFile, url, webUrl);
-        String fileUrl = fileInfo.getFileUrl();
+        FileInfoDTO fileInfoDTO = FileUtil.preserveFile(multipartFile, url, webUrl);
+        String fileUrl = fileInfoDTO.getFileUrl();
         Student student = new Student();
         student.setId(studentId);
         student.setUrl(fileUrl);

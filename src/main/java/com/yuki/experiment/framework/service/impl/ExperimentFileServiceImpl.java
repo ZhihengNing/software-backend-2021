@@ -1,15 +1,13 @@
 package com.yuki.experiment.framework.service.impl;
 
-import com.alibaba.fastjson.JSONObject;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.yuki.experiment.common.utils.FileUtil;
-import com.yuki.experiment.framework.dto.FileInfo;
+import com.yuki.experiment.framework.dto.FileInfoDTO;
 import com.yuki.experiment.framework.entity.Experiment;
 import com.yuki.experiment.framework.entity.ExperimentFile;
 import com.yuki.experiment.framework.mapper.ExperimentFileMapper;
 import com.yuki.experiment.framework.mapper.ExperimentMapper;
 import com.yuki.experiment.framework.service.ExperimentFileService;
-import com.yuki.experiment.framework.service.ExperimentService;
 import javafx.util.Pair;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -44,8 +42,8 @@ public class ExperimentFileServiceImpl implements ExperimentFileService {
             Pair<String, String> twoUrl = FileUtil.generatorTwoUrl(PATH, courseId, experimentId);
             String path = twoUrl.getKey();
             String webPath = twoUrl.getValue();
-            List<FileInfo> fileInfos= FileUtil.preserveFile(multipartFiles, path, webPath);
-            for(FileInfo item:fileInfos){
+            List<FileInfoDTO> fileInfoDTOS = FileUtil.preserveFile(multipartFiles, path, webPath);
+            for(FileInfoDTO item: fileInfoDTOS){
                 String url = item.getFileUrl();
                 String name = item.getFileName();
                 ExperimentFile build = ExperimentFile.builder()

@@ -20,7 +20,7 @@
         teacher_id
     </sql>
 
-    <select id="getCourseNoticeTeacher" resultType="com.yuki.experiment.framework.dto.CourseNoticeTeacher">
+    <select id="getCourseNoticeTeacher" resultType="com.yuki.experiment.framework.dto.CourseNoticeTeacherDTO">
         select cn.id id,
                cn.course_id courseId,
                cn.title title,

@@ -96,7 +96,7 @@ public class UserController {
 
     @ApiOperation("发送邮件")
     @RequestMapping(value = "/email/send",method = RequestMethod.POST)
-    public CommonResult sendMail(@RequestParam("studentMailbox")String studentMailbox,
+    public CommonResult<String> sendMail(@RequestParam("studentMailbox")String studentMailbox,
                                          @RequestParam("courseId") Integer courseId) {
         if (studentMailbox == null) {
             return CommonResult.failed("用户邮箱账号不能为空");
@@ -110,7 +110,7 @@ public class UserController {
         if (mailService.mailSend(studentMailbox,
                 "课程激活码",
                 text)) {
-            return CommonResult.success();
+            return CommonResult.success(activeCode);
         }
         return CommonResult.failed();
     }

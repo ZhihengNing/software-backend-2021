@@ -1,7 +1,7 @@
 package com.yuki.experiment.common.utils;
 
 import com.yuki.experiment.common.exception.FileIsNullException;
-import com.yuki.experiment.framework.dto.FileInfo;
+import com.yuki.experiment.framework.dto.FileInfoDTO;
 import javafx.util.Pair;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
@@ -85,11 +85,11 @@ public class FileUtil {
         }
     }
 
-    public static List<FileInfo> preserveFile(List<MultipartFile> multipartFiles, String path, String webPath) {
-        List<FileInfo> list = new ArrayList<>();
+    public static List<FileInfoDTO> preserveFile(List<MultipartFile> multipartFiles, String path, String webPath) {
+        List<FileInfoDTO> list = new ArrayList<>();
         for (MultipartFile item : multipartFiles) {
-            FileInfo fileInfo = new FileInfo();
-            if (item != null&&item.getSize()!=0) {
+            FileInfoDTO fileInfoDTO = new FileInfoDTO();
+            if (!EmptyUtil.isEmpty(item)) {
                 File temp = new File(path);
                 if (!temp.exists()) {
                     temp.mkdirs();
@@ -102,15 +102,15 @@ public class FileUtil {
                     log.info("message" + fileName + "上传失败");
                     throw new FileIsNullException();
                 }
-                fileInfo.setFileName(fileName);
-                fileInfo.setFileUrl(webPath + "/" + fileName);
-                list.add(fileInfo);
+                fileInfoDTO.setFileName(fileName);
+                fileInfoDTO.setFileUrl(webPath + "/" + fileName);
+                list.add(fileInfoDTO);
             }
         }
         return list;
     }
 
-    public static FileInfo preserveFile(MultipartFile multipartFile, String path, String webPath) {
+    public static FileInfoDTO preserveFile(MultipartFile multipartFile, String path, String webPath) {
         return preserveFile(Collections.singletonList(multipartFile), path, webPath).get(0);
     }
 
