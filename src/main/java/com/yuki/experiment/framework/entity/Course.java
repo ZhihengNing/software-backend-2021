@@ -8,6 +8,7 @@ import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.util.Date;
 
 /**
@@ -64,7 +65,7 @@ public class Course implements Serializable {
      * 考勤得分比例
      */
     @ApiModelProperty("考勤得分比例")
-    private Integer attendanceRatio;
+    private BigDecimal attendanceRatio;
 
     /**
      * 课程学分

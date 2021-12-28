@@ -12,7 +12,6 @@
             <result property="updateTime" column="update_time" jdbcType="TIMESTAMP"/>
             <result property="teacherId" column="teacher_id" jdbcType="INTEGER"/>
             <result property="experimentScore" column="experiment_score" jdbcType="DECIMAL"/>
-            <result property="experimentScoreRatio" column="experiment_score_ratio" jdbcType="DECIMAL"/>
             <result property="experimentPurpose" column="experiment_purpose" jdbcType="VARCHAR"/>
             <result property="experimentContent" column="experiment_content" jdbcType="VARCHAR"/>
             <result property="experimentDeadline" column="experiment_deadline" jdbcType="TIMESTAMP"/>
@@ -22,7 +21,7 @@
     <sql id="Base_Column_List">
         id,course_id,name,
         create_time,update_time,teacher_id,
-        experiment_score,experiment_score_ratio,experiment_purpose,
+        experiment_score,experiment_purpose,
         experiment_content,experiment_deadline,experiment_remarks
     </sql>
 </mapper>

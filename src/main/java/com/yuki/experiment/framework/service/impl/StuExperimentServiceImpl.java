@@ -1,9 +1,11 @@
 package com.yuki.experiment.framework.service.impl;
 
+import com.alibaba.fastjson.JSONObject;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import com.yuki.experiment.common.utils.FileUtil;
 import com.yuki.experiment.framework.dto.FileInfoDTO;
+import com.yuki.experiment.framework.entity.CourseScore;
 import com.yuki.experiment.framework.entity.StuExperiment;
 import com.yuki.experiment.framework.entity.StudentUploadFile;
 import com.yuki.experiment.framework.mapper.CourseMapper;
@@ -136,17 +138,24 @@ public class StuExperimentServiceImpl implements StuExperimentService {
     }
 
     @Override
-    public List<BigDecimal> getStudentGrade(Integer studentId,Integer courseId) {
+    public JSONObject getStudentGrade(Integer studentId, Integer courseId) {
 //        QueryWrapper<CourseScore> wrapper = new QueryWrapper<>();
 //        wrapper.eq("student_id", studentId).eq("course_id", courseId);
 //        CourseScore courseScore = courseScoreMapper.selectOne(wrapper);
 //        //得到某门课的考勤得分
 //        BigDecimal attendanceScore = courseScore.getAttendanceScore() == null ?
 //                new BigDecimal(0) : courseScore.getAttendanceScore();
+//TODO
+
+
+        QueryWrapper<CourseScore>courseScoreQueryWrapper=new QueryWrapper<>();
+        courseScoreQueryWrapper.eq("student_id",studentId).eq("course_id",courseId);
+        CourseScore courseScore = courseScoreMapper.selectOne(courseScoreQueryWrapper);
+
 
         QueryWrapper<StuExperiment> wrapper1 = new QueryWrapper<>();
         wrapper1.eq("student_id", studentId);
         List<StuExperiment> stuExperiments = stuExperimentMapper.selectList(wrapper1);
-        return stuExperiments.stream().map(StuExperiment::getExperimentScore).collect(Collectors.toList());
+        return stuExperiments;
     }
 }

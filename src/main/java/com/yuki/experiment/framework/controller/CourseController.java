@@ -23,6 +23,8 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.math.BigDecimal;
+import java.util.Calendar;
 import java.util.List;
 
 @RestController
@@ -222,6 +224,31 @@ public class CourseController {
             return CommonResult.success();
         }
         return CommonResult.failed();
+    }
+
+    @ApiOperation("设置课程考勤比例")
+    @RequestMapping(value = "/setAttendanceRatio/{courseId}",method = RequestMethod.POST)
+    public CommonResult setAttendance(@PathVariable Integer courseId,
+                                       @RequestParam("attendanceRatio") BigDecimal attendanceRatio) {
+        if (courseId == null) {
+            return CommonResult.failed("课程Id不能为空");
+        }
+        if (attendanceRatio == null) {
+            return CommonResult.failed("考勤比例不能为空");
+        }
+        BigDecimal courseAttendanceRatio = courseService.setCourseAttendanceRatio(courseId, attendanceRatio);
+        if(courseAttendanceRatio!=null){
+            return CommonResult.success(courseAttendanceRatio);
+        }
+        return CommonResult.failed();
+    }
+
+    @ApiOperation("考勤功能")
+    @RequestMapping(value = "/signIn/{studentId}/{courseId}",method = RequestMethod.GET)
+    public CommonResult signIn(@PathVariable Integer courseId,
+                               @PathVariable Integer studentId){
+
+
     }
 
 

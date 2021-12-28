@@ -45,7 +45,14 @@ public class CourseServiceImpl implements CourseService {
     }
 
     @Override
-    public List<BigDecimal> getCourseGrade(Integer studentId, Integer courseId) {
+    public BigDecimal setCourseAttendanceRatio(Integer courseId, BigDecimal attendanceRatio) {
+        Course course=new Course();
+        course.setId(courseId);
+        course.setAttendanceRatio(attendanceRatio);
+        if(courseMapper.updateById(course)>0){
+            return course.getAttendanceRatio();
+        }
         return null;
     }
+
 }

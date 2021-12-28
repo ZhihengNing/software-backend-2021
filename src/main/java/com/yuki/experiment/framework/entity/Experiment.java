@@ -63,12 +63,6 @@ public class Experiment implements Serializable {
     private BigDecimal experimentScore;
 
     /**
-     * 实验项目分数比例
-     */
-    @ApiModelProperty("实验项目分数比例")
-    private BigDecimal experimentScoreRatio;
-
-    /**
      * 实验项目目的
      */
     @ApiModelProperty("实验项目目的")

@@ -7,10 +7,13 @@ import com.yuki.experiment.framework.entity.Event;
 import com.yuki.experiment.framework.service.EventService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import javafx.collections.ObservableMap;
 import org.junit.jupiter.api.Tags;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
@@ -22,28 +25,35 @@ public class EventController {
     private EventService eventService;
 
     @RequestMapping(value = "",method = RequestMethod.GET)
-    public CommonResult<List<JSONObject>>getInfo(@RequestParam("beginDate") Date beginDate,
-                                    @RequestParam(value = "endDate",required = false) Date endDate){
-        endDate=(endDate==null?beginDate:endDate);
-        if(endDate.getTime()<beginDate.getTime()){
+    public CommonResult<List<JSONObject>>getInfo(@RequestParam("beginDate") String beginDate,
+                                    @RequestParam(value = "endDate",required = false) String endDate) {
+        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        Date parseBeginDate;
+        Date parseEndDate;
+        try {
+            parseBeginDate = format.parse(beginDate);
+            parseEndDate = format.parse(endDate);
+        } catch (ParseException e) {
+            return CommonResult.failed("时间格式不正确,请注意时间格式");
+        }
+        parseEndDate = (parseEndDate == null ? parseBeginDate : parseEndDate);
+        if (parseEndDate.getTime() < parseBeginDate.getTime()) {
             return CommonResult.failed("后者时间不能小于前者时间");
         }
-        return CommonResult.success(eventService.getInfo(beginDate,endDate));
+        return CommonResult.success(eventService.getInfo(parseBeginDate, parseEndDate));
     }
 
     @ApiOperation("插入事件")
     @RequestMapping(value = "",method = RequestMethod.POST)
-    public CommonResult insertEvent(@RequestBody Event event){
-        if(event.getStudentId()==null){
+    public CommonResult insertEvent(@RequestBody Event event) {
+        if (event.getStudentId() == null) {
             return CommonResult.failed("学生Id不能为空");
-        }
-        else if(EmptyUtil.isEmpty(event.getTitle())){
+        } else if (EmptyUtil.isEmpty(event.getTitle())) {
             return CommonResult.failed("title不能为空");
-        }
-        else if(event.getDoTime()==null){
+        } else if (event.getDoTime() == null) {
             return CommonResult.failed("要做某件事的时间不能为空");
         }
-        if(eventService.insertEvent(event)>0) {
+        if (eventService.insertEvent(event) > 0) {
             return CommonResult.success();
         }
         return CommonResult.failed();

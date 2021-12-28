@@ -4,7 +4,6 @@ package com.yuki.experiment.framework.service;
 import com.yuki.experiment.framework.entity.Course;
 
 import java.math.BigDecimal;
-import java.util.List;
 
 public interface CourseService {
 
@@ -12,5 +11,6 @@ public interface CourseService {
 
     Course getCourseInfoByID(Integer studentId,Integer courseId);
 
-    List<BigDecimal> getCourseGrade(Integer studentId,Integer courseId);
+    BigDecimal setCourseAttendanceRatio(Integer courseId,BigDecimal attendanceRatio);
+
 }

@@ -1,5 +1,6 @@
 package com.yuki.experiment.framework.service;
 
+import com.alibaba.fastjson.JSONObject;
 import com.yuki.experiment.framework.entity.StuExperiment;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -16,6 +17,6 @@ public interface StuExperimentService {
 
     int uploadGrade(Integer studentId, Integer experimentId, BigDecimal grade);
 
-    List<BigDecimal> getStudentGrade(Integer studentId,Integer courseId);
+    JSONObject getStudentGrade(Integer studentId, Integer courseId);
 
 }
