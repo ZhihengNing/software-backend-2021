@@ -205,16 +205,16 @@ public class CourseController {
         return CommonResult.failed();
     }
 
-    @ApiOperation("在前端确认激活成功之后，课程就被激活(用来真正激活课程)")
-    @RequestMapping(value = "/enableActive", method = RequestMethod.POST)
-    public CommonResult courseEnableActive(@RequestParam("id") Integer id,
-                                           @RequestParam("courseId") Integer courseId) {
-        if (id == null) {
+    @ApiOperation("用来真正激活课程")
+    @RequestMapping(value = "/enableActive/{studentId}/{courseId}", method = RequestMethod.POST)
+    public CommonResult courseEnableActive(@PathVariable("studentId") Integer studentId,
+                                           @PathVariable("courseId") Integer courseId) {
+        if (studentId == null) {
             return CommonResult.failed("用户Id不能为空");
         } else if (courseId == null) {
             return CommonResult.failed("课程Id不能为空");
         }
-        if (courseScoreService.setCourseActive(id, courseId) == 1) {
+        if (courseScoreService.setCourseActive(studentId, courseId) == 1) {
             return CommonResult.success();
         }
         return CommonResult.failed();
