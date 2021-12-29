@@ -44,15 +44,10 @@ public class CourseServiceImpl implements CourseService {
         return null;
     }
 
+
     @Override
-    public BigDecimal setCourseAttendanceRatio(Integer courseId, BigDecimal attendanceRatio) {
-        Course course=new Course();
-        course.setId(courseId);
-        course.setAttendanceRatio(attendanceRatio);
-        if(courseMapper.updateById(course)>0){
-            return course.getAttendanceRatio();
-        }
-        return null;
+    public int signIn(Integer studentId, Integer courseId) {
+        return 0;
     }
 
 }

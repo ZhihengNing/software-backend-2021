@@ -11,6 +11,7 @@ public interface CourseService {
 
     Course getCourseInfoByID(Integer studentId,Integer courseId);
 
-    BigDecimal setCourseAttendanceRatio(Integer courseId,BigDecimal attendanceRatio);
+
+    int signIn(Integer studentId,Integer courseId);
 
 }
