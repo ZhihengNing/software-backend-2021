@@ -9,4 +9,6 @@ public interface CourseScoreService {
     List<JSONObject> getCourseInfoAndIsActive(Integer studentId);
 
     int setCourseActive(Integer studentId,Integer courseId);
+
+    int signIn(Integer studentId,Integer courseId);
 }

@@ -64,8 +64,8 @@ public class Course implements Serializable {
     /**
      * 考勤得分比例
      */
-    @ApiModelProperty("考勤得分比例")
-    private BigDecimal attendanceRatio;
+    @ApiModelProperty("各种得分比例，string数组")
+    private String scoreRatio;
 
     /**
      * 课程学分

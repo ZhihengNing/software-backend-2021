@@ -247,7 +247,13 @@ public class CourseController {
     @RequestMapping(value = "/signIn/{studentId}/{courseId}",method = RequestMethod.GET)
     public CommonResult signIn(@PathVariable Integer courseId,
                                @PathVariable Integer studentId){
-
+        if(courseId==null){
+            return CommonResult.failed("课程Id不能为空");
+        }
+        if(studentId==null){
+            return CommonResult.failed("学生Id不能为空");
+        }
+        courseScoreService.singeIn(courseId,studentId)
 
     }
 

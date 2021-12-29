@@ -12,7 +12,7 @@
             <result property="createTime" column="create_time" jdbcType="TIMESTAMP"/>
             <result property="updateTime" column="update_time" jdbcType="TIMESTAMP"/>
             <result property="teacherId" column="teacher_id" jdbcType="INTEGER"/>
-            <result property="attendanceRatio" column="attendance_ratio" jdbcType="DECIMAL"/>
+            <result property="scoreRatio" column="score_ratio" jdbcType="VARCHAR"/>
             <result property="credit" column="credit" jdbcType="INTEGER"/>
             <result property="college" column="college" jdbcType="VARCHAR"/>
     </resultMap>
@@ -20,11 +20,11 @@
     <sql id="Base_Column_List">
         id,name,place,
         open_period,create_time,update_time,
-        teacher_id,attendance_ratio,credit,
+        teacher_id,score_ratio,credit,
         college
     </sql>
     <select id="getCourseInfo" resultType="com.alibaba.fastjson.JSONObject">
-        select c.name,c.place,c.open_period,c.attendance_ratio,c.credit,c.college
+        select c.name,c.place,c.open_period,c.score_ratio,c.credit,c.college
         from course c
         where c.id=#{courseId}
     </select>

@@ -13,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 @Service
@@ -54,5 +55,16 @@ public class CourseScoreServiceImpl implements CourseScoreService {
                 .eq(studentId!=null,"student_id", studentId)
                 .eq(courseId!=null,"course_id", courseId);
         return courseScoreMapper.update(new CourseScore(),updateWrapper);
+    }
+
+    @Override
+    public int signIn(Integer studentId, Integer courseId) {
+        UpdateWrapper<CourseScore>updateWrapper=new UpdateWrapper<>();
+        Date now=new Date();
+        QueryWrapper<CourseScore>queryWrapper=new QueryWrapper<>();
+        queryWrapper.eq("student_id",studentId).eq("course_id",courseId);
+        CourseScore courseScore = courseScoreMapper.selectOne(queryWrapper);
+        //TODO
+        return 0;
     }
 }
