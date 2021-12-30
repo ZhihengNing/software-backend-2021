@@ -217,7 +217,7 @@ public class CourseController {
         if (courseScoreService.setCourseActive(studentId, courseId) == 1) {
             return CommonResult.success();
         }
-        return CommonResult.failed();
+        return CommonResult.failed("激活失败");
     }
 
 //    @ApiOperation("设置课程考勤比例")
@@ -239,7 +239,7 @@ public class CourseController {
 
     @ApiOperation("考勤功能")
     @RequestMapping(value = "/signIn/{studentId}/{courseId}", method = RequestMethod.GET)
-    public CommonResult<SignInDTO> signIn(@PathVariable Integer studentId,
+    public CommonResult<CourseScore> signIn(@PathVariable Integer studentId,
                                           @PathVariable Integer courseId
     ) {
         if (courseId == null) {
@@ -248,10 +248,10 @@ public class CourseController {
         if (studentId == null) {
             return CommonResult.failed("学生Id不能为空");
         }
-        SignInDTO signInDTO = courseScoreService.signIn(studentId, courseId);
-        if (signInDTO != null) {
-            return CommonResult.success(signInDTO);
+        CourseScore courseScore = courseScoreService.signIn(studentId, courseId);
+        if (courseScore != null) {
+            return CommonResult.success(courseScore);
         }
-        return CommonResult.failed();
+        return CommonResult.failed("考勤失败");
     }
 }

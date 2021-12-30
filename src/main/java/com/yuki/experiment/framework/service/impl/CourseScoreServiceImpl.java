@@ -64,13 +64,21 @@ public class CourseScoreServiceImpl implements CourseScoreService {
 
     @Override
     public int setCourseActive(Integer studentId, Integer courseId) {
+        QueryWrapper<CourseScore> queryWrapper = new QueryWrapper<>();
+        queryWrapper.eq("student_id", studentId)
+                .eq("course_id", courseId);
+        CourseScore courseScore = courseScoreMapper.selectOne(queryWrapper);
+        if (courseScore==null||courseScore.getIsActive() != 0) {
+            return 0;
+        }
         UpdateWrapper<CourseScore> updateWrapper = new UpdateWrapper<>();
         Date now = new Date();
-        updateWrapper.set("is_active", 1).set("this_attendance_time", now)
-                .eq(studentId != null, "student_id", studentId)
+        courseScore.setIsActive(1);
+        courseScore.setLastAttendanceTime(now);
+        courseScore.setAttendanceScore(BigDecimal.ONE);
+        updateWrapper.eq(studentId != null, "student_id", studentId)
                 .eq(courseId != null, "course_id", courseId);
-        log.info("now:" + now);
-        return courseScoreMapper.update(new CourseScore(), updateWrapper);
+        return courseScoreMapper.update(courseScore, updateWrapper);
     }
 
     private boolean judgeSignIn(Date thisTime,Date lastTime){
@@ -83,12 +91,11 @@ public class CourseScoreServiceImpl implements CourseScoreService {
 
     @Override
     public CourseScore signIn(Integer studentId, Integer courseId) {
-
         QueryWrapper<CourseScore> queryWrapper = new QueryWrapper<>();
         queryWrapper.eq("student_id", studentId)
                 .eq("course_id", courseId);
         CourseScore courseScore = courseScoreMapper.selectOne(queryWrapper);
-        if (courseScore.getIsActive() == 0) {
+        if (courseScore==null||courseScore.getIsActive() == 0) {
             return null;
         }
         Date lastAttendanceTime = courseScore.getLastAttendanceTime();
@@ -97,7 +104,10 @@ public class CourseScoreServiceImpl implements CourseScoreService {
             BigDecimal newScore = courseScore.getAttendanceScore().add(EVERY_ATTENDANCE_SCORE);
             courseScore.setAttendanceScore(newScore);
             courseScore.setLastAttendanceTime(now);
-            if (courseScoreMapper.updateById(courseScore) > 0) {
+            UpdateWrapper<CourseScore> updateWrapper = new UpdateWrapper<>();
+            updateWrapper.eq("student_id", studentId).eq("course_id", courseId);
+            if (courseScoreMapper.update(courseScore, updateWrapper) > 0) {
+                log.info("考勤成功");
                 return courseScore;
             }
         }
