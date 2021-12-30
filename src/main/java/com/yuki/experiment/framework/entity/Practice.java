@@ -73,12 +73,6 @@ public class Practice implements Serializable {
     @ApiModelProperty("练习分值")
     private BigDecimal score;
 
-    /**
-     * 练习所占比例
-     */
-    @ApiModelProperty("练习所占比例")
-    private BigDecimal ratio;
-
     @TableField(exist = false)
     private static final long serialVersionUID = 1L;
 }

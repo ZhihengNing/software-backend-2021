@@ -5,24 +5,22 @@
 <mapper namespace="com.yuki.experiment.framework.mapper.StuExperimentMapper">
 
     <resultMap id="BaseResultMap" type="com.yuki.experiment.framework.entity.StuExperiment">
-            <id property="studentId" column="student_id" jdbcType="INTEGER"/>
-            <id property="experimentId" column="experiment_id" jdbcType="INTEGER"/>
+            <id property="studentId" column="student_id" jdbcType="OTHER"/>
+            <id property="experimentId" column="experiment_id" jdbcType="OTHER"/>
             <result property="experimentScore" column="experiment_score" jdbcType="DECIMAL"/>
-            <result property="fileId" column="file_id" jdbcType="INTEGER"/>
+            <result property="url" column="url" jdbcType="VARCHAR"/>
             <result property="jobContent" column="job_content" jdbcType="VARCHAR"/>
+            <result property="createTime" column="create_time" jdbcType="TIMESTAMP"/>
+            <result property="updateTime" column="update_time" jdbcType="TIMESTAMP"/>
     </resultMap>
 
     <sql id="Base_Column_List">
         student_id,experiment_id,experiment_score,
-        file_id,job_content
+        url,job_content,create_time,
+        update_time
     </sql>
     <select id="getUrl" resultType="java.lang.String">
-        select url
-        from student_upload_file
-        where id in(
-            select file_id
-            from stu_experiment
-            where student_id=#{studentId} and experiment_id=#{experimentId}
-            )
+        select url from stu_experiment
+        where experiment_id=#{experimentId} and student_id=#{studentId}
     </select>
 </mapper>

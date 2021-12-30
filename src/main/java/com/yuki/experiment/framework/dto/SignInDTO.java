@@ -12,7 +12,6 @@ public class SignInDTO {
 
     private BigDecimal attendanceScore;
 
-    private Date thisAttendanceTime;
 
     private Date lastAttendanceTime;
 

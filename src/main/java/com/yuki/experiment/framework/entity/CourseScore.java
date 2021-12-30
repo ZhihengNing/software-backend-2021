@@ -37,11 +37,6 @@ public class CourseScore implements Serializable {
     @ApiModelProperty("课程得分")
     private BigDecimal courseScore;
 
-    /**
-     * 这次考勤时间
-     */
-    @ApiModelProperty("此次考勤时间")
-    private Date thisAttendanceTime;
 
     /**
      * 上次考勤时间

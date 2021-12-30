@@ -115,9 +115,9 @@ public class FileUtil {
     }
 
 
-    public static void deleteFile(String path) {
-        if (path != null) {
-            String replace = path.replace(WEBPATH, PATH);
+    public static void deleteFile(String webUrl) {
+        if (webUrl != null) {
+            String replace = webUrl.replace(WEBPATH, PATH);
             File file = new File(replace);
             if (file.isFile() && file.exists()) {
                 file.delete();

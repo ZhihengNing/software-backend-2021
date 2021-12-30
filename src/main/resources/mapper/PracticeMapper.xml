@@ -14,13 +14,11 @@
             <result property="endTime" column="end_time" jdbcType="TIMESTAMP"/>
             <result property="teacherId" column="teacher_id" jdbcType="INTEGER"/>
             <result property="score" column="score" jdbcType="DECIMAL"/>
-            <result property="ratio" column="ratio" jdbcType="DECIMAL"/>
     </resultMap>
 
     <sql id="Base_Column_List">
         id,counter_practice_id,course_id,
         create_time,update_time,start_time,
-        end_time,teacher_id,score,
-        ratio
+        end_time,teacher_id,score
     </sql>
 </mapper>

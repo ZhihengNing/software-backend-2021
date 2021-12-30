@@ -25,12 +25,21 @@ import java.util.List;
 public class CourseScoreServiceImpl implements CourseScoreService {
 
     private final BigDecimal EVERY_ATTENDANCE_SCORE=BigDecimal.ONE;
-    @Autowired
-    private CourseScoreMapper courseScoreMapper;
-    @Autowired
-    private CourseMapper courseMapper;
-    @Autowired
-    private TeacherCourseMapper teacherCourseMapper;
+
+    private final CourseScoreMapper courseScoreMapper;
+
+    private final CourseMapper courseMapper;
+
+    private final TeacherCourseMapper teacherCourseMapper;
+
+    public CourseScoreServiceImpl(CourseScoreMapper courseScoreMapper,
+                                  CourseMapper courseMapper,
+                                  TeacherCourseMapper teacherCourseMapper) {
+        this.courseScoreMapper = courseScoreMapper;
+        this.courseMapper = courseMapper;
+        this.teacherCourseMapper = teacherCourseMapper;
+    }
+
     @Override
     public List<JSONObject> getCourseInfoAndIsActive(Integer studentID) {
         QueryWrapper<CourseScore>queryWrapper=new QueryWrapper<>();
@@ -73,7 +82,7 @@ public class CourseScoreServiceImpl implements CourseScoreService {
     }
 
     @Override
-    public SignInDTO signIn(Integer studentId, Integer courseId) {
+    public CourseScore signIn(Integer studentId, Integer courseId) {
 
         QueryWrapper<CourseScore> queryWrapper = new QueryWrapper<>();
         queryWrapper.eq("student_id", studentId)
@@ -82,17 +91,14 @@ public class CourseScoreServiceImpl implements CourseScoreService {
         if (courseScore.getIsActive() == 0) {
             return null;
         }
-        Date thisAttendanceTime = courseScore.getThisAttendanceTime();
+        Date lastAttendanceTime = courseScore.getLastAttendanceTime();
         Date now = new Date();
-        if (judgeSignIn(now, thisAttendanceTime)) {
+        if (judgeSignIn(now, lastAttendanceTime)) {
             BigDecimal newScore = courseScore.getAttendanceScore().add(EVERY_ATTENDANCE_SCORE);
             courseScore.setAttendanceScore(newScore);
-            courseScore.setThisAttendanceTime(now);
-            courseScore.setLastAttendanceTime(thisAttendanceTime);
+            courseScore.setLastAttendanceTime(now);
             if (courseScoreMapper.updateById(courseScore) > 0) {
-                return SignInDTO.builder().thisAttendanceTime(now)
-                        .lastAttendanceTime(thisAttendanceTime)
-                        .attendanceScore(newScore).build();
+                return courseScore;
             }
         }
         return null;

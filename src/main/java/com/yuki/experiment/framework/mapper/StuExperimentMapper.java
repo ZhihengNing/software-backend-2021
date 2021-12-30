@@ -5,19 +5,17 @@ import com.yuki.experiment.framework.entity.StuExperiment;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 
-import java.util.List;
-
 /**
 * @author 86180
 * @description 针对表【stu_experiment】的数据库操作Mapper
-* @createDate 2021-11-12 21:43:09
-* @Entity com.yuki.experiment.framework.entity.StuExperiment
+* @createDate 2021-12-29 18:27:03
+* @Entity generator.domain.StuExperiment
 */
 @Repository
 public interface StuExperimentMapper extends BaseMapper<StuExperiment> {
 
-    String getUrl(@Param("studentId")Integer studentId, @Param("experimentId") Integer experimentId);
-
+    String getUrl(@Param("studentId")Integer studentId
+            ,@Param("experimentId")Integer experimentId);
 }
 
 

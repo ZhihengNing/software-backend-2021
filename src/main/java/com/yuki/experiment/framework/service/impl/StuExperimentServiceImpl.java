@@ -1,17 +1,15 @@
 package com.yuki.experiment.framework.service.impl;
 
-import com.alibaba.fastjson.JSONObject;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
-import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import com.yuki.experiment.common.utils.FileUtil;
 import com.yuki.experiment.framework.dto.FileInfoDTO;
+import com.yuki.experiment.framework.dto.StudentGradeDTO;
+import com.yuki.experiment.framework.entity.Course;
 import com.yuki.experiment.framework.entity.CourseScore;
 import com.yuki.experiment.framework.entity.StuExperiment;
-import com.yuki.experiment.framework.entity.StudentUploadFile;
 import com.yuki.experiment.framework.mapper.CourseMapper;
 import com.yuki.experiment.framework.mapper.CourseScoreMapper;
 import com.yuki.experiment.framework.mapper.StuExperimentMapper;
-import com.yuki.experiment.framework.mapper.StudentUploadFileMapper;
 import com.yuki.experiment.framework.service.StuExperimentService;
 import javafx.util.Pair;
 import lombok.extern.slf4j.Slf4j;
@@ -20,8 +18,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 @Slf4j
@@ -31,7 +29,6 @@ public class StuExperimentServiceImpl implements StuExperimentService {
 
     private StuExperimentMapper stuExperimentMapper;
 
-    private StudentUploadFileMapper studentUploadFileMapper;
 
     private CourseScoreMapper courseScoreMapper;
 
@@ -42,10 +39,6 @@ public class StuExperimentServiceImpl implements StuExperimentService {
         this.stuExperimentMapper = stuExperimentMapper;
     }
 
-    @Autowired
-    public void setStudentUploadFileMapper(StudentUploadFileMapper studentUploadFileMapper) {
-        this.studentUploadFileMapper = studentUploadFileMapper;
-    }
     @Autowired
     public void setCourseScoreMapper(CourseScoreMapper courseScoreMapper) {
         this.courseScoreMapper = courseScoreMapper;
@@ -73,58 +66,39 @@ public class StuExperimentServiceImpl implements StuExperimentService {
         String webPath = twoUrl.getValue();
         //保存到服务器
         FileInfoDTO fileInfoDTO = FileUtil.preserveFile(multipartFile, path, webPath);
+
         String url = fileInfoDTO.getFileUrl();
         String name = fileInfoDTO.getFileName();
-        StudentUploadFile file = new StudentUploadFile();
-        file.setName(name);
-        file.setUrl(url);
-        if (file.getId() != null) {
-            stuExperiment.setFileId(file.getId());
-            log.info(name + "成功保存到数据库！");
-            //插入到stu_experiment表进行保存
-            if (stuExperimentMapper.insert(stuExperiment) > 0) {
-                //插入到student_upload_file表进行保存
-                return studentUploadFileMapper.insert(file);
-            }
-        }
-        return 0;
+
+        stuExperiment.setUrl(url);
+        log.info(name + "成功保存到数据库！");
+        //插入到stu_experiment表进行保存
+        return stuExperimentMapper.insert(stuExperiment);
     }
 
 
     @Override
-    public int update(MultipartFile multipartFile, Integer studentId,Integer experimentId,String jobContent) {
+    public StuExperiment update(MultipartFile multipartFile, Integer studentId, Integer experimentId, String jobContent) {
         Pair<String, String> twoUrl = FileUtil.generatorTwoUrl(experimentFileUploadPath, experimentId, studentId);
         String path = twoUrl.getKey();
         String webPath = twoUrl.getValue();
         //在服务器删除原来文件的url
-        Integer fileId = stuExperimentMapper.selectOne(new QueryWrapper<StuExperiment>()
-                .eq("student_id", studentId)
-                .eq("experiment_id", experimentId)).getFileId();
-        String url=stuExperimentMapper.getUrl(studentId, experimentId);
-        if (url != null) {
-            FileUtil.deleteFile(url);
+        String originalUrl = stuExperimentMapper.getUrl(studentId, experimentId);
+        if (originalUrl != null) {
+            FileUtil.deleteFile(originalUrl);
         }
         //把新的文件url存入服务器
         FileInfoDTO fileInfoDTO = FileUtil.preserveFile(multipartFile, path, webPath);
-        String data = fileInfoDTO.getFileUrl();
+        String url = fileInfoDTO.getFileUrl();
         String name = fileInfoDTO.getFileName();
-        //这里要更新student_upload_file
-        StudentUploadFile temp = new StudentUploadFile();
-        temp.setId(fileId);
-        temp.setName(name);
-        temp.setUrl(data);
-        if (studentUploadFileMapper.updateById(temp) > 0) {
-            log.info(name + "成功替换原文件,存到数据库中");
-            //这里更新stu_experiment
-            UpdateWrapper<StuExperiment> wrapper = new UpdateWrapper<>();
-            //.set(stuExperiment.getExperimentScore() == null, "experiment_score", null)
-            //.set(stuExperiment.getFileId() == null, "file_id", null)
-            wrapper.set(jobContent != null, "job_content", jobContent)
-                    .eq("student_id", studentId)
-                    .eq("experiment_id", experimentId);
-            return stuExperimentMapper.update(null, wrapper);
+        log.info(name + "成功替换原文件,存到数据库中");
+        //这里更新stu_experiment
+        StuExperiment build = StuExperiment.builder().experimentId(experimentId).studentId(studentId)
+                .jobContent(jobContent).url(url).build();
+        if (stuExperimentMapper.updateById(build) > 0) {
+            return build;
         }
-        return 0;
+        return null;
     }
 
     @Override
@@ -137,25 +111,57 @@ public class StuExperimentServiceImpl implements StuExperimentService {
         return stuExperimentMapper.updateById(build);
     }
 
+    private static List<BigDecimal> transfer(String scoreRatio){
+        String[] split = scoreRatio.split(",");
+        List<BigDecimal>list=new ArrayList<>();
+        for (String s : split) {
+            list.add(BigDecimal.valueOf(Double.parseDouble(s)));
+        }
+        return list;
+    }
     @Override
-    public JSONObject getStudentGrade(Integer studentId, Integer courseId) {
+    public StudentGradeDTO getStudentGrade(Integer studentId, Integer courseId) {
 //        QueryWrapper<CourseScore> wrapper = new QueryWrapper<>();
 //        wrapper.eq("student_id", studentId).eq("course_id", courseId);
-//        CourseScore courseScore = courseScoreMapper.selectOne(wrapper);
+//        CourseScore StudentGrade = courseScoreMapper.selectOne(wrapper);
 //        //得到某门课的考勤得分
-//        BigDecimal attendanceScore = courseScore.getAttendanceScore() == null ?
-//                new BigDecimal(0) : courseScore.getAttendanceScore();
+//        BigDecimal attendanceScore = StudentGrade.getAttendanceScore() == null ?
+//                new BigDecimal(0) : StudentGrade.getAttendanceScore();
 //TODO
 
+        QueryWrapper<CourseScore> courseScoreQueryWrapper = new QueryWrapper<>();
+        courseScoreQueryWrapper.eq("student_id", studentId).eq("course_id", courseId);
+        CourseScore StudentGrade = courseScoreMapper.selectOne(courseScoreQueryWrapper);
 
-        QueryWrapper<CourseScore>courseScoreQueryWrapper=new QueryWrapper<>();
-        courseScoreQueryWrapper.eq("student_id",studentId).eq("course_id",courseId);
-        CourseScore courseScore = courseScoreMapper.selectOne(courseScoreQueryWrapper);
+        //计算考勤相关
+        QueryWrapper<Course> courseQueryWrapper = new QueryWrapper<>();
+        courseQueryWrapper.eq("id", courseId);
+        Course course = courseMapper.selectOne(courseQueryWrapper);
+        String scoreRatio = course.getScoreRatio();
+        List<BigDecimal> transfer = transfer(scoreRatio);
+        BigDecimal attendance = StudentGrade.getAttendanceScore().multiply(transfer.get(0));
 
-
+        //计算实验相关
         QueryWrapper<StuExperiment> wrapper1 = new QueryWrapper<>();
         wrapper1.eq("student_id", studentId);
         List<StuExperiment> stuExperiments = stuExperimentMapper.selectList(wrapper1);
-        return stuExperiments;
+        BigDecimal start = BigDecimal.ZERO;
+        for (StuExperiment item : stuExperiments) {
+            start = start.add(item.getExperimentScore());
+        }
+
+        BigDecimal experiments = start.multiply(transfer.get(1));
+        //计算对抗练习相关
+
+
+        BigDecimal practices = null;
+
+        StudentGrade.setCourseScore(attendance.add(experiments).add(practices));
+
+        StudentGradeDTO build = StudentGradeDTO.builder().courseScore(StudentGrade)
+                .experimentScore(stuExperiments).build();
+
+
+        return build;
     }
 }

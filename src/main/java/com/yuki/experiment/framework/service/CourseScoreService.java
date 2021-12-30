@@ -12,5 +12,5 @@ public interface CourseScoreService {
 
     int setCourseActive(Integer studentId,Integer courseId);
 
-   SignInDTO signIn(Integer studentId, Integer courseId);
+   CourseScore signIn(Integer studentId, Integer courseId);
 }

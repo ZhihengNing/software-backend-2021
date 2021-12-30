@@ -15,7 +15,6 @@ public class DateUtil {
         return equals(calendar,date);
     }
 
-
     public static void main(String[] args) throws ParseException {
         SimpleDateFormat format=new SimpleDateFormat("yyyy-MM-dd");
         Date parse = format.parse("2012-02-05");

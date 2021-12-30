@@ -184,17 +184,18 @@ public class ExperimentController {
 
     @ApiOperation("学生更新实验作业")
     @RequestMapping(value = "/work/{experimentId}/{studentId}",method = RequestMethod.PUT)
-    public CommonResult updateStuExperiment(@RequestPart(value = "file",required = false) MultipartFile multipartFile,
-                                            @PathVariable Integer studentId,
-                                            @PathVariable Integer experimentId,
-                                            @RequestParam("jobContent") String jobContent) {
+    public CommonResult<StuExperiment> updateStuExperiment(@PathVariable Integer studentId,
+                                                        @PathVariable Integer experimentId,
+                                                        @RequestPart(value = "file",required = false) MultipartFile multipartFile,
+                                                        @RequestParam(value = "jobContent",required = false) String jobContent) {
         if (studentId == null) {
             return CommonResult.failed("学生Id不能为空");
         } else if (experimentId == null) {
             return CommonResult.failed("实验项目Id不能为空");
         }
-        if (stuExperimentService.update(multipartFile, studentId, experimentId, jobContent) > 0) {
-            return CommonResult.success();
+        StuExperiment update = stuExperimentService.update(multipartFile, studentId, experimentId, jobContent);
+        if(update!=null) {
+            return CommonResult.success(update);
         }
         return CommonResult.failed();
     }
