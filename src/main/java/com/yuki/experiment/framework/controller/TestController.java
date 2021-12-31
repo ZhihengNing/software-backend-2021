@@ -3,6 +3,7 @@ package com.yuki.experiment.framework.controller;
 import com.yuki.experiment.common.result.CommonResult;
 import com.yuki.experiment.common.utils.FileUtil;
 import com.yuki.experiment.framework.entity.Administrator;
+import com.yuki.experiment.framework.mapper.mongo.MongoMapper;
 import com.yuki.experiment.framework.mapper.mysql.CourseNoticeMapper;
 import com.yuki.experiment.framework.service.TestService;
 import io.swagger.annotations.Api;
@@ -27,13 +28,17 @@ public class TestController {
     @Autowired
     private CourseNoticeMapper courseNoticeMapper;
 
+    @Autowired
+    private MongoMapper mongoMapper;
+
     public TestController(TestService service){
         this.service=service;
     }
     @ApiOperation("这是一个测试controller")
     @RequestMapping(value = "/select",method = RequestMethod.GET)
-    public CommonResult<List<Administrator>> demo(){
-        //wrapper.select("name","create_time").ge("id",1951121);
+    public CommonResult<List<Administrator>> demo() {
+        System.out.println(mongoMapper.getPractice());
+
         return CommonResult.success(service.selectList());
     }
 
