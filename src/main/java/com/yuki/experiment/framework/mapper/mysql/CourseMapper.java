@@ -1,13 +1,10 @@
-package com.yuki.experiment.framework.mapper;
+package com.yuki.experiment.framework.mapper.mysql;
 
 import com.alibaba.fastjson.JSONObject;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-import com.sun.mail.imap.protocol.BASE64MailboxDecoder;
 import com.yuki.experiment.framework.entity.Course;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
-
-import java.util.List;
 
 /**
 * @author 86180

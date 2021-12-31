@@ -1,12 +1,8 @@
-package com.yuki.experiment.framework.mapper;
+package com.yuki.experiment.framework.mapper.mysql;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.yuki.experiment.framework.entity.Notice;
-import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
-
-import java.util.Date;
-import java.util.List;
 
 /**
 * @author 86180

@@ -1,7 +1,6 @@
 package com.yuki.experiment.framework.service;
 
 import com.alibaba.fastjson.JSONObject;
-import com.yuki.experiment.framework.dto.SignInDTO;
 import com.yuki.experiment.framework.entity.CourseScore;
 
 import java.util.List;

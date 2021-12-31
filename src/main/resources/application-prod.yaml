@@ -1,10 +1,16 @@
 spring:
   datasource:
-    username: root
-    password: as661778
-    url: jdbc:mysql://localhost:3306/software
-    driver-class-name: com.mysql.cj.jdbc.Driver
-    type: com.alibaba.druid.pool.DruidDataSource
+    mysql:
+      username: root
+      password: as661778
+      jdbc-url: jdbc:mysql://localhost:3306/software
+      driver-class-name: com.mysql.cj.jdbc.Driver
+      type: com.alibaba.druid.pool.DruidDataSource
+    mongodb:
+      username: root
+      password: as661778
+      jdbc-url: mongodb://localhost:27017/software
+      type: com.alibaba.druid.pool.DruidDataSource
   mail:
     protocol: smtp #发送邮件协议
     host: smtp.126.com

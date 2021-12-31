@@ -2,12 +2,10 @@ package com.yuki.experiment.framework.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.yuki.experiment.framework.entity.Teacher;
-import com.yuki.experiment.framework.mapper.TeacherMapper;
+import com.yuki.experiment.framework.mapper.mysql.TeacherMapper;
 import com.yuki.experiment.framework.service.TeacherService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
-import java.util.List;
 
 @Service
 public class TeacherServiceImpl implements TeacherService {

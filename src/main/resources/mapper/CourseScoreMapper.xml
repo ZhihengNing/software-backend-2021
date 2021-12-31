@@ -2,7 +2,7 @@
 <!DOCTYPE mapper
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.yuki.experiment.framework.mapper.CourseScoreMapper">
+<mapper namespace="com.yuki.experiment.framework.mapper.mysql.CourseScoreMapper">
 
     <resultMap id="BaseResultMap" type="com.yuki.experiment.framework.entity.CourseScore">
             <id property="courseId" column="course_id" jdbcType="INTEGER"/>

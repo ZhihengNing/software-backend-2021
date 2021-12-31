@@ -2,7 +2,7 @@ package com.yuki.experiment.framework.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.yuki.experiment.framework.entity.Experiment;
-import com.yuki.experiment.framework.mapper.ExperimentMapper;
+import com.yuki.experiment.framework.mapper.mysql.ExperimentMapper;
 import com.yuki.experiment.framework.service.ExperimentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

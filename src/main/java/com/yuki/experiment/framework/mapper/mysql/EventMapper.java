@@ -1,4 +1,4 @@
-package com.yuki.experiment.framework.mapper;
+package com.yuki.experiment.framework.mapper.mysql;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.yuki.experiment.framework.entity.Event;

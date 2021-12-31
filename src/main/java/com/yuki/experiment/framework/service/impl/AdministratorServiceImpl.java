@@ -1,9 +1,8 @@
 package com.yuki.experiment.framework.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
-import com.yuki.experiment.common.utils.JwtUtil;
 import com.yuki.experiment.framework.entity.Administrator;
-import com.yuki.experiment.framework.mapper.AdministratorMapper;
+import com.yuki.experiment.framework.mapper.mysql.AdministratorMapper;
 import com.yuki.experiment.framework.service.AdministratorService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

@@ -1,9 +1,8 @@
-package com.yuki.experiment.framework.mapper;
+package com.yuki.experiment.framework.mapper.mysql;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.yuki.experiment.framework.entity.Practice;
 import org.springframework.stereotype.Repository;
-import org.springframework.web.bind.annotation.RequestMapping;
 
 /**
 * @author 86180

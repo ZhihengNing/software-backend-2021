@@ -4,7 +4,7 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.yuki.experiment.common.utils.SimilarityUtil;
 import com.yuki.experiment.framework.dto.CourseNoticeTeacherDTO;
 import com.yuki.experiment.framework.entity.CourseNotice;
-import com.yuki.experiment.framework.mapper.CourseNoticeMapper;
+import com.yuki.experiment.framework.mapper.mysql.CourseNoticeMapper;
 import com.yuki.experiment.framework.service.CourseNoticeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

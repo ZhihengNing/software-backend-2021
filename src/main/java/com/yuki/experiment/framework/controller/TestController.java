@@ -3,19 +3,16 @@ package com.yuki.experiment.framework.controller;
 import com.yuki.experiment.common.result.CommonResult;
 import com.yuki.experiment.common.utils.FileUtil;
 import com.yuki.experiment.framework.entity.Administrator;
-import com.yuki.experiment.framework.mapper.CourseNoticeMapper;
+import com.yuki.experiment.framework.mapper.mysql.CourseNoticeMapper;
 import com.yuki.experiment.framework.service.TestService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.scheduling.annotation.Async;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletResponse;
-import javax.swing.*;
-import java.io.*;
 import java.nio.charset.StandardCharsets;
 import java.util.List;
 

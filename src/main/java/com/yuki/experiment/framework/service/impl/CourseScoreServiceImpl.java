@@ -3,15 +3,12 @@ package com.yuki.experiment.framework.service.impl;
 import com.alibaba.fastjson.JSONObject;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
-import com.yuki.experiment.framework.dto.SignInDTO;
-import com.yuki.experiment.framework.entity.Course;
 import com.yuki.experiment.framework.entity.CourseScore;
-import com.yuki.experiment.framework.mapper.CourseMapper;
-import com.yuki.experiment.framework.mapper.CourseScoreMapper;
-import com.yuki.experiment.framework.mapper.TeacherCourseMapper;
+import com.yuki.experiment.framework.mapper.mysql.CourseMapper;
+import com.yuki.experiment.framework.mapper.mysql.CourseScoreMapper;
+import com.yuki.experiment.framework.mapper.mysql.TeacherCourseMapper;
 import com.yuki.experiment.framework.service.CourseScoreService;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;

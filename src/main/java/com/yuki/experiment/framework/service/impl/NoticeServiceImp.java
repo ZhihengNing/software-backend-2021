@@ -2,12 +2,11 @@ package com.yuki.experiment.framework.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.yuki.experiment.framework.entity.Notice;
-import com.yuki.experiment.framework.mapper.NoticeMapper;
+import com.yuki.experiment.framework.mapper.mysql.NoticeMapper;
 import com.yuki.experiment.framework.service.NoticeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 

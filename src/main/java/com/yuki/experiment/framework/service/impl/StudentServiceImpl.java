@@ -4,7 +4,7 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.yuki.experiment.common.utils.FileUtil;
 import com.yuki.experiment.framework.dto.FileInfoDTO;
 import com.yuki.experiment.framework.entity.Student;
-import com.yuki.experiment.framework.mapper.StudentMapper;
+import com.yuki.experiment.framework.mapper.mysql.StudentMapper;
 import com.yuki.experiment.framework.service.StudentService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;

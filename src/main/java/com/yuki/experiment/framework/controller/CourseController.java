@@ -6,9 +6,8 @@ import com.yuki.experiment.common.exception.FileIsNullException;
 import com.yuki.experiment.common.result.CommonResult;
 import com.yuki.experiment.common.utils.FileUtil;
 import com.yuki.experiment.framework.dto.FileInfoDTO;
-import com.yuki.experiment.framework.dto.SignInDTO;
 import com.yuki.experiment.framework.entity.*;
-import com.yuki.experiment.framework.mapper.TeacherMapper;
+import com.yuki.experiment.framework.mapper.mysql.TeacherMapper;
 import com.yuki.experiment.framework.service.CourseFeedbackService;
 import com.yuki.experiment.framework.service.CourseFileService;
 import com.yuki.experiment.framework.service.CourseScoreService;
@@ -21,8 +20,6 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.math.BigDecimal;
-import java.util.Calendar;
 import java.util.List;
 
 @RestController

@@ -3,14 +3,11 @@ package com.yuki.experiment.framework.service.impl;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.yuki.experiment.framework.entity.Course;
 import com.yuki.experiment.framework.entity.CourseScore;
-import com.yuki.experiment.framework.mapper.CourseMapper;
-import com.yuki.experiment.framework.mapper.CourseScoreMapper;
+import com.yuki.experiment.framework.mapper.mysql.CourseMapper;
+import com.yuki.experiment.framework.mapper.mysql.CourseScoreMapper;
 import com.yuki.experiment.framework.service.CourseService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
-import java.math.BigDecimal;
-import java.util.List;
 
 @Service
 public class CourseServiceImpl implements CourseService {
