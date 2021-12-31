@@ -3,13 +3,12 @@ package com.yuki.experiment.framework.controller;
 import com.alibaba.fastjson.JSONObject;
 import com.yuki.experiment.common.result.CommonResult;
 import com.yuki.experiment.common.utils.FileUtil;
+import com.yuki.experiment.framework.service.impl.PracticeServiceImpl;
 import com.yuki.experiment.framework.entity.Administrator;
-import com.yuki.experiment.framework.mapper.mysql.CourseNoticeMapper;
 import com.yuki.experiment.framework.service.TestService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
-import org.bson.Document;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.web.bind.annotation.*;
@@ -30,12 +29,19 @@ public class TestController {
     @Autowired
     private MongoTemplate mongoTemplate;
 
+    @Autowired
+    private PracticeServiceImpl practiceServiceImpl;
+
     public TestController(TestService service){
         this.service=service;
     }
+
+
     @ApiOperation("这是一个测试controller")
     @RequestMapping(value = "/select",method = RequestMethod.GET)
     public CommonResult<List<Administrator>> demo() {
+
+        practiceServiceImpl.insert();
 
         System.out.println(mongoTemplate.findAll(JSONObject.class,"practice"));
 
