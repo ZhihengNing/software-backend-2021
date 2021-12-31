@@ -8,17 +8,16 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.boot.jdbc.DataSourceBuilder;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Primary;
 import org.springframework.core.io.support.PathMatchingResourcePatternResolver;
 
 import javax.sql.DataSource;
 
-@Configuration
+//@Configuration
 @MapperScan(basePackages = "com.yuki.experiment.framework.mapper.mongo",
         sqlSessionFactoryRef = "mongoSqlSessionFactory")
-public class MongoDataSourceConfig {
 
+public class MongoDataSourceConfig {
 
     // 将这个对象放入Spring容器中
     @Bean(name = "mongoDataSource")
