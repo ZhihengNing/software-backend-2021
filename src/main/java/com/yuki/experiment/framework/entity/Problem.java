@@ -3,11 +3,12 @@ package com.yuki.experiment.framework.entity;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
+import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.List;
 
 @Data
-public class Problem {
+public class Problem implements Serializable {
 
     @ApiModelProperty("题干")
     private String stem;
@@ -17,6 +18,5 @@ public class Problem {
 
     @ApiModelProperty("练习分值")
     private BigDecimal score;
-
 
 }

@@ -26,25 +26,13 @@ public class TestController {
 
     private final TestService service;
 
-    @Autowired
-    private MongoTemplate mongoTemplate;
-
-    @Autowired
-    private PracticeServiceImpl practiceServiceImpl;
-
     public TestController(TestService service){
         this.service=service;
     }
 
-
     @ApiOperation("这是一个测试controller")
     @RequestMapping(value = "/select",method = RequestMethod.GET)
     public CommonResult<List<Administrator>> demo() {
-
-        practiceServiceImpl.insert();
-
-        System.out.println(mongoTemplate.findAll(JSONObject.class,"practice"));
-
         return CommonResult.success(service.selectList());
     }
 

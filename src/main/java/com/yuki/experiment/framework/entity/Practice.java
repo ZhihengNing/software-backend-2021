@@ -4,12 +4,14 @@ import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 import org.bson.types.ObjectId;
 
+import java.io.Serializable;
 import java.util.List;
 
 @Data
-public class Practice {
+public class Practice implements Serializable {
 
-    private ObjectId id;
+    @ApiModelProperty("主键唯一标识")
+    private String id;
 
     @ApiModelProperty("课程Id")
     private Integer courseId;

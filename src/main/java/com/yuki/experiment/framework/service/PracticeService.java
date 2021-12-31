@@ -6,9 +6,9 @@ import java.util.List;
 
 public interface PracticeService {
 
-    List<Practice> getAll();
+    List<Practice> getAllByCourseId(Integer courseId);
 
-    void insert(Practice jsonObject);
+    Practice insert(Practice jsonObject);
 
     void insert();
 }

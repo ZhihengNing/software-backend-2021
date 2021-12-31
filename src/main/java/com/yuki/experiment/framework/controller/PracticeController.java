@@ -3,33 +3,34 @@ package com.yuki.experiment.framework.controller;
 import com.yuki.experiment.common.result.CommonResult;
 import com.yuki.experiment.framework.entity.Practice;
 import com.yuki.experiment.framework.service.PracticeService;
-import com.yuki.experiment.framework.service.impl.PracticeServiceImpl;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import io.swagger.annotations.ApiOperation;
+import org.springframework.web.bind.annotation.*;
 
+import javax.annotation.Resource;
 import java.util.List;
 
 @RestController
 @RequestMapping("/practice")
 public class PracticeController {
 
-    @Autowired
-    private PracticeService practiceServiceImpl;
+    @Resource
+    private PracticeService practiceService;
 
-    @RequestMapping(value = "/insert", method = RequestMethod.POST)
-    public CommonResult<List<Practice>> insert(@RequestBody Practice practice) {
-        practiceServiceImpl.insert(practice);
-        return CommonResult.success();
-
+    @ApiOperation("老师上传对抗练习")
+    @RequestMapping(value = "/add", method = RequestMethod.POST)
+    public CommonResult<Practice> addPractice(@RequestBody Practice practice) {
+        Practice insert = practiceService.insert(practice);
+        if (insert != null) {
+            return CommonResult.success(practice);
+        }
+        return CommonResult.failed();
     }
 
-    @RequestMapping(value = "/select", method = RequestMethod.GET)
-    public CommonResult<List<Practice>> get() {
-        return CommonResult.success(practiceServiceImpl.getAll());
+    @ApiOperation("老师查看对抗练习")
+    @RequestMapping(value = "/query", method = RequestMethod.GET)
+    public CommonResult<List<Practice>> queryPractice(@RequestParam(value = "courseId",required = false)
+                                                                  Integer courseId) {
+        return CommonResult.success(practiceService.getAllByCourseId(courseId));
 
     }
-
 }
