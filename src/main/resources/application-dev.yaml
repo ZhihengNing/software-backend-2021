@@ -1,11 +1,10 @@
 spring:
   datasource:
-    mysql:
-      username: root
-      password: as661778
-      jdbc-url: jdbc:mysql://139.224.65.105:3306/software
-      driver-class-name: com.mysql.cj.jdbc.Driver
-      type: com.alibaba.druid.pool.DruidDataSource
+    username: root
+    password: as661778
+    url: jdbc:mysql://139.224.65.105:3306/software
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    type: com.alibaba.druid.pool.DruidDataSource
 
   data:
     mongodb:

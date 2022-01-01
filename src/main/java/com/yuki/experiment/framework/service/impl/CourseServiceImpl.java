@@ -70,13 +70,13 @@ public class CourseServiceImpl implements CourseService {
         }
         String[] split = scoreRatio.split(",");
         if (attendanceRatio != null) {
-            split[0] = String.valueOf(attendanceRatio);
+            split[0] = attendanceRatio;
         }
         if (experimentRatio != null) {
-            split[1] = String.valueOf(experimentRatio);
+            split[1] = experimentRatio;
         }
         if (practiceRatio != null) {
-            split[2] = String.valueOf(practiceRatio);
+            split[2] = practiceRatio;
         }
         CourseRatioDTO build = CourseRatioDTO.builder().attendanceRatio(split[0])
                 .experimentRatio(split[1])

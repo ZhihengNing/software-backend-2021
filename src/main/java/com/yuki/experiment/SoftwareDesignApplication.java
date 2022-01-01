@@ -8,7 +8,7 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 @SpringBootApplication(exclude = {DataSourceAutoConfiguration.class})
 @EnableTransactionManagement
-//@MapperScan("com.yuki.experiment.framework.mapper.mysql")
+@MapperScan("com.yuki.experiment.framework.mapper.mysql")
 public class SoftwareDesignApplication {
 
     public static void main(String[] args) {

@@ -52,7 +52,7 @@ public class Course implements Serializable {
      * 课程信息修改时间
      */
     @ApiModelProperty("课程信息修改时间")
-    @TableField(fill = FieldFill.UPDATE)
+    @TableField(fill = FieldFill.INSERT_UPDATE)
     private Date updateTime;
 
     /**
