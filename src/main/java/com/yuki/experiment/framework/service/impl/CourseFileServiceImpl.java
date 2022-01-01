@@ -16,21 +16,11 @@ public class CourseFileServiceImpl implements CourseFileService {
     private CourseFileMapper mapper;
 
     @Override
-    public CourseFile getCourseFileById(Integer id) {
-        return mapper.selectOne(new QueryWrapper<CourseFile>().eq("id", id));
-    }
-
-    @Override
-    public List<CourseFile> getCourseFileByCourseId(Integer courseId) {
-        QueryWrapper<CourseFile>wrapper=new QueryWrapper<>();
-        wrapper.eq("course_id",courseId);
-        return mapper.selectList(wrapper);
-    }
-
-    @Override
-    public List<CourseFile> getCourseFileByTeacherId(Integer teacherId) {
+    public List<CourseFile> getCourseFiles(Integer courseId, Integer teacherId, Integer courseFileId) {
         QueryWrapper<CourseFile> wrapper = new QueryWrapper<>();
-        wrapper.eq("teacher_id", teacherId);
+        wrapper.eq(courseId!=null,"courseId",courseFileId)
+                .eq(teacherId!=null,"teacherId",teacherId)
+                .eq(courseFileId!=null,"id",courseFileId);
         return mapper.selectList(wrapper);
     }
 

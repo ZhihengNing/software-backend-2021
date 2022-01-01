@@ -1,4 +1,5 @@
 package com.yuki.experiment.common.config;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import springfox.documentation.builders.ApiInfoBuilder;
@@ -13,6 +14,16 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2WebMvc;
 @Configuration
 @EnableSwagger2WebMvc
 public class SwaggerConfig {
+
+    @Value("${knife4j.title}")
+    private String title;
+
+    @Value("${knife4j.description}")
+    private String description;
+
+    @Value("${knife4j.version}")
+    private String version;
+
     @Bean
     public Docket createRestApi() {
         return new Docket(DocumentationType.SWAGGER_2)
@@ -25,10 +36,10 @@ public class SwaggerConfig {
 
     private ApiInfo apiInfo() {
         return new ApiInfoBuilder()
-                .title("软件工程课设接口文档")
-                .description("接口咨询qq--1094554173")
+                .title(title)
+                .description(description)
                 .contact(new Contact("nzh", "", "1094554173@qq.com"))
-                .version("2.0")
+                .version(version)
                 .build();
     }
 }

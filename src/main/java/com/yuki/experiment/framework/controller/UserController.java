@@ -7,6 +7,7 @@ import com.yuki.experiment.common.result.CommonResult;
 import com.yuki.experiment.common.role.MyRole;
 import com.yuki.experiment.common.utils.FileUtil;
 import com.yuki.experiment.common.utils.JwtUtil;
+import com.yuki.experiment.framework.entity.Teacher;
 import com.yuki.experiment.framework.manage.impl.MailServiceImpl;
 import com.yuki.experiment.framework.service.AdministratorService;
 import com.yuki.experiment.framework.service.StudentService;
@@ -142,6 +143,18 @@ public class UserController {
                 new String(name.getBytes(StandardCharsets.UTF_8), StandardCharsets.ISO_8859_1));
 
         FileUtil.downloadFile(url, response);
+    }
+
+    @ApiOperation("这个不要用")
+    @RequestMapping(value = "/{teacherName}",method = RequestMethod.POST)
+    public CommonResult<Boolean> insert(@PathVariable String teacherName) {
+        Teacher teacher = new Teacher();
+        teacher.setAdministratorId(1);
+        teacher.setGender("男");
+        teacher.setName(teacherName);
+        teacher.setPassword("123456");
+        teacherService.insert(teacher);
+        return CommonResult.success(true);
     }
 
 }

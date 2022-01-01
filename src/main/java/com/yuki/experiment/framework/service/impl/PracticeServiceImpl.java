@@ -19,13 +19,14 @@ public class PracticeServiceImpl implements PracticeService {
     @Resource
     private MongoTemplate mongoTemplate;
 
-    public List<Practice> getAllByCourseId(Integer courseId) {
-        if(courseId!=null) {
+    @Override
+    public List<Practice> getAll(Integer courseId, Integer teacherId, Integer practiceId) {
+        if (courseId != null) {
             Criteria criteria = Criteria.where("courseId").is(courseId);
             Query query = new Query(criteria);
             return mongoTemplate.find(query, Practice.class, "practice");
         }
-        return mongoTemplate.findAll(Practice.class,"practice");
+        return mongoTemplate.findAll(Practice.class, "practice");
     }
 
     public Practice insert(Practice jsonObject) {

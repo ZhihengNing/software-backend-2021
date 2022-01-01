@@ -5,6 +5,7 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.yuki.experiment.common.exception.FileIsNullException;
 import com.yuki.experiment.common.result.CommonResult;
 import com.yuki.experiment.common.utils.FileUtil;
+import com.yuki.experiment.framework.dto.CourseRatioDTO;
 import com.yuki.experiment.framework.dto.FileInfoDTO;
 import com.yuki.experiment.framework.entity.*;
 import com.yuki.experiment.framework.mapper.mysql.TeacherMapper;
@@ -20,6 +21,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 @RestController
@@ -91,7 +93,7 @@ public class CourseController {
         if (courseId == null) {
             return CommonResult.failed("课程Id不能为空");
         }
-        Course courseInfoByID = courseService.getCourseInfoByID(studentId, courseId);
+        Course courseInfoByID = courseService.getCourseInfo(studentId, courseId);
         if (courseInfoByID != null) {
             return CommonResult.success(courseInfoByID);
         }
@@ -107,19 +109,6 @@ public class CourseController {
         return CommonResult.success(feedbackByCourseId);
     }
 
-//    @ApiOperation("查看课程反馈")
-//    @RequestMapping(value = "/feedback/courseId/{courseId}", method = RequestMethod.GET)
-//    public CommonResult<List<CourseFeedback>> getFeedbackByCourse(@PathVariable Integer courseId) {
-//        List<CourseFeedback> feedbackByCourseId = courseFeedbackService.getFeedback(null, courseId);
-//        return CommonResult.success(feedbackByCourseId);
-//    }
-//
-//    @ApiOperation("查看课程反馈")
-//    @RequestMapping(value = "/feedback/studentId/{studentId}", method = RequestMethod.GET)
-//    public CommonResult<List<CourseFeedback>> getFeedbackByStudent(@PathVariable Integer studentId) {
-//        List<CourseFeedback> feedbackByStudentId = courseFeedbackService.getFeedback(studentId, null);
-//        return CommonResult.success(feedbackByStudentId);
-//    }
 
     @ApiOperation("插入课程反馈")
     @RequestMapping(value = "/feedback", method = RequestMethod.POST)
@@ -182,25 +171,17 @@ public class CourseController {
         return CommonResult.success();
     }
 
-    @ApiOperation("查看课程文件by课程Id")
-    @RequestMapping(value = "/file/courseId/{courseId}", method = RequestMethod.GET)
-    public CommonResult<List<CourseFile>> getFileListByCourseId(@PathVariable Integer courseId) {
-        if (courseId == null) {
-            return CommonResult.failed("课程Id不能为空");
-        }
-        List<CourseFile> courseFileByCourseId = courseFileService.getCourseFileByCourseId(courseId);
+    @ApiOperation("查看课程文件")
+    @RequestMapping(value = "/file", method = RequestMethod.GET)
+    public CommonResult<List<CourseFile>> queryCourseFiles(
+            @RequestParam(value = "courseId",required = false) Integer courseId,
+            @RequestParam(value = "teacherId",required = false)Integer teacherId,
+            @RequestParam(value = "courseFileId",required = false)Integer courseFileId) {
+        List<CourseFile> courseFileByCourseId = courseFileService
+                .getCourseFiles(courseId, teacherId, courseFileId);
         return CommonResult.success(courseFileByCourseId);
     }
 
-    @ApiOperation("查看课程文件by教师Id")
-    @RequestMapping(value = "/file/teacherId/{teacherId}", method = RequestMethod.GET)
-    public CommonResult<List<CourseFile>> getFileListByTeacherId(@PathVariable Integer teacherId) {
-        if (teacherId == null) {
-            return CommonResult.failed("教师Id不能为空");
-        }
-        List<CourseFile> courseFileByTeacherId = courseFileService.getCourseFileByTeacherId(teacherId);
-        return CommonResult.success(courseFileByTeacherId);
-    }
 
     @ApiOperation("删除课程文件")
     @RequestMapping(value = "/file/{fileIds}", method = RequestMethod.DELETE)
@@ -226,24 +207,26 @@ public class CourseController {
         return CommonResult.failed("激活失败");
     }
 
-//    @ApiOperation("设置课程考勤比例")
-//    @RequestMapping(value = "/setAttendanceRatio/{courseId}",method = RequestMethod.POST)
-//    public CommonResult setAttendance(@PathVariable Integer courseId,
-//                                      @RequestParam("attendanceRatio") BigDecimal attendanceRatio) {
-//        if (courseId == null) {
-//            return CommonResult.failed("课程Id不能为空");
-//        }
-//        if (attendanceRatio == null) {
-//            return CommonResult.failed("考勤比例不能为空");
-//        }
-//        BigDecimal courseAttendanceRatio = courseService.setCourseAttendanceRatio(courseId, attendanceRatio);
-//        if(courseAttendanceRatio!=null){
-//            return CommonResult.success(courseAttendanceRatio);
-//        }
-//        return CommonResult.failed();
-//    }
 
-    @ApiOperation("考勤功能")
+    @ApiOperation("设置比例（考勤，实验，对抗练习）")
+    @RequestMapping(value = "/setRatio/{courseId}/{teacherId}",method = RequestMethod.POST)
+    public CommonResult<CourseRatioDTO> setRatio(@PathVariable Integer courseId,@PathVariable Integer teacherId,
+                                                 @RequestBody CourseRatioDTO courseRatio) {
+        if (courseId == null) {
+            return CommonResult.failed("课程Id不能为空");
+        }
+
+        CourseRatioDTO courseRatioDTO = courseService
+                .setRatio(courseId, teacherId, courseRatio.getAttendanceRatio(),
+                        courseRatio.getExperimentRatio(), courseRatio.getPracticeRatio());
+        if (courseRatioDTO == null) {
+            return CommonResult.failed();
+        }
+        return CommonResult.success(courseRatioDTO);
+    }
+
+
+    @ApiOperation("学生考勤")
     @RequestMapping(value = "/signIn/{studentId}/{courseId}", method = RequestMethod.GET)
     public CommonResult<CourseScore> signIn(@PathVariable Integer studentId,
                                           @PathVariable Integer courseId

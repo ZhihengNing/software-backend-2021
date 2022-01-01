@@ -6,7 +6,7 @@ import java.util.List;
 
 public interface PracticeService {
 
-    List<Practice> getAllByCourseId(Integer courseId);
+    List<Practice> getAll(Integer courseId,Integer teacherId,Integer practiceId);
 
     Practice insert(Practice jsonObject);
 

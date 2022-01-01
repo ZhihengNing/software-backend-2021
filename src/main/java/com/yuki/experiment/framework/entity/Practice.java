@@ -2,7 +2,6 @@ package com.yuki.experiment.framework.entity;
 
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
-import org.bson.types.ObjectId;
 
 import java.io.Serializable;
 import java.util.List;

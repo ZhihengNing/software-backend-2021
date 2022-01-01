@@ -6,11 +6,8 @@ import java.util.List;
 
 public interface CourseFileService {
 
-    CourseFile getCourseFileById(Integer id);
+    List<CourseFile> getCourseFiles(Integer courseId,Integer teacherId,Integer courseFileId);
 
-    List<CourseFile> getCourseFileByCourseId(Integer courseId);
-
-    List<CourseFile> getCourseFileByTeacherId(Integer teacherId);
 
     int insertFile(String fileName,Integer courseId,Integer teacherId,String url);
 

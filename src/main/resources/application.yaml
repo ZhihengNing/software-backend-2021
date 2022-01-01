@@ -5,7 +5,7 @@ spring:
     servlet:
       path: /api
   profiles:
-    active: dev
+    active: prod
 
   servlet:
     multipart:
@@ -25,5 +25,9 @@ jwt:
 
 knife4j:
   enable: true
+  title: 软件工程课设文档
+  description: 接口咨询qq--1094554173,对抗练习进行ing...
+  version: 3.0
+
 
 
