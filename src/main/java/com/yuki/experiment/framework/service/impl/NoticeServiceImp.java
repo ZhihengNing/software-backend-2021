@@ -15,14 +15,12 @@ public class NoticeServiceImp implements NoticeService {
     @Autowired
     private NoticeMapper noticeMapper;
     @Override
-    public List<Notice> getAllNotice() {
-        return noticeMapper.selectList(null);
+    public List<Notice> getAllNotice(Integer noticeId) {
+        QueryWrapper<Notice>noticeQueryWrapper=new QueryWrapper<>();
+        noticeQueryWrapper.eq(noticeId!=null,"id",noticeId);
+        return noticeMapper.selectList(noticeQueryWrapper);
     }
 
-    @Override
-    public Notice getNoticeById(Integer id) {
-        return noticeMapper.selectById(id);
-    }
 
     @Override
     public List<Notice> fuzzyQuery(String keyword) {

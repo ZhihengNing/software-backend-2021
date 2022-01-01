@@ -37,18 +37,11 @@ public class NoticeController {
 
     @ApiOperation("获取所有系统公告")
     @RequestMapping(value = "/system",method = RequestMethod.GET)
-    public CommonResult<List<Notice>> getSysNotice() {
-        return CommonResult.success(noticeService.getAllNotice());
+    public CommonResult<List<Notice>> getSysNotice(
+            @RequestParam(value = "noticeId",required = false)Integer noticeId) {
+        return CommonResult.success(noticeService.getAllNotice(noticeId));
     }
 
-    @ApiOperation("获取系统公告by公告Id")
-    @RequestMapping(value = "/system/noticeId/{noticeId}",method = RequestMethod.GET)
-    public CommonResult<Notice>getSysNotice(@PathVariable Integer noticeId) {
-        if (noticeId == null) {
-            return CommonResult.failed("公告Id不能为空");
-        }
-        return CommonResult.success(noticeService.getNoticeById(noticeId));
-    }
 
     @ApiOperation("模糊查询系统公告")
     @RequestMapping(value = "/system/fuzzyQuery",method = RequestMethod.GET)
@@ -106,23 +99,16 @@ public class NoticeController {
         return CommonResult.failed();
     }
 
-    @ApiOperation("查询课程公告by课程Id")
-    @RequestMapping(value = "/course/courseId/{courseId}",method = RequestMethod.GET)
-    public CommonResult<List<CourseNotice>>getCourseNoticeByCourseId(@PathVariable("courseId") Integer courseId){
-        if(courseId==null){
-            return CommonResult.failed("课程ID不能为空");
-        }
-        return CommonResult.success(courseNoticeService.getCourseNotice(courseId,null));
+    @ApiOperation("查询课程公告")
+    @RequestMapping(value = "/course",method = RequestMethod.GET)
+    public CommonResult<List<CourseNotice>>getCourseNotice(
+            @RequestParam(value = "courseId",required = false) Integer courseId,
+            @RequestParam(value = "teacherId",required = false)Integer teacherId,
+            @RequestParam(value = "courseNoticeId",required = false)Integer courseNoticeId) {
+        return CommonResult.success(courseNoticeService
+                .getCourseNotice(courseId, teacherId,courseNoticeId));
     }
 
-    @ApiOperation("查询课程公告by老师Id")
-    @RequestMapping(value = "/course/teacherId/{teacherId}",method = RequestMethod.GET)
-    public CommonResult<List<CourseNotice>>getCourseNoticeByTeacherId(@PathVariable("teacherId") Integer teacherId){
-        if(teacherId==null){
-            return CommonResult.failed("教师ID不能为空");
-        }
-        return CommonResult.success(courseNoticeService.getCourseNotice(null,teacherId));
-    }
 
     @ApiOperation("模糊查询课程公告")
     @RequestMapping(value = "/course/fuzzyQuery",method = RequestMethod.GET)

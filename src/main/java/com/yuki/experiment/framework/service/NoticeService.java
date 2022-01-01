@@ -7,9 +7,7 @@ import java.util.List;
 
 public interface NoticeService {
 
-    List<Notice> getAllNotice();
-
-    Notice getNoticeById(Integer id);
+    List<Notice> getAllNotice(Integer noticeId);
 
     List<Notice> fuzzyQuery(String keyword);
 

@@ -8,7 +8,7 @@ import java.util.List;
 
 public interface CourseNoticeService {
 
-    List<CourseNotice> getCourseNotice(Integer courseId,Integer teacherId);
+    List<CourseNotice> getCourseNotice(Integer courseId,Integer teacherId,Integer courseNoticeId);
 
     int insertCourseNoticeInfo(CourseNotice notice);
 

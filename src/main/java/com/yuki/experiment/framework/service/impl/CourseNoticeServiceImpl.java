@@ -19,10 +19,11 @@ public class CourseNoticeServiceImpl implements CourseNoticeService {
     private CourseNoticeMapper courseNoticeMapper;
 
     @Override
-    public List<CourseNotice> getCourseNotice(Integer courseId,Integer teacherId) {
+    public List<CourseNotice> getCourseNotice(Integer courseId,Integer teacherId,Integer courseNoticeId) {
         return courseNoticeMapper.selectList(new QueryWrapper<CourseNotice>()
                 .eq(courseId != null, "course_id", courseId)
-                .eq(teacherId != null, "teacher_id", teacherId));
+                .eq(teacherId != null, "teacher_id", teacherId)
+                .eq(courseNoticeId!=null,"id",courseNoticeId));
     }
 
     @Override
