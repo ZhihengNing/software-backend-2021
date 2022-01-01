@@ -24,9 +24,10 @@ public class EventController {
     @Resource
     private EventService eventService;
 
-    @RequestMapping(value = "",method = RequestMethod.GET)
-    public CommonResult<List<JSONObject>>getInfo(@RequestParam("beginDate") String beginDate,
-                                    @RequestParam(value = "endDate",required = false) String endDate) {
+    @ApiOperation("获取事件")
+    @RequestMapping(value = "", method = RequestMethod.GET)
+    public CommonResult<List<JSONObject>> queryInfo(@RequestParam("beginDate") String beginDate,
+                                                    @RequestParam(value = "endDate", required = false) String endDate) {
         SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         Date parseBeginDate;
         Date parseEndDate;
@@ -44,8 +45,8 @@ public class EventController {
     }
 
     @ApiOperation("插入事件")
-    @RequestMapping(value = "",method = RequestMethod.POST)
-    public CommonResult insertEvent(@RequestBody Event event) {
+    @RequestMapping(value = "", method = RequestMethod.POST)
+    public CommonResult addEvent(@RequestBody Event event) {
         if (event.getStudentId() == null) {
             return CommonResult.failed("学生Id不能为空");
         } else if (EmptyUtil.isEmpty(event.getTitle())) {
@@ -60,35 +61,32 @@ public class EventController {
     }
 
     @ApiOperation("更新事件")
-    @RequestMapping(value = "",method = RequestMethod.PUT)
-    public CommonResult<Event> updateEvent(@RequestBody Event event){
-        if(event.getId()==null){
+    @RequestMapping(value = "", method = RequestMethod.PUT)
+    public CommonResult<Event> modifyEvent(@RequestBody Event event) {
+        if (event.getId() == null) {
             return CommonResult.failed("事件Id不能为空");
-        }
-        else if(EmptyUtil.isEmpty(event.getTitle())){
+        } else if (EmptyUtil.isEmpty(event.getTitle())) {
             return CommonResult.failed("title不能为空");
-        }
-        else if(event.getDoTime()==null){
+        } else if (event.getDoTime() == null) {
             return CommonResult.failed("要做某件事的时间不能为空");
         }
-        if(eventService.updateEvent(event)!=null){
+        if (eventService.updateEvent(event) != null) {
             return CommonResult.success(event);
         }
         return CommonResult.failed();
     }
 
     @ApiOperation("删除事件")
-    @RequestMapping(value = "/{eventId}",method = RequestMethod.DELETE)
-    public CommonResult deleteEvent(@PathVariable("eventId")Integer eventId){
-        if(eventId==null){
+    @RequestMapping(value = "/{eventId}", method = RequestMethod.DELETE)
+    public CommonResult deleteEvent(@PathVariable("eventId") Integer eventId) {
+        if (eventId == null) {
             return CommonResult.failed("事件Id不能为空");
         }
-        if(eventService.deleteEvent(eventId)>0){
+        if (eventService.deleteEvent(eventId) > 0) {
             return CommonResult.success();
         }
         return CommonResult.failed();
     }
-
 
 
 }

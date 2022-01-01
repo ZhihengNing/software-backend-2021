@@ -4,6 +4,7 @@ import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
 import java.io.Serializable;
+import java.util.Date;
 import java.util.List;
 
 @Data
@@ -20,6 +21,12 @@ public class Practice implements Serializable {
 
     @ApiModelProperty("每一道题")
     private List<Problem> problems;
+
+    @ApiModelProperty("创建时间")
+    private Date createTime;
+
+    @ApiModelProperty("修改时间")
+    private Date updateTime;
 
 
 

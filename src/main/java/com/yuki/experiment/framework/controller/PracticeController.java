@@ -27,14 +27,26 @@ public class PracticeController {
         }
         return CommonResult.failed();
     }
-
+    @ApiOperation("更新对抗练习")
+    @RequestMapping(value = "",method = RequestMethod.PUT)
+    public CommonResult<Practice>modifyPractice(@RequestBody Practice practice){
+        if(practice.getId()==null){
+            return CommonResult.failed("对抗练习Id不能为空");
+        }
+        return CommonResult.success(practiceService.update(practice));
+    }
     @ApiOperation("查看对抗练习")
     @RequestMapping(value = "", method = RequestMethod.GET)
     public CommonResult<List<Practice>> queryPractice(
             @RequestParam(value = "courseId",required = false)Integer courseId,
-            @RequestParam(value = "teacherId",required = false)Integer teacherId,
-            @RequestParam(value = "practiceId",required = false)Integer practiceId) {
-        return CommonResult.success(practiceService.getAll(courseId, teacherId, practiceId));
+            @RequestParam(value = "teacherId",required = false)Integer teacherId) {
+        return CommonResult.success(practiceService.getAll(courseId, teacherId));
+    }
 
+    @ApiOperation("查看对抗练习ById")
+    @RequestMapping(value = "/practiceId",method = RequestMethod.GET)
+    public CommonResult<Practice>queryForOnePractice(
+            @RequestParam(value = "practiceId")String practiceId){
+        return CommonResult.success(practiceService.getOneById(practiceId));
     }
 }
