@@ -28,8 +28,9 @@ public class EventController {
     @RequestMapping(value = "", method = RequestMethod.GET)
     public CommonResult<List<JSONObject>> queryInfo(@RequestParam("beginDate") String beginDate,
                                                     @RequestParam(value = "endDate", required = false) String endDate) {
-        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
         Date parseBeginDate;
+        endDate=endDate==null?beginDate:endDate;
         Date parseEndDate;
         try {
             parseBeginDate = format.parse(beginDate);
