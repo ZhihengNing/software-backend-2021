@@ -98,20 +98,28 @@ public class CourseController {
         return CommonResult.failed("都没激活呢，肯定看不了啦");
     }
 
-
     @ApiOperation("查看课程反馈")
-    @RequestMapping(value = "/feedback/courseId/{courseId}", method = RequestMethod.GET)
-    public CommonResult<List<CourseFeedback>> getFeedbackByCourse(@PathVariable Integer courseId) {
-        List<CourseFeedback> feedbackByCourseId = courseFeedbackService.getFeedback(null, courseId);
+    @RequestMapping(value = "/feedback", method = RequestMethod.GET)
+    public CommonResult<List<CourseFeedback>> queryFeedback(
+            @RequestParam(value = "courseId",required = false)Integer courseId,
+             @RequestParam(value = "studentId",required = false)Integer studentId) {
+        List<CourseFeedback> feedbackByCourseId = courseFeedbackService.getFeedback(studentId, courseId);
         return CommonResult.success(feedbackByCourseId);
     }
 
-    @ApiOperation("查看课程反馈")
-    @RequestMapping(value = "/feedback/studentId/{studentId}", method = RequestMethod.GET)
-    public CommonResult<List<CourseFeedback>> getFeedbackByStudent(@PathVariable Integer studentId) {
-        List<CourseFeedback> feedbackByStudentId = courseFeedbackService.getFeedback(studentId, null);
-        return CommonResult.success(feedbackByStudentId);
-    }
+//    @ApiOperation("查看课程反馈")
+//    @RequestMapping(value = "/feedback/courseId/{courseId}", method = RequestMethod.GET)
+//    public CommonResult<List<CourseFeedback>> getFeedbackByCourse(@PathVariable Integer courseId) {
+//        List<CourseFeedback> feedbackByCourseId = courseFeedbackService.getFeedback(null, courseId);
+//        return CommonResult.success(feedbackByCourseId);
+//    }
+//
+//    @ApiOperation("查看课程反馈")
+//    @RequestMapping(value = "/feedback/studentId/{studentId}", method = RequestMethod.GET)
+//    public CommonResult<List<CourseFeedback>> getFeedbackByStudent(@PathVariable Integer studentId) {
+//        List<CourseFeedback> feedbackByStudentId = courseFeedbackService.getFeedback(studentId, null);
+//        return CommonResult.success(feedbackByStudentId);
+//    }
 
     @ApiOperation("插入课程反馈")
     @RequestMapping(value = "/feedback", method = RequestMethod.POST)
@@ -137,6 +145,7 @@ public class CourseController {
         }
         return CommonResult.failed();
     }
+
 
     @ApiOperation("删除课程反馈")
     @RequestMapping(value = "/feedback/{feedbackId}", method = RequestMethod.DELETE)

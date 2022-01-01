@@ -27,10 +27,11 @@ public class ExperimentFileServiceImpl implements ExperimentFileService {
 
 
     @Override
-    public List<ExperimentFile> getInfo(Integer experimentId, Integer teacherId) {
-        QueryWrapper<ExperimentFile>wrapper=new QueryWrapper<>();
-        wrapper.eq(experimentId!=null,"experiment_id",experimentId)
-                        .eq(teacherId!=null,"teacher_id",teacherId);
+    public List<ExperimentFile> getInfo(Integer experimentId, Integer teacherId,Integer experimentFileId) {
+        QueryWrapper<ExperimentFile> wrapper = new QueryWrapper<>();
+        wrapper.eq(experimentId != null, "experiment_id", experimentId)
+                .eq(teacherId != null, "teacher_id", teacherId)
+                .eq(experimentFileId != null, "id", experimentFileId);
         return experimentFileMapper.selectList(wrapper);
     }
 

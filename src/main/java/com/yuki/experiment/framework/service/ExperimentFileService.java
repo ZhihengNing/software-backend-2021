@@ -7,7 +7,7 @@ import java.util.List;
 
 public interface ExperimentFileService {
 
-    List<ExperimentFile> getInfo(Integer experimentId,Integer teacherId);
+    List<ExperimentFile> getInfo(Integer experimentId,Integer teacherId,Integer experimentFileId);
 
     int insert(List<MultipartFile> multipartFiles,Integer experimentId,Integer teacherId);
 

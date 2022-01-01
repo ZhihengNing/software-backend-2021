@@ -5,7 +5,7 @@ import com.yuki.experiment.framework.entity.Experiment;
 import java.util.List;
 
 public interface ExperimentService {
-    List<Experiment> getExperiment(Integer courseId,Integer teacherId);
+    List<Experiment> getExperiment(Integer courseId,Integer teacherId,Integer experimentId);
 
     int insert(Experiment experiment);
 

@@ -14,10 +14,11 @@ public class ExperimentServiceImpl implements ExperimentService {
     private ExperimentMapper mapper;
 
     @Override
-    public List<Experiment> getExperiment(Integer courseId,Integer teacherId) {
+    public List<Experiment> getExperiment(Integer courseId,Integer teacherId,Integer experimentId) {
         QueryWrapper<Experiment>wrapper=new QueryWrapper<>();
         wrapper.eq(courseId!=null,"course_id",courseId)
-                .eq(teacherId!=null,"teacher_id",teacherId);
+                .eq(teacherId!=null,"teacher_id",teacherId)
+                .eq(experimentId!=null,"id",experimentId);
         return mapper.selectList(wrapper);
     }
 

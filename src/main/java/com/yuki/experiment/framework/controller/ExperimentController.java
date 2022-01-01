@@ -43,51 +43,43 @@ public class ExperimentController {
         this.stuExperimentService = stuExperimentService;
     }
 
+
     @ApiOperation("查看实验项目")
-    @RequestMapping(value = "/courseId/{courseId}",method = RequestMethod.GET )
-    public CommonResult<List<Experiment>>getExperimentByCourseId(@PathVariable Integer courseId) {
-        if (courseId == null) {
-            return CommonResult.failed("课程Id不能为空");
-        }
-        List<Experiment> byCourseId = experimentService.getExperiment(courseId,null);
+    @RequestMapping(value = "", method = RequestMethod.GET)
+    public CommonResult<List<Experiment>> queryExperiment(
+            @RequestParam(value = "courseId", required = false) Integer courseId,
+            @RequestParam(value = "teacherId", required = false) Integer teacherId,
+            @RequestParam(value = "experimentId", required = false) Integer experimentId) {
+        List<Experiment> byCourseId = experimentService
+                .getExperiment(courseId, teacherId, experimentId);
         return CommonResult.success(byCourseId);
     }
 
-    @ApiOperation("查看实验项目")
-    @RequestMapping(value = "/teacherId/{teacherId}",method = RequestMethod.GET )
-    public CommonResult<List<Experiment>> getExperimentByTeacherId(@PathVariable Integer teacherId) {
-        if (teacherId == null) {
-            return CommonResult.failed("教师Id不能为空");
-        }
-        List<Experiment> byTeacherId = experimentService.getExperiment(null,teacherId);
-        return CommonResult.success(byTeacherId);
-    }
 
     @ApiOperation("插入实验项目")
-    @RequestMapping(value = "",method = RequestMethod.POST)
-    public CommonResult insertExperiment(@RequestBody Experiment experiment){
-        if(experiment.getCourseId()==null){
+    @RequestMapping(value = "", method = RequestMethod.POST)
+    public CommonResult insertExperiment(@RequestBody Experiment experiment) {
+        if (experiment.getCourseId() == null) {
             return CommonResult.failed("课程Id不能为空");
-        }
-        else if(experimentService.insert(experiment)>0){
+        } else if (experimentService.insert(experiment) > 0) {
             return CommonResult.success();
         }
         return CommonResult.failed();
     }
 
     @ApiOperation("更新实验项目")
-    @RequestMapping(value = "",method = RequestMethod.PUT)
-    public CommonResult updateExperiment(@RequestBody Experiment experiment){
-        if(experiment.getId()==null){
+    @RequestMapping(value = "", method = RequestMethod.PUT)
+    public CommonResult updateExperiment(@RequestBody Experiment experiment) {
+        if (experiment.getId() == null) {
             return CommonResult.failed("实验项目Id不能为空");
-        }
-        else if(experimentService.update(experiment)>0){
+        } else if (experimentService.update(experiment) > 0) {
             return CommonResult.success();
         }
         return CommonResult.failed();
     }
+
     @ApiOperation("删除实验项目")
-    @RequestMapping(value = "/experimentId/{experimentIds}",method = RequestMethod.DELETE)
+    @RequestMapping(value = "/experimentId/{experimentIds}", method = RequestMethod.DELETE)
     public CommonResult deleteExperiment(@PathVariable List<Integer> experimentIds) {
         if (experimentIds == null) {
             return CommonResult.failed("实验项目Id不能为空");
@@ -97,26 +89,18 @@ public class ExperimentController {
         return CommonResult.failed();
     }
 
-    @ApiOperation("获取实验项目资料by实验Id")
-    @RequestMapping(value = "/file/experimentId/{experimentId}",method = RequestMethod.GET)
-    public CommonResult<List<ExperimentFile>> getInfoByExperimentId(@PathVariable Integer experimentId){
-        if(experimentId==null){
-            return CommonResult.failed("实验项目Id不能为空");
-        }
-        return CommonResult.success(experimentFileService.getInfo(experimentId,null));
-    }
-
-    @ApiOperation("获取实验项目资料by教师Id")
-    @RequestMapping(value = "/file/teacherId/{teacherId}",method = RequestMethod.GET)
-    public CommonResult<List<ExperimentFile>> getExperimentFileByTeacherId(@PathVariable Integer teacherId){
-        if(teacherId==null){
-            return CommonResult.failed("教师Id不能为空");
-        }
-        return CommonResult.success(experimentFileService.getInfo(null,teacherId));
+    @ApiOperation("获取实验项目资料")
+    @RequestMapping(value = "/file", method = RequestMethod.GET)
+    public CommonResult<List<ExperimentFile>> getInfoByExperimentId(
+            @RequestParam(value = "experimentId", required = false) Integer experimentId,
+            @RequestParam(value = "teacherId", required = false) Integer teacherId,
+            @RequestParam(value = "experimentFileId", required = false) Integer experimentFileId) {
+        return CommonResult.success(experimentFileService
+                .getInfo(experimentId, teacherId, experimentFileId));
     }
 
     @ApiOperation("上传实验项目资料")
-    @RequestMapping(value = "/file/{experimentId}/{teacherId}",method = RequestMethod.POST)
+    @RequestMapping(value = "/file/{experimentId}/{teacherId}", method = RequestMethod.POST)
     public CommonResult insertExperimentFile(@RequestPart List<MultipartFile> multipartFiles,
                                              @PathVariable Integer experimentId,
                                              @PathVariable Integer teacherId) {
@@ -132,39 +116,18 @@ public class ExperimentController {
         return CommonResult.failed();
     }
 
-    @ApiOperation("查看学生实验作业by学生Id,实验Id")
-    @RequestMapping(value = "/work/{experimentId}/{studentId}", method = RequestMethod.GET)
-    public CommonResult<List<StuExperiment>> getStuExperiment(@PathVariable Integer studentId,
-                                                              @PathVariable Integer experimentId) {
-        if (studentId == null) {
-            return CommonResult.failed("学生Id不能为空");
-        } else if (experimentId == null) {
-            return CommonResult.failed("实验项目Id不能为空");
-        }
+    @ApiOperation("查看学生实验作业")
+    @RequestMapping(value = "/work", method = RequestMethod.GET)
+    public CommonResult<List<StuExperiment>> getStuExperiment(
+            @RequestParam(value = "studentId", required = false) Integer studentId,
+            @RequestParam(value = "experimentId", required = false) Integer experimentId) {
         return CommonResult.success(stuExperimentService.getStuExperiment(studentId, experimentId));
     }
 
-    @ApiOperation("查看学生实验作业by学生Id")
-    @RequestMapping(value = "/work/studentId/{studentId}", method = RequestMethod.GET)
-    public CommonResult<List<StuExperiment>> getStuExperimentByStudentId(@PathVariable Integer studentId) {
-        if(studentId==null){
-            return CommonResult.failed("学生Id不能为空");
-        }
-        return CommonResult.success(stuExperimentService.getStuExperiment(studentId,null));
-    }
-
-    @ApiOperation("查看学生实验作业by实验Id")
-    @RequestMapping(value = "/work/experimentId/{experimentId}",method = RequestMethod.GET)
-    public CommonResult<List<StuExperiment>>getStuExperimentByExperimentId(@PathVariable Integer experimentId){
-        if(experimentId==null){
-            return CommonResult.failed("实验项目Id不能为空");
-        }
-        return CommonResult.success(stuExperimentService.getStuExperiment(null,experimentId));
-    }
 
     @ApiOperation("学生提交实验作业")
     @RequestMapping(value = "/work/{experimentId}/{studentId}", method = RequestMethod.POST)
-    public CommonResult insetStuExperiment(@RequestPart(value = "file",required = false) MultipartFile multipartFile,
+    public CommonResult insetStuExperiment(@RequestPart(value = "file", required = false) MultipartFile multipartFile,
                                            @PathVariable("studentId") Integer studentId,
                                            @PathVariable("experimentId") Integer experimentId,
                                            @RequestParam("jobContent") String jobContent) {
@@ -183,22 +146,21 @@ public class ExperimentController {
     }
 
     @ApiOperation("学生更新实验作业")
-    @RequestMapping(value = "/work/{experimentId}/{studentId}",method = RequestMethod.PUT)
+    @RequestMapping(value = "/work/{experimentId}/{studentId}", method = RequestMethod.PUT)
     public CommonResult<StuExperiment> updateStuExperiment(@PathVariable Integer studentId,
-                                                        @PathVariable Integer experimentId,
-                                                        @RequestPart(value = "file",required = false) MultipartFile multipartFile,
-                                                        @RequestParam(value = "jobContent",required = false) String jobContent) {
+                                                           @PathVariable Integer experimentId,
+                                                           @RequestPart(value = "file", required = false) MultipartFile multipartFile,
+                                                           @RequestParam(value = "jobContent", required = false) String jobContent) {
         if (studentId == null) {
             return CommonResult.failed("学生Id不能为空");
         } else if (experimentId == null) {
             return CommonResult.failed("实验项目Id不能为空");
         }
         StuExperiment update = stuExperimentService.update(multipartFile, studentId, experimentId, jobContent);
-        if(update!=null) {
+        if (update != null) {
             return CommonResult.success(update);
         }
         return CommonResult.failed();
     }
-
 
 }
