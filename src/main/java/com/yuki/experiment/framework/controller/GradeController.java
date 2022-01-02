@@ -1,8 +1,6 @@
 package com.yuki.experiment.framework.controller;
 
-import com.alibaba.fastjson.JSONObject;
 import com.yuki.experiment.common.result.CommonResult;
-import com.yuki.experiment.common.utils.JsonUtil;
 import com.yuki.experiment.framework.dto.StudentGradeDTO;
 import com.yuki.experiment.framework.service.CourseScoreService;
 import com.yuki.experiment.framework.service.StuExperimentService;
@@ -13,14 +11,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.math.BigDecimal;
-import java.util.List;
 
 @RestController
 @RequestMapping("/grade")
 @Api(tags = "成绩模块")
 @Slf4j
 public class GradeController {
-
 
     private StuExperimentService stuExperimentService;
 

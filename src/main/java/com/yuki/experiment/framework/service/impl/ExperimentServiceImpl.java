@@ -23,13 +23,19 @@ public class ExperimentServiceImpl implements ExperimentService {
     }
 
     @Override
-    public int insert(Experiment experiment) {
-        return mapper.insert(experiment);
+    public Experiment insert(Experiment experiment) {
+        if(mapper.insert(experiment)>0){
+            return experiment;
+        }
+        return null;
     }
 
     @Override
-    public int update(Experiment experiment) {
-        return mapper.updateById(experiment);
+    public Experiment update(Experiment experiment) {
+        if (mapper.updateById(experiment) > 0) {
+            return experiment;
+        }
+        return null;
     }
 
     @Override

@@ -13,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -20,11 +21,14 @@ public class ExperimentFileServiceImpl implements ExperimentFileService {
 
     private final static String PATH="course";
 
-    @Autowired
-    private ExperimentFileMapper experimentFileMapper;
-    @Autowired
-    private ExperimentMapper experimentMapper;
+    private final ExperimentFileMapper experimentFileMapper;
 
+    private final ExperimentMapper experimentMapper;
+
+    public ExperimentFileServiceImpl(ExperimentFileMapper experimentFileMapper, ExperimentMapper experimentMapper) {
+        this.experimentFileMapper = experimentFileMapper;
+        this.experimentMapper = experimentMapper;
+    }
 
     @Override
     public List<ExperimentFile> getInfo(Integer experimentId, Integer teacherId,Integer experimentFileId) {
@@ -36,15 +40,19 @@ public class ExperimentFileServiceImpl implements ExperimentFileService {
     }
 
     @Override
-    public int insert(List<MultipartFile> multipartFiles,Integer experimentId, Integer teacherId) {
-        Experiment one = experimentMapper.selectOne(new QueryWrapper<Experiment>().eq("experiment_id", experimentId));
+    public List<ExperimentFile> insert(List<MultipartFile> multipartFiles,
+                                       Integer experimentId,
+                                       Integer teacherId) {
+        Experiment one = experimentMapper.selectOne(new QueryWrapper<Experiment>()
+                .eq("experiment_id", experimentId));
         Integer courseId = one.getCourseId();
-        if(courseId!=null) {
+        List<ExperimentFile> result = new ArrayList<>();
+        if (courseId != null) {
             Pair<String, String> twoUrl = FileUtil.generatorTwoUrl(PATH, courseId, experimentId);
             String path = twoUrl.getKey();
             String webPath = twoUrl.getValue();
             List<FileInfoDTO> fileInfoDTOS = FileUtil.preserveFile(multipartFiles, path, webPath);
-            for(FileInfoDTO item: fileInfoDTOS){
+            for (FileInfoDTO item : fileInfoDTOS) {
                 String url = item.getFileUrl();
                 String name = item.getFileName();
                 ExperimentFile build = ExperimentFile.builder()
@@ -52,11 +60,12 @@ public class ExperimentFileServiceImpl implements ExperimentFileService {
                         .name(name)
                         .url(url)
                         .teacherId(teacherId).build();
+                result.add(build);
                 //保存到数据库
                 experimentFileMapper.insert(build);
             }
-            return 1;
+            return result;
         }
-        return 0;
+        return null;
     }
 }

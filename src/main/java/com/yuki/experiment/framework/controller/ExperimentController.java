@@ -10,6 +10,7 @@ import com.yuki.experiment.framework.service.ExperimentService;
 import com.yuki.experiment.framework.service.StuExperimentService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import javassist.expr.Expr;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -59,22 +60,26 @@ public class ExperimentController {
 
     @ApiOperation("插入实验项目")
     @RequestMapping(value = "", method = RequestMethod.POST)
-    public CommonResult insertExperiment(@RequestBody Experiment experiment) {
+    public CommonResult<Experiment> insertExperiment(@RequestBody Experiment experiment) {
         if (experiment.getCourseId() == null) {
             return CommonResult.failed("课程Id不能为空");
-        } else if (experimentService.insert(experiment) > 0) {
-            return CommonResult.success();
+        }
+        Experiment insert = experimentService.insert(experiment);
+        if (insert != null) {
+            return CommonResult.success(insert);
         }
         return CommonResult.failed();
     }
 
     @ApiOperation("更新实验项目")
     @RequestMapping(value = "", method = RequestMethod.PUT)
-    public CommonResult updateExperiment(@RequestBody Experiment experiment) {
+    public CommonResult<Experiment> updateExperiment(@RequestBody Experiment experiment) {
         if (experiment.getId() == null) {
             return CommonResult.failed("实验项目Id不能为空");
-        } else if (experimentService.update(experiment) > 0) {
-            return CommonResult.success();
+        }
+        Experiment update = experimentService.update(experiment);
+        if (update != null) {
+            return CommonResult.success(update);
         }
         return CommonResult.failed();
     }
@@ -102,7 +107,7 @@ public class ExperimentController {
 
     @ApiOperation("上传实验项目资料")
     @RequestMapping(value = "/file/{experimentId}/{teacherId}", method = RequestMethod.POST)
-    public CommonResult insertExperimentFile(@RequestPart List<MultipartFile> multipartFiles,
+    public CommonResult<List<ExperimentFile>> insertExperimentFile(@RequestPart List<MultipartFile> multipartFiles,
                                              @PathVariable Integer experimentId,
                                              @PathVariable Integer teacherId) {
         if (EmptyUtil.isEmpty(multipartFiles)) {
@@ -111,8 +116,10 @@ public class ExperimentController {
             return CommonResult.failed("实验项目Id不能为空");
         } else if (teacherId == null) {
             return CommonResult.failed("教师Id不能为空");
-        } else if (experimentFileService.insert(multipartFiles, experimentId, teacherId) > 0) {
-            return CommonResult.success();
+        }
+        List<ExperimentFile> insert = experimentFileService.insert(multipartFiles, experimentId, teacherId);
+        if (!EmptyUtil.isEmpty(insert)) {
+            return CommonResult.success(insert);
         }
         return CommonResult.failed();
     }

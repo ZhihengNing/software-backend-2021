@@ -102,7 +102,7 @@ public class StudentController {
     @ApiOperation("删除学生信息")
     @RequestMapping(value = "/studentId/{studentId}",method = RequestMethod.DELETE)
     public CommonResult deleteInfo(@PathVariable List<Integer> studentId){
-        if(studentId==null){
+        if(EmptyUtil.isEmpty(studentId)){
             return CommonResult.failed("学生Id不能为空");
         }
         else if(studentService.deleteInfos(studentId) >0){
