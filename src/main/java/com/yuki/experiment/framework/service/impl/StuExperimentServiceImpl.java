@@ -1,12 +1,14 @@
 package com.yuki.experiment.framework.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import com.yuki.experiment.common.utils.FileUtil;
 import com.yuki.experiment.framework.dto.FileInfoDTO;
 import com.yuki.experiment.framework.dto.StudentGradeDTO;
 import com.yuki.experiment.framework.entity.Course;
 import com.yuki.experiment.framework.entity.CourseScore;
 import com.yuki.experiment.framework.entity.StuExperiment;
+import com.yuki.experiment.framework.entity.StuPractice;
 import com.yuki.experiment.framework.mapper.mysql.CourseMapper;
 import com.yuki.experiment.framework.mapper.mysql.CourseScoreMapper;
 import com.yuki.experiment.framework.mapper.mysql.StuExperimentMapper;
@@ -14,6 +16,10 @@ import com.yuki.experiment.framework.service.StuExperimentService;
 import javafx.util.Pair;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.mongodb.core.MongoTemplate;
+import org.springframework.data.mongodb.core.query.Criteria;
+import org.springframework.data.mongodb.core.query.Query;
+import org.springframework.data.mongodb.core.query.UpdateDefinition;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -29,10 +35,11 @@ public class StuExperimentServiceImpl implements StuExperimentService {
 
     private StuExperimentMapper stuExperimentMapper;
 
-
     private CourseScoreMapper courseScoreMapper;
 
     private CourseMapper courseMapper;
+
+    private MongoTemplate mongoTemplate;
 
     @Autowired
     public void setStuExperimentMapper(StuExperimentMapper stuExperimentMapper) {
@@ -47,6 +54,11 @@ public class StuExperimentServiceImpl implements StuExperimentService {
     @Autowired
     public void setCourseMapper(CourseMapper courseMapper){
         this.courseMapper=courseMapper;
+    }
+
+    @Autowired
+    public void setMongoTemplate(MongoTemplate mongoTemplate) {
+        this.mongoTemplate = mongoTemplate;
     }
 
     @Override
@@ -111,57 +123,6 @@ public class StuExperimentServiceImpl implements StuExperimentService {
         return stuExperimentMapper.updateById(build);
     }
 
-    private static List<BigDecimal> transfer(String scoreRatio){
-        String[] split = scoreRatio.split(",");
-        List<BigDecimal>list=new ArrayList<>();
-        for (String s : split) {
-            list.add(BigDecimal.valueOf(Double.parseDouble(s)));
-        }
-        return list;
-    }
-    @Override
-    public StudentGradeDTO getStudentGrade(Integer studentId, Integer courseId) {
-//        QueryWrapper<CourseScore> wrapper = new QueryWrapper<>();
-//        wrapper.eq("student_id", studentId).eq("course_id", courseId);
-//        CourseScore StudentGrade = courseScoreMapper.selectOne(wrapper);
-//        //得到某门课的考勤得分
-//        BigDecimal attendanceScore = StudentGrade.getAttendanceScore() == null ?
-//                new BigDecimal(0) : StudentGrade.getAttendanceScore();
-//TODO
-
-        QueryWrapper<CourseScore> courseScoreQueryWrapper = new QueryWrapper<>();
-        courseScoreQueryWrapper.eq("student_id", studentId).eq("course_id", courseId);
-        CourseScore StudentGrade = courseScoreMapper.selectOne(courseScoreQueryWrapper);
-
-        //计算考勤相关
-        QueryWrapper<Course> courseQueryWrapper = new QueryWrapper<>();
-        courseQueryWrapper.eq("id", courseId);
-        Course course = courseMapper.selectOne(courseQueryWrapper);
-        String scoreRatio = course.getScoreRatio();
-        List<BigDecimal> transfer = transfer(scoreRatio);
-        BigDecimal attendance = StudentGrade.getAttendanceScore().multiply(transfer.get(0));
-
-        //计算实验相关
-        QueryWrapper<StuExperiment> wrapper1 = new QueryWrapper<>();
-        wrapper1.eq("student_id", studentId);
-        List<StuExperiment> stuExperiments = stuExperimentMapper.selectList(wrapper1);
-        BigDecimal start = BigDecimal.ZERO;
-        for (StuExperiment item : stuExperiments) {
-            start = start.add(item.getExperimentScore());
-        }
-
-        BigDecimal experiments = start.multiply(transfer.get(1));
-        //计算对抗练习相关
 
 
-        BigDecimal practices = null;
-
-        StudentGrade.setCourseScore(attendance.add(experiments).add(practices));
-
-        StudentGradeDTO build = StudentGradeDTO.builder().courseScore(StudentGrade)
-                .experimentScore(stuExperiments).build();
-
-
-        return build;
-    }
 }

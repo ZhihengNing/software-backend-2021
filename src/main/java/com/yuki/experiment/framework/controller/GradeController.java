@@ -59,7 +59,14 @@ public class GradeController {
         if (studentId == null) {
             return CommonResult.failed("学生Id不能为空");
         }
-        return CommonResult.success(stuExperimentService.getStudentGrade(studentId, courseId));
+        else if(courseId==null){
+            return CommonResult.failed("课程Id不能为空");
+        }
+        StudentGradeDTO studentGrade = courseScoreService.getStudentGrade(studentId, courseId);
+        if (studentGrade != null) {
+            return CommonResult.success();
+        }
+        return CommonResult.failed("可能是没有设置分数比例导致失败.....");
     }
 
 }

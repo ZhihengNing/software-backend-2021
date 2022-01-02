@@ -17,6 +17,4 @@ public interface StuExperimentService {
 
     int uploadGrade(Integer studentId, Integer experimentId, BigDecimal grade);
 
-    StudentGradeDTO getStudentGrade(Integer studentId, Integer courseId);
-
 }
