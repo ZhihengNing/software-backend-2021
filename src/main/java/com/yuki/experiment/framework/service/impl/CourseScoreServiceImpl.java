@@ -105,7 +105,7 @@ public class CourseScoreServiceImpl implements CourseScoreService {
         queryWrapper.eq("student_id", studentId)
                 .eq("course_id", courseId);
         CourseScore courseScore = courseScoreMapper.selectOne(queryWrapper);
-        if (courseScore==null||courseScore.getIsActive() == 0) {
+        if (courseScore == null || courseScore.getIsActive() == 0) {
             return null;
         }
         Date lastAttendanceTime = courseScore.getLastAttendanceTime();

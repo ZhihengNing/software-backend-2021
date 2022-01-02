@@ -1,6 +1,7 @@
 package com.yuki.experiment.framework.controller;
 
 import com.yuki.experiment.common.result.CommonResult;
+import com.yuki.experiment.common.utils.EmptyUtil;
 import com.yuki.experiment.framework.dto.CourseNoticeTeacherDTO;
 import com.yuki.experiment.framework.entity.CourseNotice;
 import com.yuki.experiment.framework.entity.Notice;
@@ -146,7 +147,7 @@ public class NoticeController {
     @ApiOperation("删除课程公告")
     @RequestMapping(value="/course/courseNoticeId/{courseNoticeId}",method = RequestMethod.DELETE)
     public CommonResult deleteInfo(@PathVariable("courseNoticeId") List<Integer> courseNoticeId){
-        if(courseNoticeId==null){
+        if(EmptyUtil.isEmpty(courseNoticeId)){
             return CommonResult.failed("课程公告Id不能为空");
         }
         else if(courseNoticeService.deleteCourseNoticeInfo(courseNoticeId)>0) {

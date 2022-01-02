@@ -11,9 +11,9 @@ public interface StudentService {
 
     Student getInfo(Integer id);
 
-    int insertInfo(Student student);
+    Student insertInfo(Student student);
 
-    int updateInfo(Student student);
+    Student updateInfo(Student student);
 
     int deleteInfos(List<Integer>studentId);
 

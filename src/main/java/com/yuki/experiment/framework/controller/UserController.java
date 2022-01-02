@@ -5,6 +5,7 @@ import com.github.xiaoymin.knife4j.annotations.DynamicParameter;
 import com.github.xiaoymin.knife4j.annotations.DynamicParameters;
 import com.yuki.experiment.common.result.CommonResult;
 import com.yuki.experiment.common.role.MyRole;
+import com.yuki.experiment.common.utils.EmptyUtil;
 import com.yuki.experiment.common.utils.FileUtil;
 import com.yuki.experiment.common.utils.JwtUtil;
 import com.yuki.experiment.framework.entity.Teacher;
@@ -58,7 +59,7 @@ public class UserController {
         String type = user.getString("type");
         Integer id = user.getInteger("id");
         String password = user.getString("password");
-        if (id == null || password == null) {
+        if (id == null || EmptyUtil.isEmpty(password)) {
             return CommonResult.failed("用户名或密码为空");
         }
         String token = JwtUtil.getToken(user);
@@ -99,7 +100,7 @@ public class UserController {
     @RequestMapping(value = "/email/send",method = RequestMethod.POST)
     public CommonResult<String> sendMail(@RequestParam("studentMailbox")String studentMailbox,
                                          @RequestParam("courseId") Integer courseId) {
-        if (studentMailbox == null) {
+        if (EmptyUtil.isEmpty(studentMailbox)) {
             return CommonResult.failed("用户邮箱账号不能为空");
         } else if (courseId == null) {
             return CommonResult.failed("课程Id不能为空");
@@ -136,6 +137,10 @@ public class UserController {
     @ApiOperation("下载文件")
     @RequestMapping(value = "/download",method = RequestMethod.GET)
     public void testDownload(@RequestParam("url")String url, HttpServletResponse response) {
+        if(EmptyUtil.isEmpty(url)){
+            return;
+        }
+        //若下载文件报错，就删除上面那句话
         String name = url.substring(url.lastIndexOf("/") + 1, url.length());
 
         response.setContentType("application/force-download");

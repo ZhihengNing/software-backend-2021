@@ -1,6 +1,7 @@
 package com.yuki.experiment.framework.controller;
 
 import com.yuki.experiment.common.result.CommonResult;
+import com.yuki.experiment.common.utils.EmptyUtil;
 import com.yuki.experiment.framework.entity.Experiment;
 import com.yuki.experiment.framework.entity.ExperimentFile;
 import com.yuki.experiment.framework.entity.StuExperiment;
@@ -81,7 +82,7 @@ public class ExperimentController {
     @ApiOperation("删除实验项目")
     @RequestMapping(value = "/experimentId/{experimentIds}", method = RequestMethod.DELETE)
     public CommonResult deleteExperiment(@PathVariable List<Integer> experimentIds) {
-        if (experimentIds == null) {
+        if (EmptyUtil.isEmpty(experimentIds)) {
             return CommonResult.failed("实验项目Id不能为空");
         } else if (experimentService.delete(experimentIds) > 0) {
             return CommonResult.success();
@@ -104,7 +105,7 @@ public class ExperimentController {
     public CommonResult insertExperimentFile(@RequestPart List<MultipartFile> multipartFiles,
                                              @PathVariable Integer experimentId,
                                              @PathVariable Integer teacherId) {
-        if (multipartFiles == null) {
+        if (EmptyUtil.isEmpty(multipartFiles)) {
             return CommonResult.failed("实验项目资料不能为空");
         } else if (experimentId == null) {
             return CommonResult.failed("实验项目Id不能为空");

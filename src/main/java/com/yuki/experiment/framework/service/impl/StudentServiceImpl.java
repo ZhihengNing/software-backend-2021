@@ -33,13 +33,19 @@ public class StudentServiceImpl implements StudentService{
     }
 
     @Override
-    public int insertInfo(Student student) {
-        return studentMapper.insert(student);
+    public Student insertInfo(Student student) {
+        if( studentMapper.insert(student)>0){
+            return student;
+        }
+        return null;
     }
 
     @Override
-    public int updateInfo(Student student) {
-        return studentMapper.updateById(student);
+    public Student updateInfo(Student student) {
+        if(studentMapper.updateById(student)>0){
+            return student;
+        }
+        return null;
     }
 
     @Override
