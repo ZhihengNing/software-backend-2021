@@ -19,4 +19,24 @@
         title,content,create_time,
         update_time
     </sql>
+    <select id="getFeedback" resultType="com.yuki.experiment.framework.dto.CourseFeedbackDTO">
+        select cf.id courseFeedbackId,
+               cf.course_id  courseId,
+               cf.student_id  studentId,
+               cf.title  title,
+               cf.content content,
+               cf.create_time  createTime,
+               cf.update_time  updateTime,
+               s.name  studentName
+        from course_feedback cf left join student s
+        on cf.student_id=s.id
+        <where>
+            <if test="courseId!=null">
+                cf.course_id=#{courseId}
+            </if>
+            <if test="studentId!=null">
+                and cf.student_id=#{studentId}
+            </if>
+        </where>
+    </select>
 </mapper>

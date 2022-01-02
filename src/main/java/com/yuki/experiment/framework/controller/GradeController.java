@@ -49,7 +49,7 @@ public class GradeController {
         return CommonResult.failed();
     }
 
-    @ApiOperation("获取学生某课程所有成绩(分为总成绩，实验，考勤，对抗练习）")
+    @ApiOperation("获取学生某课程所有成绩(分为总成绩，实验，考勤，对抗练习）只返回已经激活学生")
     @RequestMapping(value = "/get/{studentId}/{courseId}", method = RequestMethod.GET)
     public CommonResult<StudentGradeDTO> getGrade(@PathVariable Integer studentId, @PathVariable Integer courseId) {
         if (studentId == null) {
@@ -60,9 +60,9 @@ public class GradeController {
         }
         StudentGradeDTO studentGrade = courseScoreService.getStudentGrade(studentId, courseId);
         if (studentGrade != null) {
-            return CommonResult.success();
+            return CommonResult.success(studentGrade);
         }
-        return CommonResult.failed("可能是没有设置分数比例导致失败.....");
+        return CommonResult.failed("没有选这门课，查什么查");
     }
 
 }

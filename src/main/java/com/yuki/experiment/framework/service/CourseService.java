@@ -2,9 +2,11 @@ package com.yuki.experiment.framework.service;
 
 
 import com.yuki.experiment.framework.dto.CourseRatioDTO;
+import com.yuki.experiment.framework.dto.StudentGradeDTO;
 import com.yuki.experiment.framework.entity.Course;
 
 import java.math.BigDecimal;
+import java.util.List;
 
 public interface CourseService {
 
@@ -14,5 +16,7 @@ public interface CourseService {
 
     CourseRatioDTO setRatio(Integer courseId,Integer teacherId,
             String attendanceRatio,String experimentRatio, String practiceRatio);
+
+    List<StudentGradeDTO> getTakeStudent(Integer courseId);
 
 }

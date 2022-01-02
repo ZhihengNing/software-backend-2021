@@ -4,9 +4,12 @@ import com.alibaba.fastjson.JSONObject;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.yuki.experiment.common.exception.FileIsNullException;
 import com.yuki.experiment.common.result.CommonResult;
+import com.yuki.experiment.common.utils.EmptyUtil;
 import com.yuki.experiment.common.utils.FileUtil;
+import com.yuki.experiment.framework.dto.CourseFeedbackDTO;
 import com.yuki.experiment.framework.dto.CourseRatioDTO;
 import com.yuki.experiment.framework.dto.FileInfoDTO;
+import com.yuki.experiment.framework.dto.StudentGradeDTO;
 import com.yuki.experiment.framework.entity.*;
 import com.yuki.experiment.framework.mapper.mysql.TeacherMapper;
 import com.yuki.experiment.framework.service.CourseFeedbackService;
@@ -102,35 +105,39 @@ public class CourseController {
 
     @ApiOperation("查看课程反馈")
     @RequestMapping(value = "/feedback", method = RequestMethod.GET)
-    public CommonResult<List<CourseFeedback>> queryFeedback(
+    public CommonResult<List<CourseFeedbackDTO>> queryFeedback(
             @RequestParam(value = "courseId",required = false)Integer courseId,
              @RequestParam(value = "studentId",required = false)Integer studentId) {
-        List<CourseFeedback> feedbackByCourseId = courseFeedbackService.getFeedback(studentId, courseId);
-        return CommonResult.success(feedbackByCourseId);
+        List<CourseFeedbackDTO> feedbacks = courseFeedbackService.getFeedback(courseId,studentId);
+        return CommonResult.success(feedbacks);
     }
 
 
     @ApiOperation("插入课程反馈")
     @RequestMapping(value = "/feedback", method = RequestMethod.POST)
-    public CommonResult insertFeedback(@RequestBody CourseFeedback courseFeedback) {
+    public CommonResult<CourseFeedback> insertFeedback(@RequestBody CourseFeedback courseFeedback) {
         if (courseFeedback.getStudentId() == null) {
             return CommonResult.failed("学生Id不能为空");
         } else if (courseFeedback.getCourseId() == null) {
             return CommonResult.failed("课程Id不能为空");
-        } else if (courseFeedbackService.insertFeedback(courseFeedback) > 0) {
-            return CommonResult.success();
-        } else {
-            return CommonResult.failed();
         }
+        CourseFeedback courseFeedback1 = courseFeedbackService.insertFeedback(courseFeedback);
+        if (courseFeedback1 != null) {
+            return CommonResult.success(courseFeedback1);
+        }
+        return CommonResult.failed();
+
     }
 
     @ApiOperation("更新课程反馈")
     @RequestMapping(value = "/feedback", method = RequestMethod.PUT)
-    public CommonResult updateFeedback(@RequestBody CourseFeedback courseFeedback) {
+    public CommonResult<CourseFeedback> updateFeedback(@RequestBody CourseFeedback courseFeedback) {
         if (courseFeedback.getId() == null) {
             return CommonResult.failed("课程反馈Id不能为空");
-        } else if (courseFeedbackService.updateFeedback(courseFeedback) > 0) {
-            return CommonResult.success();
+        }
+        CourseFeedback courseFeedback1 = courseFeedbackService.updateFeedback(courseFeedback);
+        if (courseFeedback1 != null) {
+            return CommonResult.success(courseFeedback1);
         }
         return CommonResult.failed();
     }
@@ -243,4 +250,12 @@ public class CourseController {
         }
         return CommonResult.failed("考勤失败");
     }
+
+    @ApiOperation("查看选课学生名单（只返回已经激活课程的学生信息）")
+    @RequestMapping(value = "",method = RequestMethod.GET)
+    public CommonResult<List<StudentGradeDTO>> queryTakeStudent(@RequestParam(value = "courseId",required = false)Integer courseId) {
+        List<StudentGradeDTO> takeStudent = courseService.getTakeStudent(courseId);
+        return CommonResult.success(takeStudent);
+    }
+
 }

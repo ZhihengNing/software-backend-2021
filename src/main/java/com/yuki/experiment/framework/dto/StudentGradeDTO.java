@@ -12,10 +12,14 @@ import java.util.List;
 @Builder
 public class StudentGradeDTO {
 
+    private Integer studentId;
+
+    private String studentName;
+
     private CourseScore courseScore;
 
-    private List<StuExperiment> experimentScore;
+    private List<StuExperiment> experiments;
 
-    private List<StuPractice> practiceScore;
+    private List<StuPractice> practices;
 
 }

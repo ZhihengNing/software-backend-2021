@@ -3,11 +3,13 @@ package com.yuki.experiment.framework.service.impl;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import com.yuki.experiment.framework.dto.CourseRatioDTO;
+import com.yuki.experiment.framework.dto.StudentGradeDTO;
 import com.yuki.experiment.framework.entity.Course;
 import com.yuki.experiment.framework.entity.CourseScore;
 import com.yuki.experiment.framework.mapper.mysql.CourseMapper;
 import com.yuki.experiment.framework.mapper.mysql.CourseScoreMapper;
 import com.yuki.experiment.framework.service.CourseService;
+import com.yuki.experiment.framework.util.GradeUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -19,17 +21,16 @@ import java.util.List;
 @Service
 public class CourseServiceImpl implements CourseService {
 
-    private CourseMapper courseMapper;
+    private final CourseMapper courseMapper;
 
-    private CourseScoreMapper courseScoreMapper;
+    private final CourseScoreMapper courseScoreMapper;
 
-    @Autowired
-    public void setCourseMapper(CourseMapper courseMapper) {
+    private final GradeUtil gradeUtil;
+
+    public CourseServiceImpl(CourseMapper courseMapper, CourseScoreMapper courseScoreMapper, GradeUtil gradeUtil) {
         this.courseMapper = courseMapper;
-    }
-    @Autowired
-    public void setCourseScoreMapper(CourseScoreMapper courseScoreMapper) {
         this.courseScoreMapper = courseScoreMapper;
+        this.gradeUtil = gradeUtil;
     }
 
     @Override
@@ -85,6 +86,20 @@ public class CourseServiceImpl implements CourseService {
         course.setScoreRatio(s);
         courseMapper.updateById(course);
         return build;
+    }
+
+    @Override
+    public List<StudentGradeDTO> getTakeStudent(Integer courseId) {
+
+        QueryWrapper<CourseScore> courseScoreQueryWrapper = new QueryWrapper<>();
+        courseScoreQueryWrapper.eq(courseId != null, "course_id", courseId);
+        List<CourseScore> courseScores = courseScoreMapper.selectList(courseScoreQueryWrapper);
+        List<StudentGradeDTO> list = new ArrayList<>();
+        System.out.println(courseScores);
+        courseScores.parallelStream().forEach((s) ->
+                list.add(gradeUtil.getGrade(s.getStudentId(), courseId))
+        );
+        return list;
     }
 
 }
