@@ -83,6 +83,7 @@ public class CourseScoreServiceImpl implements CourseScoreService {
         courseScore.setIsActive(1);
         courseScore.setLastAttendanceTime(now);
         courseScore.setAttendanceScore(BigDecimal.ZERO);
+        courseScore.setCourseScore(BigDecimal.ZERO);
         updateWrapper.eq(studentId != null, "student_id", studentId)
                 .eq(courseId != null, "course_id", courseId);
         return courseScoreMapper.update(courseScore, updateWrapper);

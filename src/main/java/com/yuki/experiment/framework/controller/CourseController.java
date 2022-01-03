@@ -253,7 +253,7 @@ public class CourseController {
 
     @ApiOperation("查看选课学生名单（只返回已经激活课程的学生信息）")
     @RequestMapping(value = "",method = RequestMethod.GET)
-    public CommonResult<List<StudentGradeDTO>> queryTakeStudent(@RequestParam(value = "courseId",required = false)Integer courseId) {
+    public CommonResult<List<StudentGradeDTO>> queryTakeStudent(@RequestParam("courseId")Integer courseId) {
         List<StudentGradeDTO> takeStudent = courseService.getTakeStudent(courseId);
         return CommonResult.success(takeStudent);
     }

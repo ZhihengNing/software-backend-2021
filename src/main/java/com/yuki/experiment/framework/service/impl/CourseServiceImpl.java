@@ -92,7 +92,7 @@ public class CourseServiceImpl implements CourseService {
     public List<StudentGradeDTO> getTakeStudent(Integer courseId) {
 
         QueryWrapper<CourseScore> courseScoreQueryWrapper = new QueryWrapper<>();
-        courseScoreQueryWrapper.eq(courseId != null, "course_id", courseId);
+        courseScoreQueryWrapper.eq("course_id", courseId);
         List<CourseScore> courseScores = courseScoreMapper.selectList(courseScoreQueryWrapper);
         List<StudentGradeDTO> list = new ArrayList<>();
         System.out.println(courseScores);

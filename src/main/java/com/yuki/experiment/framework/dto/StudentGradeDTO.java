@@ -16,7 +16,7 @@ public class StudentGradeDTO {
 
     private String studentName;
 
-    private CourseScore courseScore;
+    private CourseScore take;
 
     private List<StuExperiment> experiments;
 

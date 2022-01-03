@@ -112,7 +112,7 @@ public class GradeUtil {
         updateWrapper.set("course_score", StudentGrade.getCourseScore())
                 .eq("student_id", studentId).eq("course_id", courseId);
         courseScoreMapper.update(null, updateWrapper);
-        return StudentGradeDTO.builder().courseScore(StudentGrade)
+        return StudentGradeDTO.builder().take(StudentGrade)
                 .experiments(stuExperiments).practices(stuPractices)
                 .studentId(studentId).studentName(name).build();
 
