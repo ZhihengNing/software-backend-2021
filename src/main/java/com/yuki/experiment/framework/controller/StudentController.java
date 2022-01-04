@@ -17,7 +17,7 @@ import org.springframework.web.multipart.MultipartFile;
 import java.util.List;
 
 @RestController
-@RequestMapping("/student")
+@RequestMapping("/api/student")
 @Api(tags = "学生模块")
 @Slf4j
 public class StudentController {

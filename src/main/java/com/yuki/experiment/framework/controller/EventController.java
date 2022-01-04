@@ -7,8 +7,6 @@ import com.yuki.experiment.framework.entity.Event;
 import com.yuki.experiment.framework.service.EventService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
-import javafx.collections.ObservableMap;
-import org.junit.jupiter.api.Tags;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
@@ -19,7 +17,7 @@ import java.util.List;
 
 @RestController
 @Api(tags="日历事件模块")
-@RequestMapping("/event")
+@RequestMapping("/api/event")
 public class EventController {
     @Resource
     private EventService eventService;

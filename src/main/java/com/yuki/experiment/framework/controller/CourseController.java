@@ -4,7 +4,6 @@ import com.alibaba.fastjson.JSONObject;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.yuki.experiment.common.exception.FileIsNullException;
 import com.yuki.experiment.common.result.CommonResult;
-import com.yuki.experiment.common.utils.EmptyUtil;
 import com.yuki.experiment.common.utils.FileUtil;
 import com.yuki.experiment.framework.dto.CourseFeedbackDTO;
 import com.yuki.experiment.framework.dto.CourseRatioDTO;
@@ -24,11 +23,10 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.math.BigDecimal;
 import java.util.List;
 
 @RestController
-@RequestMapping("/course")
+@RequestMapping("/api/course")
 @Api(tags ="课程模块")
 @Slf4j
 public class CourseController {

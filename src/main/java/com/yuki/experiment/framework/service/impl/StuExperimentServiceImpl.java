@@ -1,30 +1,18 @@
 package com.yuki.experiment.framework.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
-import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import com.yuki.experiment.common.utils.FileUtil;
 import com.yuki.experiment.framework.dto.FileInfoDTO;
-import com.yuki.experiment.framework.dto.StudentGradeDTO;
-import com.yuki.experiment.framework.entity.Course;
-import com.yuki.experiment.framework.entity.CourseScore;
 import com.yuki.experiment.framework.entity.StuExperiment;
-import com.yuki.experiment.framework.entity.StuPractice;
-import com.yuki.experiment.framework.mapper.mysql.CourseMapper;
-import com.yuki.experiment.framework.mapper.mysql.CourseScoreMapper;
 import com.yuki.experiment.framework.mapper.mysql.StuExperimentMapper;
 import com.yuki.experiment.framework.service.StuExperimentService;
 import javafx.util.Pair;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.mongodb.core.MongoTemplate;
-import org.springframework.data.mongodb.core.query.Criteria;
-import org.springframework.data.mongodb.core.query.Query;
-import org.springframework.data.mongodb.core.query.UpdateDefinition;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.math.BigDecimal;
-import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -35,31 +23,11 @@ public class StuExperimentServiceImpl implements StuExperimentService {
 
     private StuExperimentMapper stuExperimentMapper;
 
-    private CourseScoreMapper courseScoreMapper;
-
-    private CourseMapper courseMapper;
-
-    private MongoTemplate mongoTemplate;
-
     @Autowired
     public void setStuExperimentMapper(StuExperimentMapper stuExperimentMapper) {
         this.stuExperimentMapper = stuExperimentMapper;
     }
 
-    @Autowired
-    public void setCourseScoreMapper(CourseScoreMapper courseScoreMapper) {
-        this.courseScoreMapper = courseScoreMapper;
-    }
-
-    @Autowired
-    public void setCourseMapper(CourseMapper courseMapper){
-        this.courseMapper=courseMapper;
-    }
-
-    @Autowired
-    public void setMongoTemplate(MongoTemplate mongoTemplate) {
-        this.mongoTemplate = mongoTemplate;
-    }
 
     @Override
     public List<StuExperiment> getStuExperiment(Integer studentId, Integer experimentId) {

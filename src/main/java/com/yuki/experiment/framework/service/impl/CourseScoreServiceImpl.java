@@ -29,21 +29,12 @@ public class CourseScoreServiceImpl implements CourseScoreService {
 
     private final TeacherCourseMapper teacherCourseMapper;
 
-    private final StuExperimentMapper stuExperimentMapper;
-
-    private final MongoTemplate mongoTemplate;
-
-    private final StudentMapper studentMapper;
-
     private final GradeUtil gradeUtil;
 
-    public CourseScoreServiceImpl(CourseScoreMapper courseScoreMapper, CourseMapper courseMapper, TeacherCourseMapper teacherCourseMapper, StuExperimentMapper stuExperimentMapper, MongoTemplate mongoTemplate, StudentMapper studentMapper, GradeUtil gradeUtil) {
+    public CourseScoreServiceImpl(CourseScoreMapper courseScoreMapper, CourseMapper courseMapper, TeacherCourseMapper teacherCourseMapper, GradeUtil gradeUtil) {
         this.courseScoreMapper = courseScoreMapper;
         this.courseMapper = courseMapper;
         this.teacherCourseMapper = teacherCourseMapper;
-        this.stuExperimentMapper = stuExperimentMapper;
-        this.mongoTemplate = mongoTemplate;
-        this.studentMapper = studentMapper;
         this.gradeUtil = gradeUtil;
     }
 

@@ -8,6 +8,8 @@ import com.yuki.experiment.common.role.MyRole;
 import com.yuki.experiment.common.utils.EmptyUtil;
 import com.yuki.experiment.common.utils.FileUtil;
 import com.yuki.experiment.common.utils.JwtUtil;
+import com.yuki.experiment.framework.entity.Administrator;
+import com.yuki.experiment.framework.entity.Student;
 import com.yuki.experiment.framework.entity.Teacher;
 import com.yuki.experiment.framework.manage.impl.MailServiceImpl;
 import com.yuki.experiment.framework.service.AdministratorService;
@@ -28,7 +30,7 @@ import java.nio.charset.StandardCharsets;
 import java.util.UUID;
 
 @RestController
-@RequestMapping("/user")
+@RequestMapping("/api/user")
 @Api(tags = "用户模块")
 @Slf4j
 public class UserController {
@@ -160,6 +162,34 @@ public class UserController {
         teacher.setPassword("123456");
         teacherService.insert(teacher);
         return CommonResult.success(true);
+    }
+
+    @ApiOperation("获取用户信息")
+    @RequestMapping(value = "",method = RequestMethod.GET)
+    public CommonResult queryInfo(@RequestParam("type")String type,
+                                  @RequestParam("id")Integer id) {
+        if (MyRole.TEACHER.getRoleName().equals(type)) {
+            Teacher info = teacherService.getInfo(id);
+            if(info==null){
+                return CommonResult.failed();
+            }
+            return CommonResult.success(info);
+        } else if (MyRole.STUDENT.getRoleName().equals(type)) {
+            Student info = studentService.getInfo(id);
+            if(info==null){
+                return CommonResult.failed();
+            }
+            return CommonResult.success(info);
+
+        } else if(MyRole.ADMINISTRATOR.getRoleName().equals(type)){
+            Administrator info = administratorService.getInfo(id);
+            if(info==null){
+                return CommonResult.failed();
+            }
+            return CommonResult.success(info);
+        }
+        return CommonResult.failed("没有这个类型的用户");
+
     }
 
 }

@@ -19,7 +19,7 @@ import org.springframework.web.multipart.MultipartFile;
 import java.util.List;
 
 @RestController
-@RequestMapping("/experiment")
+@RequestMapping("/api/experiment")
 @Api(tags ="实验模块")
 @Slf4j
 public class ExperimentController {
@@ -138,7 +138,7 @@ public class ExperimentController {
     public CommonResult insetStuExperiment(@RequestPart(value = "file", required = false) MultipartFile multipartFile,
                                            @PathVariable("studentId") Integer studentId,
                                            @PathVariable("experimentId") Integer experimentId,
-                                           @RequestParam("jobContent") String jobContent) {
+                                           @RequestParam(value = "jobContent",required = false) String jobContent) {
         if (studentId == null) {
             return CommonResult.failed("学生Id不能为空");
         } else if (experimentId == null) {

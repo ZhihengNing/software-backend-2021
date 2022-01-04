@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.*;
 import java.math.BigDecimal;
 
 @RestController
-@RequestMapping("/grade")
+@RequestMapping("/api/grade")
 @Api(tags = "成绩模块")
 @Slf4j
 public class GradeController {

@@ -17,7 +17,7 @@ import java.util.Date;
 import java.util.List;
 
 @RestController
-@RequestMapping("/notice")
+@RequestMapping("/api/notice")
 @Api(tags = "公告模块")
 @Slf4j
 public class NoticeController {

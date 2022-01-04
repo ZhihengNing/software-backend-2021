@@ -12,7 +12,7 @@ import java.util.List;
 
 @RestController
 @Api(tags = "对抗练习模块")
-@RequestMapping("/practice")
+@RequestMapping("/api/practice")
 public class PracticeController {
 
     @Resource
