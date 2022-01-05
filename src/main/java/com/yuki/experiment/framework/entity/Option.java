@@ -18,6 +18,4 @@ public class Option implements Serializable {
     @ApiModelProperty("选项答案")
     private String value;
 
-    @ApiModelProperty("参考答案")
-    private String reference;
 }

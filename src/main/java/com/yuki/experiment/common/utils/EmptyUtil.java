@@ -11,6 +11,8 @@ public class EmptyUtil {
     }
 
     public static boolean isEmpty(String string) {
+
+        //return StringUtils.isBlank(string); actually it is bad writting
         return string == null || string.length() == 0 || "".equals(string.trim());
     }
     public static boolean isEmpty(MultipartFile file){

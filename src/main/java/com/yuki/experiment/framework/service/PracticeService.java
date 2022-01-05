@@ -1,6 +1,7 @@
 package com.yuki.experiment.framework.service;
 
 import com.yuki.experiment.framework.entity.Practice;
+import com.yuki.experiment.framework.entity.Problem;
 
 import java.util.List;
 
@@ -10,7 +11,9 @@ public interface PracticeService {
 
     Practice getOneById(String practiceId);
 
-    Practice insert(Practice jsonObject);
+    Practice addSomeProblems(Practice practice);
+
+    Practice insert(Practice practice);
 
     Practice update(Practice practice);
 

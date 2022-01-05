@@ -19,7 +19,7 @@ public class Practice implements Serializable {
     @ApiModelProperty("教师Id")
     private Integer teacherId;
 
-    @ApiModelProperty("每一道题")
+    @ApiModelProperty("课程题目")
     private List<Problem> problems;
 
     @ApiModelProperty("创建时间")

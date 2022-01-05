@@ -16,7 +16,11 @@ public class Problem implements Serializable {
     @ApiModelProperty("具体选项")
     private List<Option> options;
 
+    @ApiModelProperty("参考答案")
+    private Option reference;
+
     @ApiModelProperty("练习分值")
     private BigDecimal score;
+
 
 }

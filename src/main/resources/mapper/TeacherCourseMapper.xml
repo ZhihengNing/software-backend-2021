@@ -14,7 +14,7 @@
         teacher_id,course_id,character_name
     </sql>
     <select id="getInfo" resultType="com.alibaba.fastjson.JSONObject">
-        select tc.character_name characterName,t.name teacherName,t.gender gender
+        select tc.character_name characterName,t.name teacherName,t.gender gender,t.id teacherId
         from  teacher_course tc left join teacher t on t.id=tc.teacher_id
         where tc.course_id=#{courseId}
     </select>

@@ -9,7 +9,6 @@ import com.yuki.experiment.framework.mapper.mysql.ExperimentFileMapper;
 import com.yuki.experiment.framework.mapper.mysql.ExperimentMapper;
 import com.yuki.experiment.framework.service.ExperimentFileService;
 import javafx.util.Pair;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
