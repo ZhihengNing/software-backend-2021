@@ -14,5 +14,5 @@ public interface EventService {
 
     int deleteEvent(int eventId);
 
-    List<JSONObject>getInfo(Date beginDate,Date endDate);
+    JSONObject getInfo(Date beginDate,Date endDate);
 }

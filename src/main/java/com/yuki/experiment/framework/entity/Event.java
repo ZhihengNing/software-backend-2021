@@ -48,11 +48,11 @@ public class Event implements Serializable {
     @TableField(fill = FieldFill.INSERT_UPDATE)
     private Date updateTime;
 
-    /**
-     * 在某一天要做的事
-     */
-    @ApiModelProperty("在某一天要做的事")
-    private Date doTime;
+    @ApiModelProperty("起始时间")
+    private Date startTime;
+
+    @ApiModelProperty("结束时间")
+    private Date endTime;
 
     @TableField(exist = false)
     private static final long serialVersionUID = 1L;

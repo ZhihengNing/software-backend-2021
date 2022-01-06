@@ -22,9 +22,9 @@ public class EventController {
     @Resource
     private EventService eventService;
 
-    @ApiOperation("获取事件")
+    @ApiOperation("获取日历事件")
     @RequestMapping(value = "", method = RequestMethod.GET)
-    public CommonResult<List<JSONObject>> queryInfo(@RequestParam("beginDate") String beginDate,
+    public CommonResult<JSONObject> queryInfo(@RequestParam("beginDate") String beginDate,
                                                     @RequestParam(value = "endDate", required = false) String endDate) {
         SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
         Date parseBeginDate;
@@ -43,15 +43,18 @@ public class EventController {
         return CommonResult.success(eventService.getInfo(parseBeginDate, parseEndDate));
     }
 
-    @ApiOperation("插入事件")
+    @ApiOperation("插入日历事件")
     @RequestMapping(value = "", method = RequestMethod.POST)
     public CommonResult addEvent(@RequestBody Event event) {
         if (event.getStudentId() == null) {
             return CommonResult.failed("学生Id不能为空");
         } else if (EmptyUtil.isEmpty(event.getTitle())) {
             return CommonResult.failed("title不能为空");
-        } else if (event.getDoTime() == null) {
-            return CommonResult.failed("要做某件事的时间不能为空");
+        } else if (event.getStartTime()== null) {
+            return CommonResult.failed("起始时间不能为空");
+        }
+        else if(event.getEndTime()==null){
+            return CommonResult.failed("结束时间不能为空");
         }
         if (eventService.insertEvent(event) > 0) {
             return CommonResult.success();
@@ -66,8 +69,6 @@ public class EventController {
             return CommonResult.failed("事件Id不能为空");
         } else if (EmptyUtil.isEmpty(event.getTitle())) {
             return CommonResult.failed("title不能为空");
-        } else if (event.getDoTime() == null) {
-            return CommonResult.failed("要做某件事的时间不能为空");
         }
         if (eventService.updateEvent(event) != null) {
             return CommonResult.success(event);

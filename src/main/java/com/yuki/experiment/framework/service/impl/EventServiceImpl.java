@@ -35,46 +35,51 @@ public class EventServiceImpl implements EventService {
 
 
     @Override
-    public List<JSONObject> getInfo(Date beginDate, Date endDate) {
+    public JSONObject getInfo(Date beginDate, Date endDate) {
+        JSONObject json=new JSONObject();
         QueryWrapper<Experiment> wrapper = new QueryWrapper<>();
         wrapper.between("experiment_deadline", beginDate, endDate);
         List<Experiment> experimentList = experimentMapper.selectList(wrapper);
+        json.put("experiments",experimentList);
 
         QueryWrapper<Event> eventQueryWrapper = new QueryWrapper<>();
-        wrapper.between("do_time", beginDate, endDate);
+        eventQueryWrapper.between("start_time", beginDate, endDate).or()
+                .between("end_time",beginDate,endDate);
+
         List<Event> eventList = eventMapper.selectList(eventQueryWrapper);
+        json.put("events",eventList);
 
 //        QueryWrapper<Practice> practiceQueryWrapper = new QueryWrapper<>();
 //        practiceQueryWrapper.between("end_time", beginDate, endDate);
 //        List<Practice> practiceList = practiceMapper.selectList(practiceQueryWrapper);
 
-        Calendar begin = Calendar.getInstance();
-        begin.setTimeZone(TimeZone.getTimeZone("Asia/Shanghai"));
-        begin.setTime(beginDate);
-        List<JSONObject> jsonList = new ArrayList<>();
-
-
-        for (Calendar item = begin; item.getTime().getTime() <= endDate.getTime();
-             item.add(Calendar.DAY_OF_YEAR, 1)) {
-            JSONObject json = new JSONObject();
-            json.put("date", item.getTime());
-            List<Experiment> experiments = experimentList.stream()
-                    .filter((s) -> DateUtil.equals(s.getExperimentDeadline(), item))
-                    .collect(Collectors.toList());
-            json.put("experiment", experiments);
-
-            List<Event> events = eventList.stream()
-                    .filter((s) -> DateUtil.equals(s.getDoTime(), item))
-                    .collect(Collectors.toList());
-            json.put("event", events);
-
-//            List<Practice> practices = practiceList.stream()
-//                    .filter((s) -> DateUtil.equals(s.getEndTime(), item))
+//        Calendar begin = Calendar.getInstance();
+//        begin.setTimeZone(TimeZone.getTimeZone("Asia/Shanghai"));
+//        begin.setTime(beginDate);
+//
+//
+//
+//        for (Calendar item = begin; item.getTime().getTime() <= endDate.getTime();
+//             item.add(Calendar.DAY_OF_YEAR, 1)) {
+//            JSONObject json = new JSONObject();
+//            json.put("date", item.getTime());
+//            List<Experiment> experiments = experimentList.stream()
+//                    .filter((s) -> DateUtil.equals(s.getExperimentDeadline(), item))
 //                    .collect(Collectors.toList());
-//            json.put("practice", practices);
-            jsonList.add(json);
-        }
-        return jsonList;
+//            json.put("experiment", experiments);
+//
+//            List<Event> events = eventList.stream()
+//                    .filter((s) -> DateUtil.equals(s.getStartTime(), item) || DateUtil.equals(s.getEndTime(), item))
+//                    .collect(Collectors.toList());
+//            json.put("event", events);
+//
+////            List<Practice> practices = practiceList.stream()
+////                    .filter((s) -> DateUtil.equals(s.getEndTime(), item))
+////                    .collect(Collectors.toList());
+////            json.put("practice", practices);
+//            jsonList.add(json);
+//        }
+        return json;
     }
 
 

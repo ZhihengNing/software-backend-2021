@@ -18,8 +18,8 @@ public class CourseFileServiceImpl implements CourseFileService {
     @Override
     public List<CourseFile> getCourseFiles(Integer courseId, Integer teacherId, Integer courseFileId) {
         QueryWrapper<CourseFile> wrapper = new QueryWrapper<>();
-        wrapper.eq(courseId!=null,"courseId",courseFileId)
-                .eq(teacherId!=null,"teacherId",teacherId)
+        wrapper.eq(courseId!=null,"course_id",courseId)
+                .eq(teacherId!=null,"teacher_id",teacherId)
                 .eq(courseFileId!=null,"id",courseFileId);
         return mapper.selectList(wrapper);
     }
