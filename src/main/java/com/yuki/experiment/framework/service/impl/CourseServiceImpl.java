@@ -6,17 +6,18 @@ import com.yuki.experiment.framework.dto.CourseRatioDTO;
 import com.yuki.experiment.framework.dto.StudentGradeDTO;
 import com.yuki.experiment.framework.entity.Course;
 import com.yuki.experiment.framework.entity.CourseScore;
+import com.yuki.experiment.framework.entity.TeacherCourse;
 import com.yuki.experiment.framework.mapper.mysql.CourseMapper;
 import com.yuki.experiment.framework.mapper.mysql.CourseScoreMapper;
+import com.yuki.experiment.framework.mapper.mysql.TeacherCourseMapper;
 import com.yuki.experiment.framework.service.CourseService;
 import com.yuki.experiment.framework.util.GradeUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+import java.util.*;
+import java.util.stream.Collectors;
 
 @Service
 public class CourseServiceImpl implements CourseService {
@@ -25,17 +26,40 @@ public class CourseServiceImpl implements CourseService {
 
     private final CourseScoreMapper courseScoreMapper;
 
+    private final TeacherCourseMapper teacherCourseMapper;
+
     private final GradeUtil gradeUtil;
 
-    public CourseServiceImpl(CourseMapper courseMapper, CourseScoreMapper courseScoreMapper, GradeUtil gradeUtil) {
+    public CourseServiceImpl(CourseMapper courseMapper, CourseScoreMapper courseScoreMapper, TeacherCourseMapper teacherCourseMapper, GradeUtil gradeUtil) {
         this.courseMapper = courseMapper;
         this.courseScoreMapper = courseScoreMapper;
+        this.teacherCourseMapper = teacherCourseMapper;
         this.gradeUtil = gradeUtil;
     }
 
     @Override
     public int insert(Course course) {
         return courseMapper.insert(course);
+    }
+
+    @Override
+    public List<Course> getCourseInfoByTeacher(Integer teacherId, Integer courseId) {
+        QueryWrapper<TeacherCourse> queryWrapper = new QueryWrapper<>();
+        queryWrapper.eq("teacher_id", teacherId)
+                .eq(courseId != null, "course_id", courseId);
+        List<TeacherCourse> teacherCourses = teacherCourseMapper.selectList(queryWrapper);
+        List<Course> list = new ArrayList<>();
+        Set<Integer> set = new HashSet<>();
+        for (TeacherCourse item : teacherCourses) {
+            set.add(item.getCourseId());
+        }
+        for (Integer item : set) {
+            QueryWrapper<Course> courseQueryWrapper = new QueryWrapper<>();
+            courseQueryWrapper.eq("id", item);
+            Course course = courseMapper.selectOne(courseQueryWrapper);
+            list.add(course);
+        }
+        return list;
     }
 
     @Override

@@ -15,6 +15,7 @@ import javax.annotation.Resource;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Random;
 
 @Service
 public class PracticeServiceImpl implements PracticeService {
@@ -69,7 +70,10 @@ public class PracticeServiceImpl implements PracticeService {
         Query query=new Query(criteria);
         Practice one = mongoTemplate.findOne(query, Practice.class, tableName);
         if(one==null){
-            return null;
+            Date date=new Date();
+            practice.setCreateTime(date);
+            practice.setUpdateTime(date);
+            return  mongoTemplate.insert(practice, tableName);
         }
         List<Problem> problems = one.getProblems();
         //把新的题加进去
@@ -81,12 +85,6 @@ public class PracticeServiceImpl implements PracticeService {
         return one;
     }
 
-    public Practice insert(Practice practice) {
-        Date date=new Date();
-        practice.setCreateTime(date);
-        practice.setUpdateTime(date);
-        return  mongoTemplate.insert(practice, tableName);
-    }
 
     @Override
     public Practice update(Practice practice) {

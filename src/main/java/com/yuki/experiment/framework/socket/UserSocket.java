@@ -7,11 +7,9 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class TeamScores {
+public class UserSocket {
 
-    private  String teamId;
-
-    private Integer userId;
+    private WebSocketServer webSocketServer;
 
     private Integer correctNum;
 }

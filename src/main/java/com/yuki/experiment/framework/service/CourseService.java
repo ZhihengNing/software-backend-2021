@@ -12,6 +12,8 @@ public interface CourseService {
 
     int insert(Course course);
 
+    List<Course> getCourseInfoByTeacher(Integer teacherId,Integer courseId);
+
     Course getCourseInfo(Integer studentId,Integer courseId);
 
     CourseRatioDTO setRatio(Integer courseId,Integer teacherId,

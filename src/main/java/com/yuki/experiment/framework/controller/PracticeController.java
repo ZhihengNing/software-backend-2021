@@ -19,6 +19,7 @@ public class PracticeController {
     @Resource
     private PracticeService practiceService;
 
+
     @ApiOperation("上传对抗练习题目")
     @RequestMapping(value = "", method = RequestMethod.POST)
     public CommonResult<Practice> addPractice(@RequestBody Practice practice) {
@@ -28,11 +29,7 @@ public class PracticeController {
         } else if (practice.getTeacherId() == null) {
             return CommonResult.failed("教师Id不能为空");
         }
-        Practice insert = practiceService.insert(practice);
-        if (insert != null) {
-            return CommonResult.success(practice);
-        }
-        return CommonResult.failed();
+        return CommonResult.success(practiceService.addSomeProblems(practice));
     }
 
     @ApiOperation("更新对抗练习")
@@ -43,6 +40,7 @@ public class PracticeController {
         }
         return CommonResult.success(practiceService.update(practice));
     }
+
 
     @ApiOperation("查看对抗练习")
     @RequestMapping(value = "", method = RequestMethod.GET)

@@ -17,6 +17,8 @@ public interface CourseMapper extends BaseMapper<Course> {
 
     JSONObject getCourseInfo(@Param("courseId")Integer courseId);
 
+
+
 }
 
 

@@ -34,6 +34,7 @@ public class StuExperimentServiceImpl implements StuExperimentService {
         QueryWrapper<StuExperiment> queryWrapper = new QueryWrapper<>();
         queryWrapper.eq(experimentId!=null,"experiment_id", experimentId)
                 .eq(studentId!=null,"student_id", studentId);
+
         return stuExperimentMapper.selectList(queryWrapper);
     }
 

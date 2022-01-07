@@ -13,8 +13,6 @@ public interface PracticeService {
 
     Practice addSomeProblems(Practice practice);
 
-    Practice insert(Practice practice);
-
     Practice update(Practice practice);
 
     void insert();

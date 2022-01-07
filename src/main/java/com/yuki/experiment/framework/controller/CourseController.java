@@ -2,6 +2,7 @@ package com.yuki.experiment.framework.controller;
 
 import com.alibaba.fastjson.JSONObject;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.core.toolkit.StringUtils;
 import com.yuki.experiment.common.exception.FileIsNullException;
 import com.yuki.experiment.common.result.CommonResult;
 import com.yuki.experiment.common.utils.FileUtil;
@@ -61,30 +62,49 @@ public class CourseController {
         this.courseScoreService = courseScoreService;
     }
 
-    @Autowired
-    private TeacherMapper mapper;
+    @ApiOperation("教师添加课程")
+    @RequestMapping(value = "/addCourse",method = RequestMethod.POST)
+    public CommonResult addCourse(@RequestBody Course course){
+        if(StringUtils.isBlank(course.getName())){
+            return CommonResult.failed("课程名字不能为空");
+        }
+        if(course.getTeacherId()==null){
+            return CommonResult.failed("教师Id不能为空");
+        }
+        if(courseService.insert(course)>0){
+            return CommonResult.success();
+        }
+        return CommonResult.failed();
+    }
 
-    @ApiOperation("这个不要用")
-    @RequestMapping(value = "", method = RequestMethod.POST)
-    public CommonResult<Boolean> insert(@RequestBody JSONObject json) {
-        String name = json.getString("name");
-        String place = json.getString("place");
-        String openPeriod = json.getString("openPeriod");
-        String teacherName = json.getString("teacherName");
-        Integer credit = json.getInteger("credit");
-        String college = json.getString("college");
+//    @ApiOperation("这个不要用")
+//    @RequestMapping(value = "", method = RequestMethod.POST)
+//    public CommonResult<Boolean> insert(@RequestBody JSONObject json) {
+//        String name = json.getString("name");
+//        String place = json.getString("place");
+//        String openPeriod = json.getString("openPeriod");
+//        String teacherName = json.getString("teacherName");
+//        Integer credit = json.getInteger("credit");
+//        String college = json.getString("college");
+//
+//        Course course = new Course();
+//        course.setName(name);
+//        course.setPlace(place);
+//        course.setOpenPeriod(openPeriod);
+//        QueryWrapper<Teacher> queryWrapper = new QueryWrapper<>();
+//        queryWrapper.eq("name", teacherName);
+//        course.setTeacherId(mapper.selectOne(queryWrapper).getId());
+//        course.setCredit(credit);
+//        course.setCollege(college);
+//        courseService.insert(course);
+//        return CommonResult.success(true);
+//    }
 
-        Course course = new Course();
-        course.setName(name);
-        course.setPlace(place);
-        course.setOpenPeriod(openPeriod);
-        QueryWrapper<Teacher> queryWrapper = new QueryWrapper<>();
-        queryWrapper.eq("name", teacherName);
-        course.setTeacherId(mapper.selectOne(queryWrapper).getId());
-        course.setCredit(credit);
-        course.setCollege(college);
-        courseService.insert(course);
-        return CommonResult.success(true);
+    @ApiOperation("教师查看自己的课程")
+    @RequestMapping(value = "/teacher",method = RequestMethod.GET)
+    public CommonResult<List<Course>> queryCourseInfo(@RequestParam("teacherId")Integer teacherId,
+                                                @RequestParam(value = "courseId",required = false)Integer courseId){
+        return CommonResult.success(courseService.getCourseInfoByTeacher(teacherId,courseId));
     }
 
     @ApiOperation("查看已激活课程的信息")
