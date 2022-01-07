@@ -3,10 +3,9 @@ package com.yuki.experiment.framework.socket;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.baomidou.mybatisplus.core.toolkit.StringUtils;
-import com.yuki.experiment.framework.controller.UserController;
 import com.yuki.experiment.framework.dto.SocketMessageDTO;
 import com.yuki.experiment.framework.entity.Practice;
-import com.yuki.experiment.framework.service.PracticeService;
+import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoTemplate;
@@ -14,7 +13,6 @@ import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Component;
 
-import javax.annotation.Resource;
 import javax.websocket.*;
 import javax.websocket.server.PathParam;
 import javax.websocket.server.ServerEndpoint;
@@ -32,9 +30,12 @@ import java.util.concurrent.ConcurrentHashMap;
 @ServerEndpoint("/server/{userId}/{courseId}")
 @Component
 @Slf4j
+@Data
 public class WebSocketServer {
 
     private static MongoTemplate mongoTemplate;
+
+    private static final int NUM=3;
 
     @Autowired
     public void setMongoTemplate(MongoTemplate mongoTemplate) {
@@ -49,6 +50,7 @@ public class WebSocketServer {
      * concurrent包的线程安全Set，用来存放每个客户端对应的MyWebSocket对象。
      */
     private static final ConcurrentHashMap<Integer, WebSocketServer> webSocketMap = new ConcurrentHashMap<>();
+
 
     private static final ConcurrentHashMap<String, ConcurrentHashMap<Integer, UserSocket>> USERS
             = new ConcurrentHashMap<>();
@@ -76,7 +78,7 @@ public class WebSocketServer {
         this.userId = userId;
 
         synchronized (WebSocketServer.class) {
-            if (webSocketMap.size() == 3) {
+            if (webSocketMap.size() == NUM) {
                 String uuid = UUID.randomUUID().toString();
                 this.teamId=uuid;
                 if (USERS.containsKey(uuid)) {
@@ -90,19 +92,17 @@ public class WebSocketServer {
                     for (Map.Entry<Integer, WebSocketServer> entry : webSocketMap.entrySet()) {
                         UserSocket userSocket = new UserSocket(entry.getValue(), 0);
                         tempMap.put(entry.getKey(), userSocket);
+                        entry.getValue().setTeamId(uuid);
                         TeamScores teamScores = new TeamScores(uuid, entry.getKey(), 0);
                         teamScoresList.add(teamScores);
                     }
                     json.put("team", teamScoresList);
-
-                    System.out.println(mongoTemplate);
                     Criteria criteria = Criteria.where("courseId").is(courseId);
                     Query query = new Query(criteria);
                     List<Practice> practices = mongoTemplate.find(query, Practice.class, "practice");
                     json.put("problem", practices);
                     for (Map.Entry<Integer, WebSocketServer> entry : webSocketMap.entrySet()) {
                         entry.getValue().sendMessage(json.toJSONString());
-                        log.info("发送信息"+json);
                     }
                     USERS.put(uuid, tempMap);
                 }

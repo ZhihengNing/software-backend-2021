@@ -2,6 +2,7 @@ package com.yuki.experiment.framework.controller;
 
 import com.yuki.experiment.common.result.CommonResult;
 import com.yuki.experiment.common.utils.EmptyUtil;
+import com.yuki.experiment.framework.dto.StuExperimentDTO;
 import com.yuki.experiment.framework.entity.Experiment;
 import com.yuki.experiment.framework.entity.ExperimentFile;
 import com.yuki.experiment.framework.entity.StuExperiment;
@@ -127,7 +128,7 @@ public class ExperimentController {
 
     @ApiOperation("查看学生实验作业")
     @RequestMapping(value = "/work", method = RequestMethod.GET)
-    public CommonResult<List<StuExperiment>> getStuExperiment(
+    public CommonResult<List<StuExperimentDTO>> getStuExperiment(
             @RequestParam(value = "studentId", required = false) Integer studentId,
             @RequestParam(value = "experimentId", required = false) Integer experimentId) {
         return CommonResult.success(stuExperimentService.getStuExperiment(studentId, experimentId));

@@ -19,7 +19,6 @@ public class PracticeController {
     @Resource
     private PracticeService practiceService;
 
-
     @ApiOperation("上传对抗练习题目")
     @RequestMapping(value = "", method = RequestMethod.POST)
     public CommonResult<Practice> addPractice(@RequestBody Practice practice) {

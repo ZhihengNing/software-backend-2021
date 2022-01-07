@@ -23,4 +23,19 @@
         select url from stu_experiment
         where experiment_id=#{experimentId} and student_id=#{studentId}
     </select>
+    <select id="getStudentWork" resultType="com.yuki.experiment.framework.dto.StuExperimentDTO">
+        select e.experiment_score experimentScore,s.name studentName,
+        se.experiment_id experimentId,se.student_id studentId,se.experiment_score studentScore,
+        se.url url,se.job_content jobContent,se.create_time createTime,se.update_time updateTime
+        from stu_experiment se left join experiment e on se.experiment_id = e.id
+        left join student s on se.student_id = s.id
+        <where>
+            <if test="param1!=null">
+                se.experiment_id=#{param1}
+            </if>
+        <if test="param2!=null">
+            and se.student_id=#{param2}
+        </if>
+        </where>
+    </select>
 </mapper>

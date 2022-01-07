@@ -3,6 +3,7 @@ package com.yuki.experiment.framework.service.impl;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.yuki.experiment.common.utils.FileUtil;
 import com.yuki.experiment.framework.dto.FileInfoDTO;
+import com.yuki.experiment.framework.dto.StuExperimentDTO;
 import com.yuki.experiment.framework.entity.StuExperiment;
 import com.yuki.experiment.framework.mapper.mysql.StuExperimentMapper;
 import com.yuki.experiment.framework.service.StuExperimentService;
@@ -30,12 +31,8 @@ public class StuExperimentServiceImpl implements StuExperimentService {
 
 
     @Override
-    public List<StuExperiment> getStuExperiment(Integer studentId, Integer experimentId) {
-        QueryWrapper<StuExperiment> queryWrapper = new QueryWrapper<>();
-        queryWrapper.eq(experimentId!=null,"experiment_id", experimentId)
-                .eq(studentId!=null,"student_id", studentId);
-
-        return stuExperimentMapper.selectList(queryWrapper);
+    public List<StuExperimentDTO> getStuExperiment(Integer studentId, Integer experimentId) {
+        return stuExperimentMapper.getStudentWork(experimentId,studentId);
     }
 
     @Override

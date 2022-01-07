@@ -1,5 +1,6 @@
 package com.yuki.experiment.framework.service;
 
+import com.yuki.experiment.framework.dto.StuExperimentDTO;
 import com.yuki.experiment.framework.dto.StudentGradeDTO;
 import com.yuki.experiment.framework.entity.StuExperiment;
 import org.springframework.web.multipart.MultipartFile;
@@ -9,7 +10,7 @@ import java.util.List;
 
 public interface StuExperimentService {
 
-    List<StuExperiment> getStuExperiment(Integer studentId,Integer experimentId);
+    List<StuExperimentDTO> getStuExperiment(Integer studentId, Integer experimentId);
 
     int insert(MultipartFile multipartFile,StuExperiment stuExperiment);
 
