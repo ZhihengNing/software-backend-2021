@@ -18,7 +18,7 @@ public class UserSocket {
 
     private Practice practice;
 
-    private int flag;
+    private Integer flag;
 
     private List<Integer> rightOrWrong;
 }

@@ -70,7 +70,7 @@ public class CourseScoreServiceImpl implements CourseScoreService {
         Date now = new Date();
         courseScore.setIsActive(1);
         courseScore.setLastAttendanceTime(now);
-        courseScore.setAttendanceTimes(0);
+        courseScore.setAttendanceTimes(1);
         courseScore.setPracticeScore(BigDecimal.ZERO);
         courseScore.setCourseScore(BigDecimal.ZERO);
         updateWrapper.eq(studentId != null, "student_id", studentId)

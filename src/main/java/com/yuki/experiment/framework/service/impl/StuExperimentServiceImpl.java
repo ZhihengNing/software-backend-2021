@@ -44,14 +44,16 @@ public class StuExperimentServiceImpl implements StuExperimentService {
         String webPath = twoUrl.getValue();
         //保存到服务器
         FileInfoDTO fileInfoDTO = FileUtil.preserveFile(multipartFile, path, webPath);
+        if(fileInfoDTO!=null) {
+            String url = fileInfoDTO.getFileUrl();
+            String name = fileInfoDTO.getFileName();
 
-        String url = fileInfoDTO.getFileUrl();
-        String name = fileInfoDTO.getFileName();
-
-        stuExperiment.setUrl(url);
-        log.info(name + "成功保存到数据库！");
-        //插入到stu_experiment表进行保存
-        return stuExperimentMapper.insert(stuExperiment);
+            stuExperiment.setUrl(url);
+            log.info(name + "成功保存到数据库！");
+            //插入到stu_experiment表进行保存
+            return stuExperimentMapper.insert(stuExperiment);
+        }
+        return 0;
     }
 
 
@@ -67,14 +69,18 @@ public class StuExperimentServiceImpl implements StuExperimentService {
         }
         //把新的文件url存入服务器
         FileInfoDTO fileInfoDTO = FileUtil.preserveFile(multipartFile, path, webPath);
-        String url = fileInfoDTO.getFileUrl();
-        String name = fileInfoDTO.getFileName();
-        log.info(name + "成功替换原文件,存到数据库中");
-        //这里更新stu_experiment
-        StuExperiment build = StuExperiment.builder().experimentId(experimentId).studentId(studentId)
-                .jobContent(jobContent).url(url).build();
-        if (stuExperimentMapper.updateById(build) > 0) {
-            return build;
+        if (fileInfoDTO != null) {
+            String url = fileInfoDTO.getFileUrl();
+            String name = fileInfoDTO.getFileName();
+            log.info(name + "成功替换原文件,存到数据库中");
+            //这里更新stu_experiment
+            StuExperiment build = StuExperiment.builder().experimentId(experimentId).studentId(studentId)
+                    .jobContent(jobContent).url(url).build();
+            if (stuExperimentMapper.updateById(build) > 0) {
+                return stuExperimentMapper.selectOne(new QueryWrapper<StuExperiment>()
+                        .eq("student_id", studentId)
+                        .eq("experiment_id", experimentId));
+            }
         }
         return null;
     }

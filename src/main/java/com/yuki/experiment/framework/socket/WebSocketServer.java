@@ -65,7 +65,7 @@ public class WebSocketServer {
      */
     private Integer userId;
 
-    private String teamId="";
+    private String teamId;
 
 
     private TeamScores getTeamInfo(String teamId) {
@@ -95,20 +95,30 @@ public class WebSocketServer {
         this.userId = userId;
         addOnlineCount();
         log.info("用户连接:" + userId + ",当前在线人数为:" + getOnlineCount());
-        log.info("USERS"+USERS);
+
         for (Map.Entry<String, ConcurrentHashMap<Integer, UserSocket>> entry : USERS.entrySet()) {
             String teamId = entry.getKey();
             ConcurrentHashMap<Integer, UserSocket> value = entry.getValue();
+            log.info("对于这个teamId"+teamId);
+            log.info("value..."+value);
+            for(Map.Entry<Integer,UserSocket>entry1:value.entrySet()){
+                log.info(entry1.getKey()+".."+entry1.getValue());
+            }
             if (value.containsKey(userId)&&value.get(userId).getFlag()==0) {
+                //下面这一句至关重要
+                this.teamId=value.get(userId).getWebSocketServer().getTeamId();
+                log.info("给重连的孩子发个东西"+userId);
                 value.get(userId).setWebSocketServer(this);
                 value.get(userId).setFlag(1);
                 TeamScores teamInfo = getTeamInfo(teamId);
-                if (teamInfo != null) {
+
+                if (teamInfo != null&&this.session.isOpen()) {
                     this.sendMessage(teamInfo);
                 }
                 return;
             }
         }
+        log.info("websocketMap大小"+webSocketMap.size());
         webSocketMap.put(userId, this);
         //String uuid = UUID.randomUUID().toString();
 
@@ -133,7 +143,9 @@ public class WebSocketServer {
                     }
                     TeamScores teamScores = new TeamScores(uuid, random, teamUserInfos);
                     for (Map.Entry<Integer, WebSocketServer> entry : webSocketMap.entrySet()) {
-                        entry.getValue().sendMessage(teamScores);
+                        if(entry.getValue().session.isOpen()) {
+                            entry.getValue().sendMessage(teamScores);
+                        }
                     }
                     USERS.put(uuid, tempMap);
                 }
@@ -155,19 +167,17 @@ public class WebSocketServer {
     @OnClose
     public void onClose() {
 
-        log.info("teamId" + teamId);
         if (USERS.containsKey(teamId)) {
             //USERS.get(teamId).remove(userId);
             ConcurrentHashMap<Integer, UserSocket> map = USERS.get(teamId);
             if (map.containsKey(userId)) {
+                log.info(userId+"的flag要被设置了");
                 map.get(userId).setFlag(0);
             }
-            log.info("团队人数" + map.size());
             int sign = 0;
             for (Map.Entry<Integer, UserSocket> entry : map.entrySet()) {
                 sign += entry.getValue().getFlag();
             }
-            log.info("sign"+sign);
             if (sign == 0) {
                 USERS.remove(teamId);
             }
@@ -197,7 +207,8 @@ public class WebSocketServer {
      */
     @OnMessage
     public void onMessage(String message, Session session) {
-        log.info("用户消息:" + userId + ",报文:" + message);
+       // log.info("用户消息:" + userId + ",报文:" + message);
+
         if (StringUtils.isNotBlank(message)) {
             try {
                 //解析发送的报文
@@ -222,12 +233,16 @@ public class WebSocketServer {
                                 entry.getValue().getRightOrWrong()));
                     }
                     teamScores.setTeamUserInfos(list);
+                    log.info("team"+team);
                     for (Map.Entry<Integer, UserSocket> entry : team.entrySet()) {
-                        log.info("value"+entry.getValue());
-                        if(entry.getValue().getFlag()!=0) {
-                            entry.getValue().getWebSocketServer().sendMessage(teamScores);
+                        //log.info("value"+entry.getValue());
+
+                        if(entry.getValue().getFlag()!=0&&entry.getValue().getWebSocketServer().session.isOpen()) {
+                            log.info("我们给他发"+entry.getValue().getWebSocketServer().userId.toString());
+                            String s = JSONObject.toJSONString(teamScores);
+                            entry.getValue().getWebSocketServer().session.getBasicRemote().sendText(s);
                         }
-                        log.info("发送消息"+list);
+                        //log.info("发送消息"+list);
                     }
                 } else {
                     log.error("请求的userId:" + userId + "不在该服务器上");
@@ -266,7 +281,7 @@ public class WebSocketServer {
      * 发送自定义消息
      */
     public static void sendInfo(List<TeamScores> message, Integer userId) throws IOException {
-        log.info("发送消息到:" + userId + "，报文:" + message);
+        //log.info("发送消息到:" + userId + "，报文:" + message);
         if (userId != null && webSocketMap.containsKey(userId)) {
             webSocketMap.get(userId).sendMessage(message.toString());
         } else {
@@ -276,7 +291,6 @@ public class WebSocketServer {
 
     public static void sendProblem(JSONObject message, Integer userId) throws IOException {
 
-        log.info("发送消息到:" + userId + "，报文:" + message);
         if (userId != null && webSocketMap.containsKey(userId)) {
             webSocketMap.get(userId).sendMessage(message.toJSONString());
         } else {

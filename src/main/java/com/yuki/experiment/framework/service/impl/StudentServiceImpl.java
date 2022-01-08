@@ -15,16 +15,17 @@ import java.util.List;
 
 @Service
 @Slf4j
-public class StudentServiceImpl implements StudentService{
+public class StudentServiceImpl implements StudentService {
 
     @Autowired
     private StudentMapper studentMapper;
+
     @Override
     public boolean verifyLogin(Integer id, String password) {
-        QueryWrapper<Student>wrapper=new QueryWrapper<>();
-        wrapper.eq("id",id)
-                .eq("password",password);
-        return studentMapper.selectOne(wrapper)!=null;
+        QueryWrapper<Student> wrapper = new QueryWrapper<>();
+        wrapper.eq("id", id)
+                .eq("password", password);
+        return studentMapper.selectOne(wrapper) != null;
     }
 
     @Override
@@ -34,7 +35,7 @@ public class StudentServiceImpl implements StudentService{
 
     @Override
     public Student insertInfo(Student student) {
-        if( studentMapper.insert(student)>0){
+        if (studentMapper.insert(student) > 0) {
             return student;
         }
         return null;
@@ -42,7 +43,7 @@ public class StudentServiceImpl implements StudentService{
 
     @Override
     public Student updateInfo(Student student) {
-        if(studentMapper.updateById(student)>0){
+        if (studentMapper.updateById(student) > 0) {
             return student;
         }
         return null;
@@ -54,18 +55,19 @@ public class StudentServiceImpl implements StudentService{
     }
 
     @Override
-    public String uploadPic(Integer studentId,String url, String webUrl, MultipartFile multipartFile) {
+    public String uploadPic(Integer studentId, String url, String webUrl, MultipartFile multipartFile) {
         FileUtil.deleteFile(studentMapper.selectById(studentId).getUrl());
         FileInfoDTO fileInfoDTO = FileUtil.preserveFile(multipartFile, url, webUrl);
-        String fileUrl = fileInfoDTO.getFileUrl();
-        Student student = new Student();
-        student.setId(studentId);
-        student.setUrl(fileUrl);
-        if (studentMapper.updateById(student) > 0) {
-            return fileUrl;
+        if (fileInfoDTO != null) {
+            String fileUrl = fileInfoDTO.getFileUrl();
+            Student student = new Student();
+            student.setId(studentId);
+            student.setUrl(fileUrl);
+            if (studentMapper.updateById(student) > 0) {
+                return fileUrl;
+            }
         }
         return null;
     }
-
 
 }

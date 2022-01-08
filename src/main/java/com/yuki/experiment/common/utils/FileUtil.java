@@ -111,7 +111,11 @@ public class FileUtil {
     }
 
     public static FileInfoDTO preserveFile(MultipartFile multipartFile, String path, String webPath) {
-        return preserveFile(Collections.singletonList(multipartFile), path, webPath).get(0);
+        List<FileInfoDTO> fileInfoDTOS = preserveFile(Collections.singletonList(multipartFile), path, webPath);
+        if(!EmptyUtil.isEmpty(fileInfoDTOS)){
+            return  fileInfoDTOS.get(0);
+        }
+        return null;
     }
 
 

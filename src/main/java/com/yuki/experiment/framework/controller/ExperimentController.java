@@ -1,5 +1,6 @@
 package com.yuki.experiment.framework.controller;
 
+import com.baomidou.mybatisplus.core.toolkit.StringUtils;
 import com.yuki.experiment.common.result.CommonResult;
 import com.yuki.experiment.common.utils.EmptyUtil;
 import com.yuki.experiment.framework.dto.StuExperimentDTO;
@@ -146,9 +147,12 @@ public class ExperimentController {
         } else if (experimentId == null) {
             return CommonResult.failed("实验项目Id不能为空");
         }
-        StuExperiment build = StuExperiment.builder().studentId(studentId)
-                .experimentId(experimentId)
-                .jobContent(jobContent).build();
+        StuExperiment.StuExperimentBuilder builder = StuExperiment.builder().studentId(studentId)
+                .experimentId(experimentId);
+        if(!StringUtils.isBlank(jobContent)) {
+             builder.jobContent(jobContent);
+        }
+        StuExperiment build = builder.build();
         if (stuExperimentService.insert(multipartFile, build) > 0) {
             return CommonResult.success();
         }
