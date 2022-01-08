@@ -2,6 +2,7 @@ package com.yuki.experiment.framework.controller;
 
 import com.yuki.experiment.common.result.CommonResult;
 import com.yuki.experiment.common.utils.EmptyUtil;
+import com.yuki.experiment.framework.entity.CourseScore;
 import com.yuki.experiment.framework.entity.Practice;
 import com.yuki.experiment.framework.service.PracticeService;
 import io.swagger.annotations.Api;
@@ -40,7 +41,6 @@ public class PracticeController {
         return CommonResult.success(practiceService.update(practice));
     }
 
-
     @ApiOperation("查看对抗练习")
     @RequestMapping(value = "", method = RequestMethod.GET)
     public CommonResult<List<Practice>> queryPractice(
@@ -62,4 +62,14 @@ public class PracticeController {
         }
         return CommonResult.success(oneById);
     }
+
+    @ApiOperation("判断能否进行对抗练习")
+    @RequestMapping(value = "/judge/{courseId}/{studentId}",method = RequestMethod.GET)
+    public CommonResult<Boolean> judgePractice(@PathVariable Integer courseId,
+                                               @PathVariable Integer studentId) {
+        return CommonResult.success(practiceService.judgePractice(courseId, studentId));
+
+    }
+
+
 }

@@ -25,7 +25,4 @@ public class StudentGradeDTO {
     @ApiModelProperty("所有的实验")
     private List<StuExperiment> experiments;
 
-    @ApiModelProperty("所有的对抗练习")
-    private List<StuPractice> practices;
-
 }

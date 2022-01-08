@@ -5,6 +5,8 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.List;
+
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
@@ -15,4 +17,8 @@ public class UserSocket {
     private Integer correctNum;
 
     private Practice practice;
+
+    private int flag;
+
+    private List<Integer> rightOrWrong;
 }

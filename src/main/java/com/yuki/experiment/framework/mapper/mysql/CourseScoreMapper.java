@@ -7,8 +7,8 @@ import org.springframework.stereotype.Repository;
 /**
 * @author 86180
 * @description 针对表【course_score】的数据库操作Mapper
-* @createDate 2021-11-16 20:12:51
-* @Entity com.yuki.experiment.framework.entity.CourseScore
+* @createDate 2022-01-08 15:39:28
+* @Entity generator.domain.CourseScore
 */
 @Repository
 public interface CourseScoreMapper extends BaseMapper<CourseScore> {

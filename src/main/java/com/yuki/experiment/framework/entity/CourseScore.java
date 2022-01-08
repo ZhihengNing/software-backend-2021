@@ -20,15 +20,15 @@ public class CourseScore implements Serializable {
     /**
      * 课程ID
      */
+    @ApiModelProperty("课程Id")
     @TableId
-    @ApiModelProperty("课程ID")
     private Integer courseId;
 
     /**
      * 学生ID
      */
+    @ApiModelProperty("学生Id")
     @TableId
-    @ApiModelProperty("学生ID")
     private Integer studentId;
 
     /**
@@ -37,24 +37,31 @@ public class CourseScore implements Serializable {
     @ApiModelProperty("课程得分")
     private BigDecimal courseScore;
 
-
     /**
      * 上次考勤时间
      */
     @ApiModelProperty("上次考勤时间")
     private Date lastAttendanceTime;
 
+    @ApiModelProperty("上次对抗练习时间")
+    private Date lastPracticeTime;
     /**
-     * 考勤得分
+     * 考勤次数
      */
-    @ApiModelProperty("考勤得分")
-    private BigDecimal attendanceScore;
+    @ApiModelProperty("考勤次数")
+    private Integer attendanceTimes;
 
     /**
      * 是否激活
      */
     @ApiModelProperty("是否激活")
     private Integer isActive;
+
+    /**
+     * 对抗练习分数
+     */
+    @ApiModelProperty("对抗练习分数")
+    private BigDecimal practiceScore;
 
     @TableField(exist = false)
     private static final long serialVersionUID = 1L;

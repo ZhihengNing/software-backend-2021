@@ -2,6 +2,7 @@ package com.yuki.experiment.framework.controller;
 
 import com.yuki.experiment.common.result.CommonResult;
 import com.yuki.experiment.framework.dto.StudentGradeDTO;
+import com.yuki.experiment.framework.entity.CourseScore;
 import com.yuki.experiment.framework.service.CourseScoreService;
 import com.yuki.experiment.framework.service.StuExperimentService;
 import io.swagger.annotations.Api;
@@ -49,6 +50,19 @@ public class GradeController {
         return CommonResult.failed();
     }
 
+    @ApiOperation("上传学生对抗练习成绩")
+    @RequestMapping(value = "/{studentId}/{courseId}",method = RequestMethod.POST)
+    public CommonResult<CourseScore> uploadPracticeGrade(@PathVariable Integer courseId,
+                                            @PathVariable Integer studentId,
+                                            @RequestParam("grade")BigDecimal grade) {
+        CourseScore courseScore = courseScoreService.uploadPracticeGrade(studentId, courseId, grade);
+        if (courseScore != null) {
+            return CommonResult.success(courseScore);
+        }
+        return CommonResult.failed();
+    }
+
+
     @ApiOperation("获取学生某课程所有成绩(分为总成绩，实验，考勤，对抗练习）只返回已经激活学生")
     @RequestMapping(value = "/get/{studentId}/{courseId}", method = RequestMethod.GET)
     public CommonResult<StudentGradeDTO> getGrade(@PathVariable Integer studentId, @PathVariable Integer courseId) {
@@ -64,5 +78,7 @@ public class GradeController {
         }
         return CommonResult.failed("没有选这门课，查什么查");
     }
+
+
 
 }

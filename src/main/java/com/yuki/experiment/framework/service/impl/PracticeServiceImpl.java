@@ -1,10 +1,14 @@
 package com.yuki.experiment.framework.service.impl;
 
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.yuki.experiment.common.utils.EmptyUtil;
+import com.yuki.experiment.framework.entity.CourseScore;
 import com.yuki.experiment.framework.entity.Option;
 import com.yuki.experiment.framework.entity.Practice;
 import com.yuki.experiment.framework.entity.Problem;
+import com.yuki.experiment.framework.mapper.mysql.CourseScoreMapper;
 import com.yuki.experiment.framework.service.PracticeService;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
@@ -12,16 +16,17 @@ import org.springframework.data.mongodb.core.query.Update;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.Random;
+import java.util.*;
 
 @Service
+@Slf4j
 public class PracticeServiceImpl implements PracticeService {
 
     @Resource
     private MongoTemplate mongoTemplate;
+
+    @Resource
+    private CourseScoreMapper courseScoreMapper;
 
     private final static String tableName="practice";
 
@@ -101,7 +106,8 @@ public class PracticeServiceImpl implements PracticeService {
     public Practice random(Integer courseId) {
         Criteria criteria = Criteria.where("courseId").is(courseId);
         Query query = new Query(criteria);
-        return mongoTemplate.findOne(query, Practice.class, "practice");
+        Practice practice = mongoTemplate.findOne(query, Practice.class, "practice");
+        return practice;
     }
 
     public void insert() {
@@ -134,5 +140,23 @@ public class PracticeServiceImpl implements PracticeService {
 //        System.out.println(practice);
 //        mongoTemplate.insert(practice, tableName);
 
+    }
+
+    private boolean judgeTime(Date thisTime,Date lastTime){
+        Calendar instance = Calendar.getInstance();
+        instance.setTime(lastTime);
+        Calendar instance1=Calendar.getInstance();
+        instance1.setTime(thisTime);
+        return instance1.get(Calendar.DAY_OF_YEAR)-instance.get(Calendar.DAY_OF_YEAR)>1;
+    }
+
+    @Override
+    public Boolean judgePractice(Integer courseId, Integer studentId) {
+        Date now=new Date();
+        QueryWrapper<CourseScore>queryWrapper=new QueryWrapper<>();
+        queryWrapper.eq("student_id",studentId).eq("course_id",courseId);
+        CourseScore courseScore = courseScoreMapper.selectOne(queryWrapper);
+
+        return judgeTime(now,courseScore.getLastPracticeTime());
     }
 }

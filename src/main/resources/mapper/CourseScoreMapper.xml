@@ -5,17 +5,19 @@
 <mapper namespace="com.yuki.experiment.framework.mapper.mysql.CourseScoreMapper">
 
     <resultMap id="BaseResultMap" type="com.yuki.experiment.framework.entity.CourseScore">
-            <id property="courseId" column="course_id" jdbcType="INTEGER"/>
-            <id property="studentId" column="student_id" jdbcType="INTEGER"/>
+            <id property="courseId" column="course_id" jdbcType="OTHER"/>
+            <id property="studentId" column="student_id" jdbcType="OTHER"/>
             <result property="courseScore" column="course_score" jdbcType="DECIMAL"/>
             <result property="lastAttendanceTime" column="last_attendance_time" jdbcType="TIMESTAMP"/>
-            <result property="attendanceScore" column="attendance_score" jdbcType="DECIMAL"/>
+            <result property="lastPracticeTime" column="last_practice_time" jdbcType="TIMESTAMP"/>
+            <result property="attendanceTimes" column="attendance_times" jdbcType="OTHER"/>
             <result property="isActive" column="is_active" jdbcType="INTEGER"/>
+            <result property="practiceScore" column="practice_score" jdbcType="DECIMAL"/>
     </resultMap>
 
     <sql id="Base_Column_List">
         course_id,student_id,course_score,
-        last_attendance_time,attendance_score,
-        is_active
+        last_attendance_time,attendance_times,is_active,
+        practice_score,last_practice_time
     </sql>
 </mapper>

@@ -9,9 +9,6 @@ import com.yuki.experiment.framework.mapper.mysql.*;
 import com.yuki.experiment.framework.service.CourseScoreService;
 import com.yuki.experiment.framework.util.GradeUtil;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.data.mongodb.core.MongoTemplate;
-import org.springframework.data.mongodb.core.query.Criteria;
-import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
@@ -21,7 +18,7 @@ import java.util.*;
 @Slf4j
 public class CourseScoreServiceImpl implements CourseScoreService {
 
-    private final BigDecimal EVERY_ATTENDANCE_SCORE=BigDecimal.ONE;
+    private final Integer EVERY_ATTENDANCE_TIMES=1;
 
     private final CourseScoreMapper courseScoreMapper;
 
@@ -73,14 +70,15 @@ public class CourseScoreServiceImpl implements CourseScoreService {
         Date now = new Date();
         courseScore.setIsActive(1);
         courseScore.setLastAttendanceTime(now);
-        courseScore.setAttendanceScore(BigDecimal.ZERO);
+        courseScore.setAttendanceTimes(0);
+        courseScore.setPracticeScore(BigDecimal.ZERO);
         courseScore.setCourseScore(BigDecimal.ZERO);
         updateWrapper.eq(studentId != null, "student_id", studentId)
                 .eq(courseId != null, "course_id", courseId);
         return courseScoreMapper.update(courseScore, updateWrapper);
     }
 
-    private boolean judgeSignIn(Date thisTime,Date lastTime){
+    private boolean judgeTime(Date thisTime, Date lastTime){
         Calendar instance = Calendar.getInstance();
         instance.setTime(lastTime);
         Calendar instance1=Calendar.getInstance();
@@ -90,18 +88,11 @@ public class CourseScoreServiceImpl implements CourseScoreService {
 
     @Override
     public CourseScore signIn(Integer studentId, Integer courseId) {
-        QueryWrapper<CourseScore> queryWrapper = new QueryWrapper<>();
-        queryWrapper.eq("student_id", studentId)
-                .eq("course_id", courseId);
-        CourseScore courseScore = courseScoreMapper.selectOne(queryWrapper);
-        if (courseScore == null || courseScore.getIsActive() == 0) {
-            return null;
-        }
-        Date lastAttendanceTime = courseScore.getLastAttendanceTime();
-        Date now = new Date();
-        if (judgeSignIn(now, lastAttendanceTime)) {
-            BigDecimal newScore = courseScore.getAttendanceScore().add(EVERY_ATTENDANCE_SCORE);
-            courseScore.setAttendanceScore(newScore);
+        CourseScore courseScore = getMessage(studentId, courseId);
+        Date now=new Date();
+        if (judge(studentId, courseId,now)) {
+            Integer newTimes = courseScore.getAttendanceTimes() + EVERY_ATTENDANCE_TIMES;
+            courseScore.setAttendanceTimes(newTimes);
             courseScore.setLastAttendanceTime(now);
             UpdateWrapper<CourseScore> updateWrapper = new UpdateWrapper<>();
             updateWrapper.eq("student_id", studentId).eq("course_id", courseId);
@@ -127,6 +118,45 @@ public class CourseScoreServiceImpl implements CourseScoreService {
 
         return gradeUtil.getGrade(studentId, courseId);
 
+    }
+
+    @Override
+    public CourseScore uploadPracticeGrade(Integer studentId, Integer courseId, BigDecimal grade) {
+        CourseScore courseScore = getMessage(studentId, courseId);
+        Date now=new Date();
+        if (judge(studentId,courseId,now)) {
+            BigDecimal add = courseScore.getPracticeScore().add(grade);
+            courseScore.setPracticeScore(add);
+            courseScore.setLastPracticeTime(now);
+            UpdateWrapper<CourseScore> updateWrapper = new UpdateWrapper<>();
+            updateWrapper.eq("student_id", studentId).eq("course_id", courseId);
+            if (courseScoreMapper.update(courseScore, updateWrapper) > 0) {
+                log.info("对抗练习上传分数成功");
+                return courseScore;
+            }
+        }
+        return null;
+    }
+
+    public CourseScore getMessage(Integer studentId,Integer courseId){
+        QueryWrapper<CourseScore> queryWrapper = new QueryWrapper<>();
+        queryWrapper.eq("student_id", studentId)
+                .eq("course_id", courseId);
+        CourseScore courseScore = courseScoreMapper.selectOne(queryWrapper);
+        if (courseScore == null || courseScore.getIsActive() == 0) {
+            return null;
+        }
+        return courseScore;
+    }
+
+    public boolean judge(Integer studentId, Integer courseId,Date now){
+        CourseScore courseScore = getMessage(studentId, courseId);
+        Date lastAttendanceTime = courseScore.getLastAttendanceTime();
+        return judgeTime(now,lastAttendanceTime);
+    }
+    @Override
+    public boolean judgeSignIn(Integer studentId, Integer courseId) {
+        return judge(studentId, courseId,new Date());
     }
 
 }

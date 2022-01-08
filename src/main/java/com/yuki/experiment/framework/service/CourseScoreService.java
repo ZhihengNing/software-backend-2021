@@ -4,6 +4,7 @@ import com.alibaba.fastjson.JSONObject;
 import com.yuki.experiment.framework.dto.StudentGradeDTO;
 import com.yuki.experiment.framework.entity.CourseScore;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 public interface CourseScoreService {
@@ -15,6 +16,10 @@ public interface CourseScoreService {
    CourseScore signIn(Integer studentId, Integer courseId);
 
     StudentGradeDTO getStudentGrade(Integer studentId, Integer courseId);
+
+    CourseScore uploadPracticeGrade(Integer studentId, Integer courseId, BigDecimal grade);
+
+    boolean judgeSignIn(Integer studentId,Integer courseId);
 
 
 }

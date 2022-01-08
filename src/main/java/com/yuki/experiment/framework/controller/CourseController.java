@@ -3,6 +3,7 @@ package com.yuki.experiment.framework.controller;
 import com.alibaba.fastjson.JSONObject;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.toolkit.StringUtils;
+import com.sun.org.apache.xpath.internal.operations.Bool;
 import com.yuki.experiment.common.exception.FileIsNullException;
 import com.yuki.experiment.common.result.CommonResult;
 import com.yuki.experiment.common.utils.FileUtil;
@@ -267,6 +268,14 @@ public class CourseController {
             return CommonResult.success(courseScore);
         }
         return CommonResult.failed("考勤失败");
+    }
+
+    @ApiOperation("判断学生能否考勤")
+    @RequestMapping(value = "/judgeSignIn/{studentId}/{courseId}", method = RequestMethod.GET)
+    public CommonResult<Boolean> judgeSignIn(@PathVariable Integer studentId,
+                                            @PathVariable Integer courseId
+    ) {
+        return CommonResult.success(courseScoreService.judgeSignIn(studentId, courseId));
     }
 
     @ApiOperation("查看选课学生名单（只返回已经激活课程的学生信息）")

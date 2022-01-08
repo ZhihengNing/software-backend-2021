@@ -39,7 +39,15 @@ public class CourseServiceImpl implements CourseService {
 
     @Override
     public int insert(Course course) {
-        return courseMapper.insert(course);
+        courseMapper.insert(course);
+        TeacherCourse teacherCourse = new TeacherCourse();
+        teacherCourse.setCourseId(course.getId());
+
+        teacherCourse.setCharacterName("责任教师");
+        teacherCourse.setTeacherId(course.getTeacherId());
+        teacherCourseMapper.insert(teacherCourse);
+
+        return 1;
     }
 
     @Override

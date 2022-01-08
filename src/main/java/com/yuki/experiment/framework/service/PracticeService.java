@@ -18,4 +18,6 @@ public interface PracticeService {
     Practice random(Integer courseId);
 
     void insert();
+
+    Boolean judgePractice(Integer courseId,Integer studentId);
 }

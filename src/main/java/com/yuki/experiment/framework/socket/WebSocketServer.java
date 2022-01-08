@@ -1,10 +1,12 @@
 package com.yuki.experiment.framework.socket;
 
 import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.baomidou.mybatisplus.core.toolkit.StringUtils;
 import com.yuki.experiment.framework.dto.SocketMessageDTO;
 import com.yuki.experiment.framework.entity.Practice;
+import com.yuki.experiment.framework.entity.Problem;
 import com.yuki.experiment.framework.service.PracticeService;
 import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
@@ -19,10 +21,7 @@ import javax.websocket.*;
 import javax.websocket.server.PathParam;
 import javax.websocket.server.ServerEndpoint;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.UUID;
+import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 
 
@@ -75,9 +74,10 @@ public class WebSocketServer {
         if (USERS.containsKey(teamId)) {
             ConcurrentHashMap<Integer, UserSocket> map = USERS.get(teamId);
             teamScores.setTeamId(teamId);
+            teamScores.setPractice(map.get(userId).getPractice());
             for (Map.Entry<Integer, UserSocket> entry : map.entrySet()) {
-                teamScores.setPractice(entry.getValue().getPractice());
-                list.add(new TeamUserInfo(entry.getKey(), entry.getValue().getCorrectNum()));
+                list.add(new TeamUserInfo(entry.getKey(), entry.getValue().getCorrectNum(),
+                        entry.getValue().getRightOrWrong()));
             }
             teamScores.setTeamUserInfos(list);
             return teamScores;
@@ -93,12 +93,15 @@ public class WebSocketServer {
                        @PathParam("courseId") Integer courseId) throws IOException {
         this.session = session;
         this.userId = userId;
-
+        addOnlineCount();
+        log.info("用户连接:" + userId + ",当前在线人数为:" + getOnlineCount());
         log.info("USERS"+USERS);
         for (Map.Entry<String, ConcurrentHashMap<Integer, UserSocket>> entry : USERS.entrySet()) {
             String teamId = entry.getKey();
             ConcurrentHashMap<Integer, UserSocket> value = entry.getValue();
-            if (value.containsKey(userId)) {
+            if (value.containsKey(userId)&&value.get(userId).getFlag()==0) {
+                value.get(userId).setWebSocketServer(this);
+                value.get(userId).setFlag(1);
                 TeamScores teamInfo = getTeamInfo(teamId);
                 if (teamInfo != null) {
                     this.sendMessage(teamInfo);
@@ -106,7 +109,6 @@ public class WebSocketServer {
                 return;
             }
         }
-        addOnlineCount();
         webSocketMap.put(userId, this);
         //String uuid = UUID.randomUUID().toString();
 
@@ -115,18 +117,19 @@ public class WebSocketServer {
                 String uuid = UUID.randomUUID().toString();
                 this.teamId = uuid;
                 Practice random = practiceService.random(courseId);
+                List<Integer>correctOrWrong=new ArrayList<>();
                 if (USERS.containsKey(uuid)) {
                     ConcurrentHashMap<Integer, UserSocket> concurrentHashMap = USERS.get(uuid);
-                    UserSocket userSocket = new UserSocket(this, 0, random);
+                    UserSocket userSocket = new UserSocket(this, 0, random,1,correctOrWrong);
                     concurrentHashMap.put(userId, userSocket);
                 } else {
                     ConcurrentHashMap<Integer, UserSocket> tempMap = new ConcurrentHashMap<>();
                     List<TeamUserInfo> teamUserInfos = new ArrayList<>();
                     for (Map.Entry<Integer, WebSocketServer> entry : webSocketMap.entrySet()) {
-                        UserSocket userSocket = new UserSocket(entry.getValue(), 0, random);
+                        UserSocket userSocket = new UserSocket(entry.getValue(), 0, random,1,correctOrWrong);
                         tempMap.put(entry.getKey(), userSocket);
                         entry.getValue().setTeamId(uuid);
-                        teamUserInfos.add(new TeamUserInfo(entry.getKey(), 0));
+                        teamUserInfos.add(new TeamUserInfo(entry.getKey(), 0,correctOrWrong));
                     }
                     TeamScores teamScores = new TeamScores(uuid, random, teamUserInfos);
                     for (Map.Entry<Integer, WebSocketServer> entry : webSocketMap.entrySet()) {
@@ -138,7 +141,6 @@ public class WebSocketServer {
             }
         }
 
-        log.info("用户连接:" + userId + ",当前在线人数为:" + getOnlineCount());
 
         try {
             sendMessage("连接成功");
@@ -153,13 +155,20 @@ public class WebSocketServer {
     @OnClose
     public void onClose() {
 
-        log.info("teamId"+teamId);
+        log.info("teamId" + teamId);
         if (USERS.containsKey(teamId)) {
             //USERS.get(teamId).remove(userId);
-            if(USERS.get(teamId).containsKey(userId)) {
-                subOnlineCount();
+            ConcurrentHashMap<Integer, UserSocket> map = USERS.get(teamId);
+            if (map.containsKey(userId)) {
+                map.get(userId).setFlag(0);
             }
-            if (USERS.get(teamId).size() == 0) {
+            log.info("团队人数" + map.size());
+            int sign = 0;
+            for (Map.Entry<Integer, UserSocket> entry : map.entrySet()) {
+                sign += entry.getValue().getFlag();
+            }
+            log.info("sign"+sign);
+            if (sign == 0) {
                 USERS.remove(teamId);
             }
         }
@@ -176,6 +185,7 @@ public class WebSocketServer {
 //        if (scores.get(teamId).size() == 0) {
 //            scores.remove(teamId);
 //        }
+        subOnlineCount();
         log.info("用户退出:" + userId + ",当前在线人数为:" + getOnlineCount());
     }
 
@@ -195,18 +205,28 @@ public class WebSocketServer {
                 String teamId = jsonObject.getString("teamId");
                 Integer userId = jsonObject.getInteger("userId");
                 int correctNum = jsonObject.getIntValue("correctNum");
+                JSONArray correctOrWrong = jsonObject.getJSONArray("rightOrWrong");
+                List<Integer> list1 = JSONObject.parseArray(correctOrWrong.toJSONString(), Integer.class);
                 if (USERS.containsKey(teamId) && USERS.get(teamId).containsKey(userId)) {
-                    UserSocket userSocket = USERS.get(teamId).get(userId);
+                    ConcurrentHashMap<Integer, UserSocket> team = USERS.get(teamId);
+                    UserSocket userSocket = team.get(userId);
                     userSocket.setCorrectNum(correctNum);
+                    userSocket.setRightOrWrong(list1);
+
                     TeamScores teamScores = new TeamScores();
+                    teamScores.setPractice(userSocket.getPractice());
                     teamScores.setTeamId(teamId);
                     List<TeamUserInfo>list=new ArrayList<>();
-                    for (Map.Entry<Integer, UserSocket> entry : USERS.get(teamId).entrySet()) {
-                        teamScores.setPractice(entry.getValue().getPractice());
-                        list.add(new TeamUserInfo(entry.getKey(), entry.getValue().getCorrectNum()));
+                    for (Map.Entry<Integer, UserSocket> entry : team.entrySet()) {
+                        list.add(new TeamUserInfo(entry.getKey(), entry.getValue().getCorrectNum(),
+                                entry.getValue().getRightOrWrong()));
                     }
-                    for (Map.Entry<Integer, UserSocket> entry : USERS.get(teamId).entrySet()) {
-                        entry.getValue().getWebSocketServer().sendMessage(teamScores);
+                    teamScores.setTeamUserInfos(list);
+                    for (Map.Entry<Integer, UserSocket> entry : team.entrySet()) {
+                        log.info("value"+entry.getValue());
+                        if(entry.getValue().getFlag()!=0) {
+                            entry.getValue().getWebSocketServer().sendMessage(teamScores);
+                        }
                         log.info("发送消息"+list);
                     }
                 } else {

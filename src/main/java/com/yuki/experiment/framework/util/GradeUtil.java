@@ -32,7 +32,6 @@ public class GradeUtil {
 
     private final MongoTemplate mongoTemplate;
 
-
     public GradeUtil(StudentMapper studentMapper, CourseScoreMapper courseScoreMapper, CourseMapper courseMapper, StuExperimentMapper stuExperimentMapper, MongoTemplate mongoTemplate) {
         this.studentMapper = studentMapper;
         this.courseScoreMapper = courseScoreMapper;
@@ -41,26 +40,26 @@ public class GradeUtil {
         this.mongoTemplate = mongoTemplate;
     }
 
-    private static List<BigDecimal> transfer(String scoreRatio){
-        if(scoreRatio==null){
-            return Arrays.asList(BigDecimal.ZERO,BigDecimal.ZERO,BigDecimal.ZERO);
+    private static List<BigDecimal> transfer(String scoreRatio) {
+        if (scoreRatio == null) {
+            return Arrays.asList(BigDecimal.ZERO, BigDecimal.ZERO, BigDecimal.ZERO);
         }
         String[] split = scoreRatio.split(",");
-        List<BigDecimal>list=new ArrayList<>();
+        List<BigDecimal> list = new ArrayList<>();
         for (String s : split) {
             list.add(BigDecimal.valueOf(Double.parseDouble(s)));
         }
         return list;
     }
 
-    public StudentGradeDTO getGrade(Integer studentId, Integer courseId){
+    public StudentGradeDTO getGrade(Integer studentId, Integer courseId) {
         String name = studentMapper.selectOne(new QueryWrapper<Student>()
                 .eq("id", studentId)).getName();
 
         QueryWrapper<CourseScore> courseScoreQueryWrapper = new QueryWrapper<>();
         courseScoreQueryWrapper.eq("student_id", studentId).eq("course_id", courseId);
         CourseScore StudentGrade = courseScoreMapper.selectOne(courseScoreQueryWrapper);
-        if(StudentGrade==null||StudentGrade.getIsActive()==0){
+        if (StudentGrade == null || StudentGrade.getIsActive() == 0) {
             return null;
         }
 
@@ -72,9 +71,10 @@ public class GradeUtil {
 
         //这里可能因为没设置分数比例导致无法计算
         List<BigDecimal> transfer = transfer(scoreRatio);
-        BigDecimal attendanceScore = StudentGrade.getAttendanceScore();
-        BigDecimal tempAttendance=attendanceScore==null?BigDecimal.ZERO:attendanceScore;
-        BigDecimal attendances = tempAttendance.multiply(transfer.get(0));
+        Integer attendanceTimes = StudentGrade.getAttendanceTimes();
+        int tempAttendance = attendanceTimes == null ? 0 : attendanceTimes;
+        BigDecimal attendances = transfer.get(0).multiply(BigDecimal.valueOf(tempAttendance/30.0));
+
 
         //计算实验相关
         QueryWrapper<StuExperiment> wrapper1 = new QueryWrapper<>();
@@ -86,26 +86,13 @@ public class GradeUtil {
             BigDecimal temp = experimentScore == null ? BigDecimal.ZERO : experimentScore;
             start = start.add(temp);
         }
-
         BigDecimal experiments = start.multiply(transfer.get(1));
 
         //计算对抗练习相关
-        BigDecimal start1 = BigDecimal.ZERO;
-        Criteria criteria = new Criteria();
-        criteria.andOperator(
-                Criteria.where("studentId").is(studentId),
-                Criteria.where("courseId").is(courseId)
-        );
-        Query query = new Query(criteria);
-        List<StuPractice> stuPractices = mongoTemplate
-                .find(query, StuPractice.class, "stuPractice");
-        for (StuPractice item : stuPractices) {
-            BigDecimal studentScore = item.getStudentScore();
-            BigDecimal temp = studentScore == null ? BigDecimal.ZERO : studentScore;
-            start1 = start1.add(temp);
-        }
+        BigDecimal practiceScore = StudentGrade.getPracticeScore();
+        BigDecimal tempPractice = practiceScore == null ? BigDecimal.ZERO : practiceScore;
+        BigDecimal practices = tempPractice.multiply(transfer.get(2));
 
-        BigDecimal practices = start1.multiply(transfer.get(2));
         //设置总分保存到数据库
         StudentGrade.setCourseScore(attendances.add(experiments).add(practices));
         UpdateWrapper<CourseScore> updateWrapper = new UpdateWrapper<>();
@@ -113,7 +100,7 @@ public class GradeUtil {
                 .eq("student_id", studentId).eq("course_id", courseId);
         courseScoreMapper.update(null, updateWrapper);
         return StudentGradeDTO.builder().take(StudentGrade)
-                .experiments(stuExperiments).practices(stuPractices)
+                .experiments(stuExperiments)
                 .studentId(studentId).studentName(name).build();
 
     }
