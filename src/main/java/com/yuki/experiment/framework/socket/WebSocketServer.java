@@ -5,8 +5,10 @@ import com.alibaba.fastjson.JSONObject;
 import com.baomidou.mybatisplus.core.toolkit.StringUtils;
 import com.yuki.experiment.framework.dto.SocketMessageDTO;
 import com.yuki.experiment.framework.entity.Practice;
+import com.yuki.experiment.framework.service.PracticeService;
 import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
+import org.bson.json.JsonObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
@@ -33,15 +35,15 @@ import java.util.concurrent.ConcurrentHashMap;
 @Data
 public class WebSocketServer {
 
-    private static MongoTemplate mongoTemplate;
 
-    private static final int NUM=3;
+    private static PracticeService practiceService;
 
     @Autowired
-    public void setMongoTemplate(MongoTemplate mongoTemplate) {
-        WebSocketServer.mongoTemplate = mongoTemplate;
+    public void setPracticeService(PracticeService practiceService){
+        WebSocketServer.practiceService=practiceService;
     }
 
+    private static final int NUM=3;
     /**
      * 静态变量，用来记录当前在线连接数。应该把它设计成线程安全的。
      */
@@ -64,7 +66,24 @@ public class WebSocketServer {
      */
     private Integer userId;
 
-    private String teamId;
+    private String teamId="";
+
+
+    private TeamScores getTeamInfo(String teamId) {
+        TeamScores teamScores = new TeamScores();
+        List<TeamUserInfo> list = new ArrayList<>();
+        if (USERS.containsKey(teamId)) {
+            ConcurrentHashMap<Integer, UserSocket> map = USERS.get(teamId);
+            teamScores.setTeamId(teamId);
+            for (Map.Entry<Integer, UserSocket> entry : map.entrySet()) {
+                teamScores.setPractice(entry.getValue().getPractice());
+                list.add(new TeamUserInfo(entry.getKey(), entry.getValue().getCorrectNum()));
+            }
+            teamScores.setTeamUserInfos(list);
+            return teamScores;
+        }
+        return null;
+    }
 
     /**
      * 连接建立成功调用的方法
@@ -72,45 +91,52 @@ public class WebSocketServer {
     @OnOpen
     public void onOpen(Session session, @PathParam("userId") Integer userId,
                        @PathParam("courseId") Integer courseId) throws IOException {
-        webSocketMap.put(userId, this);
-        //String uuid = UUID.randomUUID().toString();
         this.session = session;
         this.userId = userId;
+
+        log.info("USERS"+USERS);
+        for (Map.Entry<String, ConcurrentHashMap<Integer, UserSocket>> entry : USERS.entrySet()) {
+            String teamId = entry.getKey();
+            ConcurrentHashMap<Integer, UserSocket> value = entry.getValue();
+            if (value.containsKey(userId)) {
+                TeamScores teamInfo = getTeamInfo(teamId);
+                if (teamInfo != null) {
+                    this.sendMessage(teamInfo);
+                }
+                return;
+            }
+        }
+        addOnlineCount();
+        webSocketMap.put(userId, this);
+        //String uuid = UUID.randomUUID().toString();
 
         synchronized (WebSocketServer.class) {
             if (webSocketMap.size() == NUM) {
                 String uuid = UUID.randomUUID().toString();
-                this.teamId=uuid;
+                this.teamId = uuid;
+                Practice random = practiceService.random(courseId);
                 if (USERS.containsKey(uuid)) {
                     ConcurrentHashMap<Integer, UserSocket> concurrentHashMap = USERS.get(uuid);
-                    UserSocket userSocket = new UserSocket(this, 0);
+                    UserSocket userSocket = new UserSocket(this, 0, random);
                     concurrentHashMap.put(userId, userSocket);
                 } else {
                     ConcurrentHashMap<Integer, UserSocket> tempMap = new ConcurrentHashMap<>();
-                    JSONObject json = new JSONObject();
-                    List<TeamScores> teamScoresList = new ArrayList<>();
+                    List<TeamUserInfo> teamUserInfos = new ArrayList<>();
                     for (Map.Entry<Integer, WebSocketServer> entry : webSocketMap.entrySet()) {
-                        UserSocket userSocket = new UserSocket(entry.getValue(), 0);
+                        UserSocket userSocket = new UserSocket(entry.getValue(), 0, random);
                         tempMap.put(entry.getKey(), userSocket);
                         entry.getValue().setTeamId(uuid);
-                        TeamScores teamScores = new TeamScores(uuid, entry.getKey(), 0);
-                        teamScoresList.add(teamScores);
+                        teamUserInfos.add(new TeamUserInfo(entry.getKey(), 0));
                     }
-                    json.put("team", teamScoresList);
-                    Criteria criteria = Criteria.where("courseId").is(courseId);
-                    Query query = new Query(criteria);
-                    List<Practice> practices = mongoTemplate.find(query, Practice.class, "practice");
-                    json.put("problem", practices);
+                    TeamScores teamScores = new TeamScores(uuid, random, teamUserInfos);
                     for (Map.Entry<Integer, WebSocketServer> entry : webSocketMap.entrySet()) {
-                        entry.getValue().sendMessage(json.toJSONString());
+                        entry.getValue().sendMessage(teamScores);
                     }
                     USERS.put(uuid, tempMap);
                 }
                 webSocketMap.clear();
             }
         }
-        //查看当前人数
-        addOnlineCount();
 
         log.info("用户连接:" + userId + ",当前在线人数为:" + getOnlineCount());
 
@@ -127,13 +153,17 @@ public class WebSocketServer {
     @OnClose
     public void onClose() {
 
+        log.info("teamId"+teamId);
         if (USERS.containsKey(teamId)) {
-            USERS.get(teamId).remove(userId);
-            subOnlineCount();
+            //USERS.get(teamId).remove(userId);
+            if(USERS.get(teamId).containsKey(userId)) {
+                subOnlineCount();
+            }
+            if (USERS.get(teamId).size() == 0) {
+                USERS.remove(teamId);
+            }
         }
-//        if (USERS.get(teamId).size() == 0) {
-//            USERS.remove(teamId);
-//        }
+
 //        if (allUserMap.containsKey(teamId)) {
 //            allUserMap.get(teamId).remove(userId);
 //        }
@@ -168,16 +198,15 @@ public class WebSocketServer {
                 if (USERS.containsKey(teamId) && USERS.get(teamId).containsKey(userId)) {
                     UserSocket userSocket = USERS.get(teamId).get(userId);
                     userSocket.setCorrectNum(correctNum);
-                    List<TeamScores> list = new ArrayList<>();
+                    TeamScores teamScores = new TeamScores();
+                    teamScores.setTeamId(teamId);
+                    List<TeamUserInfo>list=new ArrayList<>();
                     for (Map.Entry<Integer, UserSocket> entry : USERS.get(teamId).entrySet()) {
-                        TeamScores teamScores = new TeamScores();
-                        teamScores.setTeamId(teamId);
-                        teamScores.setUserId(entry.getKey());
-                        teamScores.setCorrectNum(entry.getValue().getCorrectNum());
-                        list.add(teamScores);
+                        teamScores.setPractice(entry.getValue().getPractice());
+                        list.add(new TeamUserInfo(entry.getKey(), entry.getValue().getCorrectNum()));
                     }
                     for (Map.Entry<Integer, UserSocket> entry : USERS.get(teamId).entrySet()) {
-                        entry.getValue().getWebSocketServer().sendMessage(list.toString());
+                        entry.getValue().getWebSocketServer().sendMessage(teamScores);
                         log.info("发送消息"+list);
                     }
                 } else {
@@ -208,6 +237,10 @@ public class WebSocketServer {
         this.session.getBasicRemote().sendText(message);
     }
 
+    public void sendMessage(TeamScores teamScores) throws IOException {
+        String s = JSONObject.toJSONString(teamScores);
+        this.session.getBasicRemote().sendText(s);
+    }
 
     /**
      * 发送自定义消息

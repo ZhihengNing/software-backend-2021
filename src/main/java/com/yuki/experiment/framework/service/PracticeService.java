@@ -15,5 +15,7 @@ public interface PracticeService {
 
     Practice update(Practice practice);
 
+    Practice random(Integer courseId);
+
     void insert();
 }

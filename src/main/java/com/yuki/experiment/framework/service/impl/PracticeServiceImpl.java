@@ -97,6 +97,13 @@ public class PracticeServiceImpl implements PracticeService {
         return practice;
     }
 
+    @Override
+    public Practice random(Integer courseId) {
+        Criteria criteria = Criteria.where("courseId").is(courseId);
+        Query query = new Query(criteria);
+        return mongoTemplate.findOne(query, Practice.class, "practice");
+    }
+
     public void insert() {
 //        Practice practice = new Practice();
 //
