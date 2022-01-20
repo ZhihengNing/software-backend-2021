@@ -147,7 +147,7 @@ public class PracticeServiceImpl implements PracticeService {
         instance.setTime(lastTime);
         Calendar instance1=Calendar.getInstance();
         instance1.setTime(thisTime);
-        return instance1.get(Calendar.DAY_OF_YEAR)-instance.get(Calendar.DAY_OF_YEAR)>1;
+        return instance1.get(Calendar.DAY_OF_YEAR)-instance.get(Calendar.DAY_OF_YEAR)>=1;
     }
 
     @Override

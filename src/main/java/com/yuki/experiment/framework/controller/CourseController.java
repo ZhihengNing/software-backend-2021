@@ -25,6 +25,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.mail.event.MailEvent;
 import java.util.List;
 
 @RestController
@@ -61,6 +62,12 @@ public class CourseController {
     @Autowired
     public void setCourseScoreService(CourseScoreService courseScoreService) {
         this.courseScoreService = courseScoreService;
+    }
+
+    @ApiOperation("查询课程")
+    @RequestMapping(value = "/all",method = RequestMethod.GET)
+    public CommonResult<List<Course>> queryAllCourse() {
+        return CommonResult.success(courseService.allCourse());
     }
 
     @ApiOperation("教师添加课程")
@@ -103,7 +110,7 @@ public class CourseController {
 
     @ApiOperation("教师查看自己的课程")
     @RequestMapping(value = "/teacher",method = RequestMethod.GET)
-    public CommonResult<List<Course>> queryCourseInfo(@RequestParam("teacherId")Integer teacherId,
+    public CommonResult<List<Course>> queryCourseInfo(@RequestParam(value = "teacherId")Integer teacherId,
                                                 @RequestParam(value = "courseId",required = false)Integer courseId){
         return CommonResult.success(courseService.getCourseInfoByTeacher(teacherId,courseId));
     }
@@ -227,6 +234,7 @@ public class CourseController {
         } else if (courseId == null) {
             return CommonResult.failed("课程Id不能为空");
         }
+
         if (courseScoreService.setCourseActive(studentId, courseId) == 1) {
             return CommonResult.success();
         }
@@ -278,7 +286,7 @@ public class CourseController {
         return CommonResult.success(courseScoreService.judgeSignIn(studentId, courseId));
     }
 
-    @ApiOperation("查看选课学生名单（只返回已经激活课程的学生信息）")
+    @ApiOperation("查看选课学生名单")
     @RequestMapping(value = "",method = RequestMethod.GET)
     public CommonResult<List<StudentGradeDTO>> queryTakeStudent(@RequestParam("courseId")Integer courseId) {
         List<StudentGradeDTO> takeStudent = courseService.getTakeStudent(courseId);

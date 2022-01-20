@@ -36,6 +36,15 @@ public class CourseScoreServiceImpl implements CourseScoreService {
     }
 
     @Override
+    public int insertStudentTakes(Integer studentId, Integer courseId) {
+        CourseScore courseScore = new CourseScore();
+        courseScore.setStudentId(studentId);
+        courseScore.setCourseId(courseId);
+        courseScore.setIsActive(0);
+        return courseScoreMapper.insert(courseScore);
+    }
+
+    @Override
     public List<JSONObject> getCourseInfoAndIsActive(Integer studentID) {
         QueryWrapper<CourseScore>queryWrapper=new QueryWrapper<>();
         queryWrapper.eq("student_id",studentID);
@@ -83,7 +92,7 @@ public class CourseScoreServiceImpl implements CourseScoreService {
         instance.setTime(lastTime);
         Calendar instance1=Calendar.getInstance();
         instance1.setTime(thisTime);
-        return instance1.get(Calendar.DAY_OF_YEAR)-instance.get(Calendar.DAY_OF_YEAR)>1;
+        return instance1.get(Calendar.DAY_OF_YEAR)-instance.get(Calendar.DAY_OF_YEAR)>=1;
     }
 
     @Override
@@ -151,6 +160,9 @@ public class CourseScoreServiceImpl implements CourseScoreService {
 
     public boolean judge(Integer studentId, Integer courseId,Date now){
         CourseScore courseScore = getMessage(studentId, courseId);
+        if(courseScore==null){
+            return false;
+        }
         Date lastAttendanceTime = courseScore.getLastAttendanceTime();
         return judgeTime(now,lastAttendanceTime);
     }

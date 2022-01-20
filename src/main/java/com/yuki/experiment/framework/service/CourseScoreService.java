@@ -9,6 +9,8 @@ import java.util.List;
 
 public interface CourseScoreService {
 
+    int insertStudentTakes(Integer studentId,Integer courseId);
+
     List<JSONObject> getCourseInfoAndIsActive(Integer studentId);
 
     int setCourseActive(Integer studentId,Integer courseId);

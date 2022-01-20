@@ -1,6 +1,8 @@
 package com.yuki.experiment.framework.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
+import com.baomidou.mybatisplus.core.toolkit.StringUtils;
 import com.yuki.experiment.common.utils.FileUtil;
 import com.yuki.experiment.framework.dto.FileInfoDTO;
 import com.yuki.experiment.framework.dto.StuExperimentDTO;
@@ -12,6 +14,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
+import org.yaml.snakeyaml.Yaml;
 
 import java.math.BigDecimal;
 import java.util.List;
@@ -69,30 +72,34 @@ public class StuExperimentServiceImpl implements StuExperimentService {
         }
         //把新的文件url存入服务器
         FileInfoDTO fileInfoDTO = FileUtil.preserveFile(multipartFile, path, webPath);
+        StuExperiment.StuExperimentBuilder builder = StuExperiment.builder();
+        if (!StringUtils.isBlank(jobContent)) {
+            builder.jobContent(jobContent);
+        }
         if (fileInfoDTO != null) {
             String url = fileInfoDTO.getFileUrl();
             String name = fileInfoDTO.getFileName();
             log.info(name + "成功替换原文件,存到数据库中");
             //这里更新stu_experiment
-            StuExperiment build = StuExperiment.builder().experimentId(experimentId).studentId(studentId)
-                    .jobContent(jobContent).url(url).build();
-            if (stuExperimentMapper.updateById(build) > 0) {
-                return stuExperimentMapper.selectOne(new QueryWrapper<StuExperiment>()
-                        .eq("student_id", studentId)
-                        .eq("experiment_id", experimentId));
-            }
+            builder.url(url);
         }
-        return null;
+        StuExperiment build = builder.build();
+        UpdateWrapper<StuExperiment> updateWrapper = new UpdateWrapper<>();
+        updateWrapper.eq("student_id", studentId).eq("experiment_id", experimentId);
+        stuExperimentMapper.update(build, updateWrapper);
+        return stuExperimentMapper.selectOne(new QueryWrapper<StuExperiment>()
+                .eq("student_id", studentId)
+                .eq("experiment_id", experimentId));
     }
 
     @Override
     public int uploadGrade(Integer studentId, Integer experimentId, BigDecimal grade) {
         StuExperiment build = StuExperiment.builder()
-                .experimentId(experimentId)
-                .studentId(studentId)
                 .experimentScore(grade)
                 .build();
-        return stuExperimentMapper.updateById(build);
+        UpdateWrapper<StuExperiment> updateWrapper = new UpdateWrapper<>();
+        updateWrapper.eq("student_id", studentId).eq("experiment_id", experimentId);
+        return stuExperimentMapper.update(build, updateWrapper);
     }
 
 

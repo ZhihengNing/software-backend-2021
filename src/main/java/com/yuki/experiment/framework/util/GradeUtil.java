@@ -58,8 +58,8 @@ public class GradeUtil {
 
         QueryWrapper<CourseScore> courseScoreQueryWrapper = new QueryWrapper<>();
         courseScoreQueryWrapper.eq("student_id", studentId).eq("course_id", courseId);
-        CourseScore StudentGrade = courseScoreMapper.selectOne(courseScoreQueryWrapper);
-        if (StudentGrade == null || StudentGrade.getIsActive() == 0) {
+        CourseScore studentGrade = courseScoreMapper.selectOne(courseScoreQueryWrapper);
+        if (studentGrade == null) {
             return null;
         }
 
@@ -71,7 +71,7 @@ public class GradeUtil {
 
         //这里可能因为没设置分数比例导致无法计算
         List<BigDecimal> transfer = transfer(scoreRatio);
-        Integer attendanceTimes = StudentGrade.getAttendanceTimes();
+        Integer attendanceTimes = studentGrade.getAttendanceTimes();
         int tempAttendance = attendanceTimes == null ? 0 : attendanceTimes;
         BigDecimal attendances = transfer.get(0).multiply(BigDecimal.valueOf(tempAttendance/30.0));
 
@@ -89,17 +89,17 @@ public class GradeUtil {
         BigDecimal experiments = start.multiply(transfer.get(1));
 
         //计算对抗练习相关
-        BigDecimal practiceScore = StudentGrade.getPracticeScore();
+        BigDecimal practiceScore = studentGrade.getPracticeScore();
         BigDecimal tempPractice = practiceScore == null ? BigDecimal.ZERO : practiceScore;
         BigDecimal practices = tempPractice.multiply(transfer.get(2));
 
         //设置总分保存到数据库
-        StudentGrade.setCourseScore(attendances.add(experiments).add(practices));
+        studentGrade.setCourseScore(attendances.add(experiments).add(practices));
         UpdateWrapper<CourseScore> updateWrapper = new UpdateWrapper<>();
-        updateWrapper.set("course_score", StudentGrade.getCourseScore())
+        updateWrapper.set("course_score", studentGrade.getCourseScore())
                 .eq("student_id", studentId).eq("course_id", courseId);
         courseScoreMapper.update(null, updateWrapper);
-        return StudentGradeDTO.builder().take(StudentGrade)
+        return StudentGradeDTO.builder().take(studentGrade)
                 .experiments(stuExperiments)
                 .studentId(studentId).studentName(name).build();
 

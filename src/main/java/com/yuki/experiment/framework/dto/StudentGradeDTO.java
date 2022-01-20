@@ -2,7 +2,6 @@ package com.yuki.experiment.framework.dto;
 
 import com.yuki.experiment.framework.entity.CourseScore;
 import com.yuki.experiment.framework.entity.StuExperiment;
-import com.yuki.experiment.framework.entity.StuPractice;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Builder;
 import lombok.Data;

@@ -38,6 +38,12 @@ public class CourseServiceImpl implements CourseService {
     }
 
     @Override
+    public List<Course> allCourse() {
+        List<Course> courses = courseMapper.selectList(null);
+        return courses;
+    }
+
+    @Override
     public int insert(Course course) {
         courseMapper.insert(course);
         TeacherCourse teacherCourse = new TeacherCourse();
@@ -127,7 +133,6 @@ public class CourseServiceImpl implements CourseService {
         courseScoreQueryWrapper.eq("course_id", courseId);
         List<CourseScore> courseScores = courseScoreMapper.selectList(courseScoreQueryWrapper);
         List<StudentGradeDTO> list = new ArrayList<>();
-        System.out.println(courseScores);
         courseScores.parallelStream().forEach((s) ->
                 list.add(gradeUtil.getGrade(s.getStudentId(), courseId))
         );

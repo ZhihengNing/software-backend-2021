@@ -19,6 +19,11 @@ public class AdministratorServiceImpl implements AdministratorService {
     }
 
     @Override
+    public int insert(Administrator administrator) {
+        return mapper.insert(administrator);
+    }
+
+    @Override
     public boolean verifyLogin(Integer id, String password) {
         QueryWrapper<Administrator>wrapper=new QueryWrapper<>();
         wrapper.eq("id",id)

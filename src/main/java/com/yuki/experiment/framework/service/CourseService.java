@@ -9,6 +9,7 @@ import java.math.BigDecimal;
 import java.util.List;
 
 public interface CourseService {
+    List<Course>allCourse();
 
     int insert(Course course);
 

@@ -1,6 +1,7 @@
 package com.yuki.experiment.framework.controller;
 
 import com.alibaba.fastjson.JSONObject;
+import com.baomidou.mybatisplus.core.toolkit.StringUtils;
 import com.github.xiaoymin.knife4j.annotations.DynamicParameter;
 import com.github.xiaoymin.knife4j.annotations.DynamicParameters;
 import com.yuki.experiment.common.result.CommonResult;
@@ -8,11 +9,13 @@ import com.yuki.experiment.common.role.MyRole;
 import com.yuki.experiment.common.utils.EmptyUtil;
 import com.yuki.experiment.common.utils.FileUtil;
 import com.yuki.experiment.common.utils.JwtUtil;
+import com.yuki.experiment.framework.dto.AccountDTO;
 import com.yuki.experiment.framework.entity.Administrator;
 import com.yuki.experiment.framework.entity.Student;
 import com.yuki.experiment.framework.entity.Teacher;
 import com.yuki.experiment.framework.manage.impl.MailServiceImpl;
 import com.yuki.experiment.framework.service.AdministratorService;
+import com.yuki.experiment.framework.service.CourseScoreService;
 import com.yuki.experiment.framework.service.StudentService;
 import com.yuki.experiment.framework.service.TeacherService;
 import io.swagger.annotations.Api;
@@ -23,6 +26,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.mail.MessagingException;
+import javax.servlet.ServletRequest;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
@@ -42,12 +46,16 @@ public class UserController {
 
     private final MailServiceImpl mailService;
 
-    @Autowired
-    public UserController(StudentService studentService, AdministratorService administratorService, TeacherService teacherService, MailServiceImpl mailService) {
+    private final CourseScoreService courseScoreService;
+
+    private final String PASSWORD="123456";
+
+    public UserController(StudentService studentService, AdministratorService administratorService, TeacherService teacherService, MailServiceImpl mailService, CourseScoreService courseScoreService) {
         this.studentService = studentService;
         this.administratorService = administratorService;
         this.teacherService = teacherService;
         this.mailService = mailService;
+        this.courseScoreService = courseScoreService;
     }
 
     @ApiOperation("登录接口,返回token")
@@ -189,7 +197,50 @@ public class UserController {
             return CommonResult.success(info);
         }
         return CommonResult.failed("没有这个类型的用户");
+    }
 
+    @ApiOperation("管理员创建账户")
+    @RequestMapping(value = "/createAccount",method = RequestMethod.POST)
+    public CommonResult createAccount(@RequestBody AccountDTO accountDTO) {
+        String type = accountDTO.getType();
+        String gender = accountDTO.getGender();
+        String name = accountDTO.getName();
+        if (StringUtils.isBlank(type)) {
+            return CommonResult.failed();
+        }
+        if (MyRole.TEACHER.getRoleName().equals(type)) {
+            Teacher teacher = new Teacher();
+            teacher.setName(name);
+            teacher.setGender(gender);
+            teacher.setPassword(PASSWORD);
+            teacherService.insert(teacher);
+            return CommonResult.success();
+        } else if (MyRole.STUDENT.getRoleName().equals(type)) {
+            Student student = new Student();
+            student.setName(name);
+            student.setGender(gender);
+            student.setPassword(PASSWORD);
+            studentService.insertInfo(student);
+            return CommonResult.success();
+        }else if(MyRole.ADMINISTRATOR.getRoleName().equals(type)){
+            Administrator administrator=new Administrator();
+            administrator.setName(name);
+            administrator.setGender(gender);
+            administrator.setPassword(PASSWORD);
+            administratorService.insert(administrator);
+            return  CommonResult.success();
+        }
+        return CommonResult.failed("类型错误");
+    }
+
+    @ApiOperation("添加学生选课")
+    @RequestMapping(value = "/studentTake/{studentId}/{courseId}",method = RequestMethod.POST)
+    public CommonResult addStudentTake(@PathVariable Integer courseId,
+                                       @PathVariable Integer studentId){
+        if(courseScoreService.insertStudentTakes(studentId,courseId)>0){
+            return CommonResult.success();
+        }
+        return CommonResult.failed();
     }
 
 }
