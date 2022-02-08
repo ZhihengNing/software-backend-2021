@@ -1,9 +1,6 @@
 package com.yuki.experiment.framework.controller;
 
-import com.alibaba.fastjson.JSONObject;
-import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.toolkit.StringUtils;
-import com.sun.org.apache.xpath.internal.operations.Bool;
 import com.yuki.experiment.common.exception.FileIsNullException;
 import com.yuki.experiment.common.result.CommonResult;
 import com.yuki.experiment.common.utils.FileUtil;
@@ -11,8 +8,10 @@ import com.yuki.experiment.framework.dto.CourseFeedbackDTO;
 import com.yuki.experiment.framework.dto.CourseRatioDTO;
 import com.yuki.experiment.framework.dto.FileInfoDTO;
 import com.yuki.experiment.framework.dto.StudentGradeDTO;
-import com.yuki.experiment.framework.entity.*;
-import com.yuki.experiment.framework.mapper.mysql.TeacherMapper;
+import com.yuki.experiment.framework.entity.Course;
+import com.yuki.experiment.framework.entity.CourseFeedback;
+import com.yuki.experiment.framework.entity.CourseFile;
+import com.yuki.experiment.framework.entity.CourseScore;
 import com.yuki.experiment.framework.service.CourseFeedbackService;
 import com.yuki.experiment.framework.service.CourseFileService;
 import com.yuki.experiment.framework.service.CourseScoreService;
@@ -25,7 +24,6 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-import javax.mail.event.MailEvent;
 import java.util.List;
 
 @RestController
@@ -69,6 +67,7 @@ public class CourseController {
     public CommonResult<List<Course>> queryAllCourse() {
         return CommonResult.success(courseService.allCourse());
     }
+
 
     @ApiOperation("教师添加课程")
     @RequestMapping(value = "/addCourse",method = RequestMethod.POST)

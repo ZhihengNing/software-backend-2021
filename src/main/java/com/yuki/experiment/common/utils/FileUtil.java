@@ -2,7 +2,6 @@ package com.yuki.experiment.common.utils;
 
 import com.yuki.experiment.common.exception.FileIsNullException;
 import com.yuki.experiment.framework.dto.FileInfoDTO;
-import javafx.util.Pair;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.Resource;

@@ -2,13 +2,13 @@ package com.yuki.experiment.framework.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.yuki.experiment.common.utils.FileUtil;
+import com.yuki.experiment.common.utils.Pair;
 import com.yuki.experiment.framework.dto.FileInfoDTO;
 import com.yuki.experiment.framework.entity.Experiment;
 import com.yuki.experiment.framework.entity.ExperimentFile;
 import com.yuki.experiment.framework.mapper.mysql.ExperimentFileMapper;
 import com.yuki.experiment.framework.mapper.mysql.ExperimentMapper;
 import com.yuki.experiment.framework.service.ExperimentFileService;
-import javafx.util.Pair;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 

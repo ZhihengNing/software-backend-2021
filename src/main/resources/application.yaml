@@ -17,7 +17,7 @@ mybatis-plus:
   mapper-locations: mapper/**/*.xml
 
 server:
-  port: 9090
+  port: 9099
 
 jwt:
   key: tongjinzh
