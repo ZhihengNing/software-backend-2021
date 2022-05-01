@@ -13,8 +13,6 @@ public class SoftwareDesignApplication {
 
     public static void main(String[] args) {
         SpringApplication.run(SoftwareDesignApplication.class, args);
-        System.out.println("启动成功");
-
     }
 
 }

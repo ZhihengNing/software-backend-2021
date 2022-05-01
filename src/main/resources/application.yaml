@@ -1,11 +1,9 @@
 spring:
-  banner:
-    location: banner.txt
 #  mvc:
 #    servlet:
 #      path: /api
   profiles:
-    active: prod
+    active: dev
 
   servlet:
     multipart:

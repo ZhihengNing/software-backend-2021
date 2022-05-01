@@ -171,7 +171,7 @@ public class WebSocketServer {
             //USERS.get(teamId).remove(userId);
             ConcurrentHashMap<Integer, UserSocket> map = USERS.get(teamId);
             if (map.containsKey(userId)) {
-                log.info(userId+"的flag要被设置了");
+                log.info(userId + "的flag要被设置了");
                 map.get(userId).setFlag(0);
             }
             int sign = 0;
@@ -182,7 +182,6 @@ public class WebSocketServer {
                 USERS.remove(teamId);
             }
         }
-
 //        if (allUserMap.containsKey(teamId)) {
 //            allUserMap.get(teamId).remove(userId);
 //        }
